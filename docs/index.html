@@ -808,20 +808,43 @@ function setTheme(theme){
 }
 
 // WALLPAPER
-let currentWallpaper='none'
+let currentWallpaper='black'
 function setWallpaper(wp){
   currentWallpaper=wp
   const msgArea=document.getElementById('messages')
-  const ids=['none','dots','grid','gradient']
+  const ids=['white','black','green','mix']
   ids.forEach(id=>{
     const el=document.getElementById('wp-'+id)
-    if(el)el.style.borderColor=id===wp?'var(--accent)':'var(--border)'
+    if(!el)return
+    el.style.borderColor=id===wp?'var(--accent)':'var(--border)'
+    // Update checkmark
+    const existing=el.querySelector('.wp-check')
+    if(existing)existing.remove()
+    if(id===wp){
+      const check=document.createElement('div')
+      check.className='wp-check'
+      check.style.cssText='position:absolute;top:6px;right:6px'
+      check.innerHTML='<svg width="14" height="14" fill="none" stroke="#00897B" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>'
+      el.appendChild(check)
+    }
   })
   if(!msgArea)return
-  if(wp==='none') msgArea.style.backgroundImage='none'
-  else if(wp==='dots') msgArea.style.backgroundImage='radial-gradient(circle,#00897B22 1px,transparent 1px)',msgArea.style.backgroundSize='20px 20px'
-  else if(wp==='grid') msgArea.style.backgroundImage='linear-gradient(#00897B11 1px,transparent 1px),linear-gradient(90deg,#00897B11 1px,transparent 1px)',msgArea.style.backgroundSize='24px 24px'
-  else if(wp==='gradient') msgArea.style.backgroundImage='linear-gradient(135deg,#001a18,#000,#001208,#000)',msgArea.style.backgroundSize='100% 100%'
+  // Apply wallpaper to message area
+  if(wp==='white'){
+    msgArea.style.background='#ffffff'
+    msgArea.style.backgroundImage='none'
+  } else if(wp==='black'){
+    msgArea.style.background='#000000'
+    msgArea.style.backgroundImage='none'
+  } else if(wp==='green'){
+    msgArea.style.background='none'
+    msgArea.style.backgroundImage='linear-gradient(135deg,#00897B,#00695C,#004d40)'
+    msgArea.style.backgroundSize='100% 100%'
+  } else if(wp==='mix'){
+    msgArea.style.background='none'
+    msgArea.style.backgroundImage='linear-gradient(135deg,#000 0%,#00897B 35%,#fff 65%,#00695C 100%)'
+    msgArea.style.backgroundSize='100% 100%'
+  }
   toast('Wallpaper updated')
 }
 
