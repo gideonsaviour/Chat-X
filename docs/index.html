@@ -113,8 +113,8 @@ input::placeholder,textarea::placeholder{color:#444}
         </div>
       </div>
       <div style="display:flex;gap:2px">
-        <button class="icon-btn" onclick="showPrivacy()"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></button>
-        <button class="icon-btn" onclick="toast('Settings coming soon!')"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>
+        
+        <button class="icon-btn" onclick="showSettings()"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>
         <button class="icon-btn" onclick="openChat('ai')" style="background:linear-gradient(135deg,#00897B,#00695C);color:#fff;border-radius:8px"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></button>
       </div>
     </div>
@@ -172,6 +172,66 @@ input::placeholder,textarea::placeholder{color:#444}
   </div>
   <div id="group-panel-content" style="padding:16px;flex:1;overflow-y:auto"></div>
 </div>
+</div>
+
+<!-- Settings Panel -->
+<div id="settings-panel" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.88);align-items:center;justify-content:center;z-index:9997;backdrop-filter:blur(4px)">
+  <div style="background:#111;border:1px solid #222;border-radius:20px;width:380px;max-width:95vw;max-height:90vh;overflow-y:auto">
+    <div style="padding:20px;border-bottom:1px solid #222;display:flex;align-items:center;justify-content:space-between">
+      <div style="font-weight:700;font-size:17px">Settings</div>
+      <button class="icon-btn" onclick="hideSettings()"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <!-- Profile -->
+    <div style="padding:20px;border-bottom:1px solid #222;display:flex;align-items:center;gap:14px">
+      <div class="avatar" style="width:60px;height:60px;font-size:22px">GS</div>
+      <div>
+        <div style="font-weight:700;font-size:16px">Gideon Saviour</div>
+        <div style="font-size:13px;color:#666;margin-top:2px">Hey there! I am using Chat-X</div>
+        <div style="font-size:11px;color:#00897B;margin-top:4px">Online</div>
+      </div>
+    </div>
+    <!-- Settings Items -->
+    <div style="padding:8px 0">
+      <div onclick="hideSettings();showPrivacy()" style="display:flex;align-items:center;gap:14px;padding:14px 20px;cursor:pointer;transition:background .15s" onmouseover="this.style.background='rgba(255,255,255,0.05)'" onmouseout="this.style.background='transparent'">
+        <div style="width:40px;height:40px;border-radius:12px;background:rgba(0,137,123,0.15);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+          <svg width="20" height="20" fill="none" stroke="#00897B" stroke-width="2" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <div style="flex:1"><div style="font-size:14px;font-weight:600">Privacy & Security</div><div style="font-size:12px;color:#555;margin-top:1px">Read receipts, last seen, encryption</div></div>
+        <svg width="16" height="16" fill="none" stroke="#444" stroke-width="2" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+      </div>
+      <div onclick="toast('Notifications coming soon!')" style="display:flex;align-items:center;gap:14px;padding:14px 20px;cursor:pointer;transition:background .15s" onmouseover="this.style.background='rgba(255,255,255,0.05)'" onmouseout="this.style.background='transparent'">
+        <div style="width:40px;height:40px;border-radius:12px;background:rgba(0,137,123,0.15);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+          <svg width="20" height="20" fill="none" stroke="#00897B" stroke-width="2" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+        </div>
+        <div style="flex:1"><div style="font-size:14px;font-weight:600">Notifications</div><div style="font-size:12px;color:#555;margin-top:1px">Message, group and call tones</div></div>
+        <svg width="16" height="16" fill="none" stroke="#444" stroke-width="2" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+      </div>
+      <div onclick="toast('Chats settings coming soon!')" style="display:flex;align-items:center;gap:14px;padding:14px 20px;cursor:pointer;transition:background .15s" onmouseover="this.style.background='rgba(255,255,255,0.05)'" onmouseout="this.style.background='transparent'">
+        <div style="width:40px;height:40px;border-radius:12px;background:rgba(0,137,123,0.15);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+          <svg width="20" height="20" fill="none" stroke="#00897B" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        </div>
+        <div style="flex:1"><div style="font-size:14px;font-weight:600">Chats</div><div style="font-size:12px;color:#555;margin-top:1px">Theme, wallpaper, chat backup</div></div>
+        <svg width="16" height="16" fill="none" stroke="#444" stroke-width="2" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+      </div>
+      <div onclick="toast('Storage settings coming soon!')" style="display:flex;align-items:center;gap:14px;padding:14px 20px;cursor:pointer;transition:background .15s" onmouseover="this.style.background='rgba(255,255,255,0.05)'" onmouseout="this.style.background='transparent'">
+        <div style="width:40px;height:40px;border-radius:12px;background:rgba(0,137,123,0.15);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+          <svg width="20" height="20" fill="none" stroke="#00897B" stroke-width="2" viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+        </div>
+        <div style="flex:1"><div style="font-size:14px;font-weight:600">Storage & Data</div><div style="font-size:12px;color:#555;margin-top:1px">Manage storage, network usage</div></div>
+        <svg width="16" height="16" fill="none" stroke="#444" stroke-width="2" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+      </div>
+      <div onclick="toast('Help coming soon!')" style="display:flex;align-items:center;gap:14px;padding:14px 20px;cursor:pointer;transition:background .15s" onmouseover="this.style.background='rgba(255,255,255,0.05)'" onmouseout="this.style.background='transparent'">
+        <div style="width:40px;height:40px;border-radius:12px;background:rgba(0,137,123,0.15);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+          <svg width="20" height="20" fill="none" stroke="#00897B" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        </div>
+        <div style="flex:1"><div style="font-size:14px;font-weight:600">Help</div><div style="font-size:12px;color:#555;margin-top:1px">FAQ, contact us, privacy policy</div></div>
+        <svg width="16" height="16" fill="none" stroke="#444" stroke-width="2" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+      </div>
+    </div>
+    <div style="padding:16px 20px;border-top:1px solid #222">
+      <div style="font-size:12px;color:#333;text-align:center">Chat-X v1.0.0 · from GIDEON SAVIOUR</div>
+    </div>
+  </div>
 </div>
 
 <!-- Privacy Panel -->
@@ -483,6 +543,9 @@ function toast(msg){
   toastTimer=setTimeout(()=>{el.style.opacity='0';el.style.transform='translateX(-50%) translateY(20px)'},2500)
 }
 document.getElementById('privacy-panel').addEventListener('click',function(e){if(e.target===this)hidePrivacy()})
+document.getElementById('settings-panel').addEventListener('click',function(e){if(e.target===this)hideSettings()})
+function showSettings(){document.getElementById('settings-panel').style.display='flex'}
+function hideSettings(){document.getElementById('settings-panel').style.display='none'}
 document.getElementById('event-panel').addEventListener('click',function(e){if(e.target===this)hideEvent()})
 
 // Splash to app transition
