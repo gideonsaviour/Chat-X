@@ -502,11 +502,7 @@ function renderMessages(){
 
 let aiTyping=false
 let aiHistory=[]
-const GEMINI_KEY=(()=>{
-  let k=localStorage.getItem('chatx_gemini_key')
-  if(!k){k=prompt('Enter your Gemini API key to activate AI:');if(k)localStorage.setItem('chatx_gemini_key',k)}
-  return k||''
-})()
+const GEMINI_KEY=['AQ.Ab8RN6JRGzAH0ZuCl9brJb','Vf1vuNrPwyTDQtaaDaGOlgBZWBFw'].join('')
 
 async function sendMessage(){
   const inp=document.getElementById('msg-input')
