@@ -658,14 +658,16 @@ document.getElementById('privacy-panel').addEventListener('click',function(e){if
 document.getElementById('event-panel').addEventListener('click',function(e){if(e.target===this)hideEvent()})
 
 
-setTimeout(()=>{
-  document.getElementById('splash').classList.add('hide')
+window.addEventListener('load',()=>{
   setTimeout(()=>{
-    document.getElementById('splash').style.display='none'
-    document.getElementById('app').classList.add('show')
-    renderList()
-  },600)
-},4000)
+    document.getElementById('splash').classList.add('hide')
+    setTimeout(()=>{
+      document.getElementById('splash').style.display='none'
+      document.getElementById('app').classList.add('show')
+      renderList()
+    },600)
+  },3500)
+})
 
 function renderMessages(){
   const box=document.getElementById('messages')
