@@ -488,7 +488,7 @@ function renderMessages(){
       ${(!mine&&active)?av(active.av,28,isAI?'ai':null):''}
       <div class="${mine?'msg-mine':isAI?'msg-ai':'msg-theirs'}">
         ${isAI?`<div style="font-size:10px;color:#7c3aed;font-weight:700;margin-bottom:4px;letter-spacing:.5px">CHAT-X AI</div>`:''}
-        ${m.text}
+        ${isAI?m.text.replace(/\n/g,"<br>"):m.text}
         <div style="display:flex;align-items:center;justify-content:flex-end;gap:2px;margin-top:4px">
           <span style="font-size:11px;color:${mine?'rgba(255,255,255,.4)':'#444'}">${m.time}</span>
           ${mine?tick(m.st):''}
@@ -521,14 +521,19 @@ async function sendMessage(){
         body:JSON.stringify({
           model:'claude-sonnet-4-6',
           max_tokens:1000,
-          system:"You are Chat-X AI Assistant, a helpful, friendly assistant built into the Chat-X messaging app. Keep responses concise and conversational. You help users with questions, writing, summarising, and general assistance.",
+          system:"You are Chat-X AI Assistant — a smart, helpful assistant built into the Chat-X messaging app. You have access to real-time web search. Always search the web for current events, news, prices, scores, weather, and any time-sensitive information. Give accurate, concise, conversational answers. If you searched the web, briefly mention what you found. Never make up facts.",
+          tools:[{type:"web_search_20250305",name:"web_search"}],
           messages:[{role:'user',content:text}]
         })
       })
       const data=await res.json()
       msgs.pop()
-      const reply=data.content?.[0]?.text||"Sorry, I couldn't process that. Please try again."
-      msgs.push({from:'ai',text:reply,time:new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}),st:'read'})
+      // Extract text from content blocks (may include tool_use and tool_result blocks)
+      const textBlocks=data.content?.filter(b=>b.type==='text')
+      const reply=textBlocks?.map(b=>b.text).join('\n').trim()||"Sorry, I couldn't process that. Please try again."
+      // Check if web search was used
+      const searched=data.content?.some(b=>b.type==='tool_use'&&b.name==='web_search')
+      msgs.push({from:'ai',text:(searched?'🔍 <em style="font-size:11px;color:#7c3aed">Searched the web</em>\n\n':'')+reply,time:new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}),st:'read'})
     }catch(e){
       msgs.pop()
       msgs.push({from:'ai',text:"I'm having trouble connecting right now. Please try again in a moment.",time:new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}),st:'read'})
