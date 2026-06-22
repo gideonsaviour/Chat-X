@@ -544,7 +544,7 @@ async function sendMessage(){
       }
     }catch(e){
       msgs.pop()
-      msgs.push({from:'ai',text:"Connection error. Please check your internet and try again.",time:new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}),st:'read'})
+      msgs.push({from:'ai',text:"Error: "+e.message,time:new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}),st:'read'})
     }
     aiTyping=false
     renderMessages()
