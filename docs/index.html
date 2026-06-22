@@ -425,6 +425,7 @@ function renderList(){
 function openChat(id){
   active=contacts.find(c=>c.id===id)||{id:'ai',name:'Chat-X AI Assistant',av:'AI',status:'ai',type:'ai'}
   msgs=seedMsgs(active)
+  if(active.type==='ai') aiHistory=[]
   if(isMobile()) document.getElementById('sidebar').classList.add('hidden')
   document.getElementById('empty-state').style.display='none'
   const area=document.getElementById('chat-area')
@@ -500,6 +501,9 @@ function renderMessages(){
 }
 
 let aiTyping=false
+let aiHistory=[]
+const BACKEND='https://chat-x-backend.onrender.com'
+
 async function sendMessage(){
   const inp=document.getElementById('msg-input')
   const text=inp.value.trim()
@@ -515,25 +519,23 @@ async function sendMessage(){
     msgs.push({from:'ai',text:'<span style="display:inline-flex;gap:4px;align-items:center"><span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span></span>',time:'',st:'',isTyping:true})
     renderMessages()
     try{
-      const res=await fetch('https://api.anthropic.com/v1/messages',{
+      // Add to history for context
+      aiHistory.push({role:'user',content:text})
+
+      const res=await fetch(`${BACKEND}/chat`,{
         method:'POST',
         headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({
-          model:'claude-sonnet-4-6',
-          max_tokens:1000,
-          system:"You are Chat-X AI Assistant — a smart, helpful assistant built into the Chat-X messaging app. You have access to real-time web search. Always search the web for current events, news, prices, scores, weather, and any time-sensitive information. Give accurate, concise, conversational answers. If you searched the web, briefly mention what you found. Never make up facts.",
-          tools:[{type:"web_search_20250305",name:"web_search"}],
-          messages:[{role:'user',content:text}]
-        })
+        body:JSON.stringify({message:text, history:aiHistory.slice(-10)})
       })
       const data=await res.json()
       msgs.pop()
-      // Extract text from content blocks (may include tool_use and tool_result blocks)
-      const textBlocks=data.content?.filter(b=>b.type==='text')
-      const reply=textBlocks?.map(b=>b.text).join('\n').trim()||"Sorry, I couldn't process that. Please try again."
-      // Check if web search was used
-      const searched=data.content?.some(b=>b.type==='tool_use'&&b.name==='web_search')
-      msgs.push({from:'ai',text:(searched?'🔍 <em style="font-size:11px;color:#7c3aed">Searched the web</em>\n\n':'')+reply,time:new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}),st:'read'})
+
+      if(data.error){
+        msgs.push({from:'ai',text:'Sorry, something went wrong. Please try again.',time:new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}),st:'read'})
+      } else {
+        aiHistory.push({role:'assistant',content:data.reply})
+        msgs.push({from:'ai',text:(data.searched?'🔍 <em style="font-size:11px;color:#7c3aed">Searched the web</em><br><br>':'')+data.reply.replace(/\n/g,'<br>'),time:new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}),st:'read'})
+      }
     }catch(e){
       msgs.pop()
       msgs.push({from:'ai',text:"I'm having trouble connecting right now. Please try again in a moment.",time:new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}),st:'read'})
