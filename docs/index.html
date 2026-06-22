@@ -4,42 +4,74 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>Chat-X</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Inter',sans-serif;background:#0a0a0f;color:#f1f1f5;height:100vh;display:flex;overflow:hidden}
+body{font-family:'Inter',sans-serif;background:#0a0a0f;color:#f1f1f5;height:100vh;overflow:hidden}
 ::-webkit-scrollbar{width:4px}
 ::-webkit-scrollbar-thumb{background:#2a2a3a;border-radius:2px}
 
+/* SPLASH */
+#splash{
+  position:fixed;inset:0;background:#0a0a0f;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  z-index:9999;transition:opacity .6s ease;
+}
+#splash.hide{opacity:0;pointer-events:none}
+#splash-logo{
+  width:100px;height:100px;border-radius:28px;
+  background:linear-gradient(135deg,#7c3aed,#4f46e5);
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 0 60px rgba(124,58,237,0.5);
+  animation:popIn .5s cubic-bezier(.34,1.56,.64,1) .2s both;
+}
+@keyframes popIn{from{opacity:0;transform:scale(.5)}to{opacity:1;transform:scale(1)}}
+#splash-name{
+  margin-top:24px;font-size:32px;font-weight:800;letter-spacing:-.5px;
+  animation:fadeUp .5s ease .6s both;
+}
+#splash-tag{
+  margin-top:8px;font-size:14px;color:#8b8b9e;
+  animation:fadeUp .5s ease .75s both;
+}
+#splash-bottom{
+  position:absolute;bottom:48px;text-align:center;
+  animation:fadeUp .5s ease 1s both;
+}
+#splash-from{font-size:13px;color:#4a4a5e;margin-bottom:6px}
+#splash-brand{font-size:15px;font-weight:700;color:#6b6b80;letter-spacing:.5px}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+
+/* APP */
+#app{display:none;height:100vh}
+#app.show{display:flex}
+
+/* LAYOUT */
 #sidebar{
   width:300px;background:#111118;border-right:1px solid #2a2a3a;
   display:flex;flex-direction:column;height:100vh;flex-shrink:0;
-  transition:transform .25s ease;
 }
 #main{flex:1;display:flex;flex-direction:column;height:100vh;min-width:0}
 
-/* Mobile */
 @media(max-width:640px){
-  #sidebar{
-    position:fixed;inset:0;width:100%;z-index:100;
-    transform:translateX(0);
-  }
+  #sidebar{position:fixed;inset:0;width:100%;z-index:100;transition:transform .25s ease}
   #sidebar.hidden{transform:translateX(-100%)}
   #main{width:100%}
-  #back-btn{display:flex !important}
+  .back-btn{display:flex !important}
 }
 
 .avatar{border-radius:50%;background:linear-gradient(135deg,#7c3aed,#4f46e5);display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;flex-shrink:0}
 .sdot{position:absolute;bottom:1px;right:1px;border-radius:50%;border:2px solid #111118}
+.sdot2{position:absolute;bottom:1px;right:1px;border-radius:50%;border:2px solid #0a0a0f}
 .chat-item{display:flex;align-items:center;gap:12px;padding:11px 14px;cursor:pointer;border-radius:12px;margin:2px 8px;border:1px solid transparent;transition:background .15s}
 .chat-item:hover{background:rgba(255,255,255,0.05)}
 .chat-item.active{background:rgba(124,58,237,0.15);border-color:rgba(124,58,237,0.3)}
 .tab-btn{flex:1;padding:8px 4px;border:none;border-radius:8px;font-size:11px;font-weight:600;cursor:pointer;transition:all .15s;background:transparent;color:#8b8b9e;font-family:'Inter',sans-serif}
 .tab-btn.active{background:rgba(124,58,237,0.2);color:#8b5cf6}
 .tab-btn:hover:not(.active){background:rgba(255,255,255,0.05);color:#f1f1f5}
-.icon-btn{background:none;border:none;color:#8b8b9e;cursor:pointer;padding:8px;border-radius:8px;display:flex;align-items:center;justify-content:center;transition:all .15s;line-height:1;flex-shrink:0}
+.icon-btn{background:none;border:none;color:#8b8b9e;cursor:pointer;padding:8px;border-radius:8px;display:flex;align-items:center;justify-content:center;transition:all .15s;flex-shrink:0}
 .icon-btn:hover{background:rgba(255,255,255,0.08);color:#f1f1f5}
-.icon-btn:active{transform:scale(0.9)}
+.icon-btn:active{transform:scale(.9)}
 .send-btn{background:linear-gradient(135deg,#7c3aed,#4f46e5);border:none;color:#fff;width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .15s;flex-shrink:0}
 .send-btn:hover{opacity:.85}
 .send-btn:active{transform:scale(.93)}
@@ -47,9 +79,9 @@ body{font-family:'Inter',sans-serif;background:#0a0a0f;color:#f1f1f5;height:100v
 .msg-theirs{background:#1a1a24;border:1px solid #2a2a3a;border-radius:18px 18px 18px 4px;color:#f1f1f5;padding:10px 14px;max-width:70%;font-size:14px;line-height:1.55;word-break:break-word}
 .msg-row{display:flex;align-items:flex-end;gap:8px;margin-bottom:6px}
 .msg-row.mine{flex-direction:row-reverse}
-@keyframes fadeUp{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
-.fade{animation:fadeUp .18s ease}
-#modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);align-items:center;justify-content:center;z-index:999;backdrop-filter:blur(4px)}
+@keyframes fadeMsg{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+.fade{animation:fadeMsg .18s ease}
+#modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);align-items:center;justify-content:center;z-index:9998;backdrop-filter:blur(4px)}
 #modal-overlay.show{display:flex}
 #modal-box{background:#1a1a24;border:1px solid #2a2a3a;border-radius:24px;padding:40px 48px;text-align:center;width:290px;max-width:90vw}
 .modal-btn{border:none;width:60px;height:60px;border-radius:50%;cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center}
@@ -59,9 +91,28 @@ input,textarea{outline:none;font-family:'Inter',sans-serif;color:#f1f1f5}
 input::placeholder,textarea::placeholder{color:#4a4a5e}
 .pill{background:#1a1a24;border:1px solid #2a2a3a;border-radius:10px;padding:8px 14px;font-size:13px;color:#8b8b9e}
 .unread{background:#7c3aed;color:#fff;font-size:11px;font-weight:700;border-radius:10px;padding:2px 8px;min-width:22px;text-align:center;flex-shrink:0}
+#toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(20px);background:#1a1a24;border:1px solid #2a2a3a;color:#f1f1f5;padding:10px 20px;border-radius:10px;font-size:13px;opacity:0;transition:all .3s;z-index:9999;pointer-events:none;white-space:nowrap}
 </style>
 </head>
 <body>
+
+<!-- SPLASH SCREEN -->
+<div id="splash">
+  <div id="splash-logo">
+    <svg width="52" height="52" fill="none" stroke="#fff" stroke-width="2" viewBox="0 0 24 24">
+      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+    </svg>
+  </div>
+  <div id="splash-name">Chat-X</div>
+  <div id="splash-tag">Next generation messaging</div>
+  <div id="splash-bottom">
+    <div id="splash-from">from</div>
+    <div id="splash-brand">GIDEON SAVIOUR</div>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app">
 
 <!-- SIDEBAR -->
 <div id="sidebar">
@@ -78,13 +129,13 @@ input::placeholder,textarea::placeholder{color:#4a4a5e}
         </div>
       </div>
       <div style="display:flex;gap:2px">
-        <button class="icon-btn" title="Notifications" onclick="toast('Notifications coming soon!')">
+        <button class="icon-btn" onclick="toast('Notifications coming soon!')">
           <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
         </button>
-        <button class="icon-btn" title="Settings" onclick="toast('Settings coming soon!')">
+        <button class="icon-btn" onclick="toast('Settings coming soon!')">
           <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
         </button>
-        <button class="icon-btn" title="New chat" onclick="toast('New chat coming soon!')" style="background:linear-gradient(135deg,#7c3aed,#4f46e5);color:#fff;border-radius:8px">
+        <button class="icon-btn" onclick="toast('New chat coming soon!')" style="background:linear-gradient(135deg,#7c3aed,#4f46e5);color:#fff;border-radius:8px">
           <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
         </button>
       </div>
@@ -117,7 +168,6 @@ input::placeholder,textarea::placeholder{color:#4a4a5e}
 
 <!-- MAIN -->
 <div id="main">
-  <!-- Empty state -->
   <div id="empty-state" style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px">
     <div style="width:80px;height:80px;border-radius:24px;background:linear-gradient(135deg,#7c3aed,#4f46e5);display:flex;align-items:center;justify-content:center;margin-bottom:24px;box-shadow:0 0 40px rgba(124,58,237,0.35)">
       <svg width="36" height="36" fill="none" stroke="#fff" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
@@ -130,21 +180,17 @@ input::placeholder,textarea::placeholder{color:#4a4a5e}
       <div class="pill">🛡️ Private</div>
     </div>
   </div>
-
-  <!-- Chat area -->
   <div id="chat-area" style="display:none;flex-direction:column;height:100vh">
     <div id="chat-header" style="padding:12px 16px;border-bottom:1px solid #2a2a3a;background:#111118;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;gap:8px"></div>
-    <div style="text-align:center;padding:5px 16px;font-size:11px;color:#3a3a4e;flex-shrink:0;background:#0a0a0f">
-      🔒 End-to-end encrypted
-    </div>
+    <div style="text-align:center;padding:5px 16px;font-size:11px;color:#3a3a4e;flex-shrink:0">🔒 End-to-end encrypted</div>
     <div id="messages" style="flex:1;overflow-y:auto;padding:8px 16px;display:flex;flex-direction:column"></div>
     <div style="padding:10px 12px;border-top:1px solid #2a2a3a;background:#111118;display:flex;align-items:flex-end;gap:8px;flex-shrink:0">
-      <button class="icon-btn" title="Attach" onclick="toast('File sharing coming soon!')">
+      <button class="icon-btn" onclick="toast('File sharing coming soon!')">
         <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
       </button>
       <textarea id="msg-input" rows="1" placeholder="Type a message..." oninput="handleInput(this)" onkeydown="handleKey(event)"
         style="flex:1;background:#1a1a24;border:1px solid #2a2a3a;border-radius:12px;padding:10px 14px;font-size:14px;resize:none;max-height:100px;overflow-y:auto;line-height:1.5"></textarea>
-      <button class="icon-btn" title="Emoji" onclick="toast('Emoji picker coming soon!')">
+      <button class="icon-btn" onclick="toast('Emoji picker coming soon!')">
         <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 13s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
       </button>
       <button id="send-btn" class="send-btn" onclick="sendMessage()">
@@ -154,8 +200,10 @@ input::placeholder,textarea::placeholder{color:#4a4a5e}
   </div>
 </div>
 
+</div><!-- end #app -->
+
 <!-- Toast -->
-<div id="toast" style="position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(20px);background:#1a1a24;border:1px solid #2a2a3a;color:#f1f1f5;padding:10px 20px;border-radius:10px;font-size:13px;opacity:0;transition:all .3s;z-index:9999;pointer-events:none;white-space:nowrap"></div>
+<div id="toast"></div>
 
 <!-- Call Modal -->
 <div id="modal-overlay" onclick="closeCall(event)">
@@ -164,10 +212,10 @@ input::placeholder,textarea::placeholder{color:#4a4a5e}
     <div id="modal-name" style="margin-top:20px;font-size:20px;font-weight:700"></div>
     <div id="modal-sub" style="color:#8b8b9e;margin-top:6px;font-size:14px"></div>
     <div style="display:flex;gap:20px;justify-content:center;margin-top:36px">
-      <button class="modal-btn" onclick="closeCall()" style="background:#ef4444;color:#fff" title="Decline">
+      <button class="modal-btn" onclick="closeCall()" style="background:#ef4444;color:#fff">
         <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
       </button>
-      <button class="modal-btn" onclick="acceptCall()" style="background:#10b981;color:#fff" title="Accept">
+      <button class="modal-btn" onclick="acceptCall()" style="background:#10b981;color:#fff">
         <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
       </button>
     </div>
@@ -175,6 +223,18 @@ input::placeholder,textarea::placeholder{color:#4a4a5e}
 </div>
 
 <script>
+// SPLASH → APP transition
+setTimeout(()=>{
+  const splash=document.getElementById('splash')
+  splash.classList.add('hide')
+  setTimeout(()=>{
+    splash.style.display='none'
+    const app=document.getElementById('app')
+    app.classList.add('show')
+    renderList()
+  },600)
+},4000)
+
 const contacts=[
   {id:'u2',name:'David Lawrence',av:'DL',status:'online',seen:'now',unread:3,last:'Can we jump on a call?',type:'dm'},
   {id:'u3',name:'Sarah Chen',av:'SC',status:'online',seen:'now',unread:0,last:'The designs look amazing 🔥',type:'dm'},
@@ -190,10 +250,10 @@ const contacts=[
 const sColor=s=>s==='online'?'#10b981':s==='away'?'#f59e0b':'#3a3a4e'
 let tab='chats',active=null,msgs=[]
 
-function av(i,s,status){
+function av(i,s,status,border='#111118'){
   const f=Math.round(s*.34),d=Math.round(s*.28)
-  const dot=status&&status!=='group'?`<div class="sdot" style="width:${d}px;height:${d}px;background:${sColor(status)}"></div>`:''
-  return `<div style="position:relative;width:${s}px;height:${s}px;flex-shrink:0"><div class="avatar" style="width:${s}px;height:${s}px;font-size:${f}px">${i}</div>${dot}</div>`
+  const dot=status&&status!=='group'?`<div class="sdot" style="width:${d}px;height:${d}px;background:${sColor(status)};border-color:${border}"></div>`:''
+  return`<div style="position:relative;width:${s}px;height:${s}px;flex-shrink:0"><div class="avatar" style="width:${s}px;height:${s}px;font-size:${f}px">${i}</div>${dot}</div>`
 }
 
 function seedMsgs(c){return[
@@ -236,41 +296,35 @@ function renderList(){
 function openChat(id){
   active=contacts.find(c=>c.id===id)
   msgs=seedMsgs(active)
-
-  if(isMobile()){
-    document.getElementById('sidebar').classList.add('hidden')
-  }
-
+  if(isMobile())document.getElementById('sidebar').classList.add('hidden')
   document.getElementById('empty-state').style.display='none'
   const area=document.getElementById('chat-area')
   area.style.display='flex'
-
   document.getElementById('chat-header').innerHTML=`
     <div style="display:flex;align-items:center;gap:10px;flex:1;min-width:0">
-      <button id="back-btn" class="icon-btn" style="display:none;flex-shrink:0" onclick="goBack()">
+      <button class="icon-btn back-btn" style="display:none;flex-shrink:0" onclick="goBack()">
         <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
       </button>
-      ${av(active.av,40,active.status)}
+      ${av(active.av,40,active.status,'#0a0a0f')}
       <div style="min-width:0">
-        <div style="font-weight:700;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${active.name}</div>
+        <div style="font-weight:700;font-size:15px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${active.name}</div>
         <div style="font-size:12px;color:${active.status==='online'?'#10b981':active.status==='away'?'#f59e0b':'#8b8b9e'}">
           ${active.members?active.members+' members':active.status==='online'?'● Online':active.status==='away'?'● Away':'Last seen '+active.seen}
         </div>
       </div>
     </div>
     <div style="display:flex;gap:2px;flex-shrink:0">
-      <button class="icon-btn" title="Voice call" onclick="startCall('voice')">
+      <button class="icon-btn" onclick="startCall('voice')">
         <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
       </button>
-      <button class="icon-btn" title="Video call" onclick="startCall('video')">
+      <button class="icon-btn" onclick="startCall('video')">
         <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
       </button>
-      <button class="icon-btn" title="More" onclick="toast('More options coming soon!')">
+      <button class="icon-btn" onclick="toast('More options coming soon!')">
         <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg>
       </button>
     </div>`
-
-  if(isMobile()) document.getElementById('back-btn').style.display='flex'
+  if(isMobile())document.querySelector('.back-btn').style.display='flex'
   renderMessages()
   renderList()
   document.getElementById('msg-input').focus()
@@ -280,8 +334,7 @@ function goBack(){
   document.getElementById('sidebar').classList.remove('hidden')
   document.getElementById('chat-area').style.display='none'
   document.getElementById('empty-state').style.display='flex'
-  active=null
-  renderList()
+  active=null;renderList()
 }
 
 function renderMessages(){
@@ -348,14 +401,10 @@ function closeCall(e){if(!e||e.target===document.getElementById('modal-overlay')
 let toastTimer
 function toast(msg){
   const el=document.getElementById('toast')
-  el.textContent=msg
-  el.style.opacity='1'
-  el.style.transform='translateX(-50%) translateY(0)'
+  el.textContent=msg;el.style.opacity='1';el.style.transform='translateX(-50%) translateY(0)'
   clearTimeout(toastTimer)
   toastTimer=setTimeout(()=>{el.style.opacity='0';el.style.transform='translateX(-50%) translateY(20px)'},2500)
 }
-
-renderList()
 </script>
 </body>
 </html>
