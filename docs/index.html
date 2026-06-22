@@ -141,52 +141,8 @@ input::placeholder,textarea::placeholder{color:#444}
 
 <!-- SPLASH -->
 <div id="splash">
-  <div id="splash-logo"></div>
-  <div id="splash-scene">
-    <!-- Falling letters -->
-    <span id="sc">C</span>
-    <span id="sx">X</span>
-
-    <!-- Stick figure runner -->
-    <div id="runner">
-      <div id="runner-body">
-        <svg width="50" height="70" viewBox="0 0 50 70" fill="none">
-          <!-- Head -->
-          <circle cx="25" cy="10" r="7" fill="#fff"/>
-          <!-- Body -->
-          <line x1="25" y1="17" x2="25" y2="40" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
-          <!-- Arms swinging -->
-          <line x1="25" y1="24" x2="10" y2="32" stroke="#fff" stroke-width="2.5" stroke-linecap="round" style="animation:armL .3s ease infinite alternate;transform-origin:25px 24px">
-            <animateTransform attributeName="transform" type="rotate" values="-30 25 24;20 25 24" dur="0.3s" repeatCount="indefinite"/>
-          </line>
-          <line x1="25" y1="24" x2="40" y2="32" stroke="#fff" stroke-width="2.5" stroke-linecap="round">
-            <animateTransform attributeName="transform" type="rotate" values="20 25 24;-30 25 24" dur="0.3s" repeatCount="indefinite"/>
-          </line>
-          <!-- Legs running -->
-          <line x1="25" y1="40" x2="12" y2="58" stroke="#fff" stroke-width="2.5" stroke-linecap="round">
-            <animateTransform attributeName="transform" type="rotate" values="-25 25 40;25 25 40" dur="0.3s" repeatCount="indefinite"/>
-          </line>
-          <line x1="25" y1="40" x2="38" y2="58" stroke="#fff" stroke-width="2.5" stroke-linecap="round">
-            <animateTransform attributeName="transform" type="rotate" values="25 25 40;-25 25 40" dur="0.3s" repeatCount="indefinite"/>
-          </line>
-        </svg>
-      </div>
-    </div>
-
-    <!-- Caught flash text -->
-    <div id="catch-flash">Got them!</div>
-
-    <!-- Glow box -->
-    <div id="bubble-glow"></div>
-
-    <!-- Chat bubble icon -->
-    <div id="si" style="z-index:1">
-      <div style="width:80px;height:80px;border-radius:20px;background:linear-gradient(135deg,#00897B,#00695C);display:flex;align-items:center;justify-content:center">
-        <svg width="44" height="44" fill="none" stroke="#fff" stroke-width="2.2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-      </div>
-    </div>
-  </div>
-  <div id="splash-name">Chat-X</div>
+  <canvas id="splash-canvas" style="width:320px;height:320px;border-radius:20px"></canvas>
+  <div id="splash-name" style="margin-top:16px">Chat-X</div>
   <div id="splash-tag">Next generation messaging</div>
   <div id="splash-bottom">
     <div id="splash-from">from</div>
@@ -409,14 +365,291 @@ function fileOption(name,icon,desc){
 </script>
 
 <script>
-setTimeout(()=>{
-  document.getElementById('splash').classList.add('hide')
-  setTimeout(()=>{
-    document.getElementById('splash').style.display='none'
-    document.getElementById('app').classList.add('show')
-    renderList()
-  },600)
-},4000)
+// THREE.JS 3D SPLASH
+(function(){
+  const s=document.createElement('script')
+  s.src='https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js'
+  s.onload=initSplash
+  document.head.appendChild(s)
+})()
+
+function initSplash(){
+  const canvas=document.getElementById('splash-canvas')
+  const W=320,H=320
+  canvas.width=W;canvas.height=H
+
+  const renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:true})
+  renderer.setSize(W,H)
+  renderer.shadowMap.enabled=true
+  renderer.setClearColor(0x000000,1)
+
+  const scene=new THREE.Scene()
+  const camera=new THREE.PerspectiveCamera(60,W/H,.1,100)
+  camera.position.set(0,3,8)
+  camera.lookAt(0,1,0)
+
+  // Lights
+  const amb=new THREE.AmbientLight(0xffffff,.4)
+  scene.add(amb)
+  const dir=new THREE.DirectionalLight(0xffffff,.9)
+  dir.position.set(3,8,5)
+  dir.castShadow=true
+  scene.add(dir)
+  const teal=new THREE.PointLight(0x00897B,1.5,20)
+  teal.position.set(0,4,2)
+  scene.add(teal)
+
+  // Ground
+  const gGeo=new THREE.PlaneGeometry(20,20)
+  const gMat=new THREE.MeshStandardMaterial({color:0x0a0a0a})
+  const ground=new THREE.Mesh(gGeo,gMat)
+  ground.rotation.x=-Math.PI/2
+  ground.receiveShadow=true
+  scene.add(ground)
+
+  // 3D Man builder
+  const skinMat=new THREE.MeshStandardMaterial({color:0xf5cba7,roughness:.8})
+  const clothMat=new THREE.MeshStandardMaterial({color:0x00897B,roughness:.7})
+  const hairMat=new THREE.MeshStandardMaterial({color:0x1a1a1a,roughness:.9})
+  const shoesMat=new THREE.MeshStandardMaterial({color:0x111111,roughness:.8})
+
+  function box(w,h,d,mat){
+    const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),mat)
+    m.castShadow=true
+    return m
+  }
+  function cyl(r,h,mat){
+    const m=new THREE.Mesh(new THREE.CylinderGeometry(r,r,h,12),mat)
+    m.castShadow=true
+    return m
+  }
+  function sph(r,mat){
+    const m=new THREE.Mesh(new THREE.SphereGeometry(r,12,12),mat)
+    m.castShadow=true
+    return m
+  }
+
+  // Build man
+  const man=new THREE.Group()
+
+  // Head
+  const head=sph(.28,skinMat)
+  head.position.set(0,1.78,0)
+  man.add(head)
+
+  // Hair
+  const hair=sph(.3,hairMat)
+  hair.position.set(0,1.88,-.02)
+  hair.scale.set(1,0.7,1)
+  man.add(hair)
+
+  // Eyes
+  const eyeL=sph(.04,new THREE.MeshStandardMaterial({color:0x111111}))
+  eyeL.position.set(-.1,1.82,.26)
+  man.add(eyeL)
+  const eyeR=eyeL.clone()
+  eyeR.position.set(.1,1.82,.26)
+  man.add(eyeR)
+
+  // Body/torso
+  const torso=box(.5,.6,.28,clothMat)
+  torso.position.set(0,1.2,0)
+  man.add(torso)
+
+  // Hips
+  const hips=box(.44,.22,.26,clothMat)
+  hips.position.set(0,.86,0)
+  man.add(hips)
+
+  // Arms (pivots at shoulder)
+  const armLPivot=new THREE.Group()
+  armLPivot.position.set(-.32,1.45,0)
+  const armLU=box(.14,.3,.14,skinMat)
+  armLU.position.set(0,-.18,0)
+  const armLL=box(.12,.28,.12,skinMat)
+  armLL.position.set(0,-.48,0)
+  const handL=sph(.09,skinMat)
+  handL.position.set(0,-.65,0)
+  armLPivot.add(armLU,armLL,handL)
+  man.add(armLPivot)
+
+  const armRPivot=new THREE.Group()
+  armRPivot.position.set(.32,1.45,0)
+  const armRU=box(.14,.3,.14,skinMat)
+  armRU.position.set(0,-.18,0)
+  const armRL=box(.12,.28,.12,skinMat)
+  armRL.position.set(0,-.48,0)
+  const handR=sph(.09,skinMat)
+  handR.position.set(0,-.65,0)
+  armRPivot.add(armRU,armRL,handR)
+  man.add(armRPivot)
+
+  // Legs (pivots at hip)
+  const legLPivot=new THREE.Group()
+  legLPivot.position.set(-.14,.75,0)
+  const legLU=box(.17,.36,.17,clothMat)
+  legLU.position.set(0,-.2,0)
+  const legLL=box(.15,.34,.15,skinMat)
+  legLL.position.set(0,-.55,0)
+  const shoeL=box(.18,.1,.24,shoesMat)
+  shoeL.position.set(0,-.75,.04)
+  legLPivot.add(legLU,legLL,shoeL)
+  man.add(legLPivot)
+
+  const legRPivot=new THREE.Group()
+  legRPivot.position.set(.14,.75,0)
+  const legRU=box(.17,.36,.17,clothMat)
+  legRU.position.set(0,-.2,0)
+  const legRL=box(.15,.34,.15,skinMat)
+  legRL.position.set(0,-.55,0)
+  const shoeR=box(.18,.1,.24,shoesMat)
+  shoeR.position.set(0,-.75,.04)
+  legRPivot.add(legRU,legRL,shoeR)
+  man.add(legRPivot)
+
+  man.position.set(-5,0,0)
+  scene.add(man)
+
+  // Floating letters C and X
+  const loader=new THREE.FontLoader ? new THREE.FontLoader() : null
+  
+  // Simple letter placeholders (flat boxes with text-like shape)
+  const cMat=new THREE.MeshStandardMaterial({color:0xffffff,emissive:0x00897B,emissiveIntensity:.3,roughness:.4,metalness:.3})
+  const xMat=new THREE.MeshStandardMaterial({color:0xffffff,emissive:0x00897B,emissiveIntensity:.3,roughness:.4,metalness:.3})
+
+  // C letter shape
+  const cGroup=new THREE.Group()
+  const cBack=box(.08,.7,.5,cMat)
+  const cTop=box(.08,.18,.25,cMat)
+  cTop.position.set(0,.26,.12)
+  const cBot=box(.08,.18,.25,cMat)
+  cBot.position.set(0,-.26,.12)
+  cGroup.add(cBack,cTop,cBot)
+  cGroup.position.set(-2,4,0)
+  cGroup.rotation.y=Math.PI/2
+  scene.add(cGroup)
+
+  // X letter shape
+  const xGroup=new THREE.Group()
+  const xBar1=box(.08,.7,.12,xMat)
+  xBar1.rotation.z=Math.PI/4
+  const xBar2=box(.08,.7,.12,xMat)
+  xBar2.rotation.z=-Math.PI/4
+  xGroup.add(xBar1,xBar2)
+  xGroup.position.set(2,4,0)
+  xGroup.rotation.y=Math.PI/2
+  scene.add(xGroup)
+
+  // Chat bubble (hidden initially)
+  const bubbleGroup=new THREE.Group()
+  const bubbleMat=new THREE.MeshStandardMaterial({color:0x00897B,emissive:0x00695C,emissiveIntensity:.4,roughness:.3,metalness:.2})
+  const bubbleBody=box(1.4,1,.3,bubbleMat)
+  bubbleBody.position.set(0,.1,0)
+  const bubbleTail=box(.3,.35,.28,bubbleMat)
+  bubbleTail.position.set(-.4,-.42,.01)
+  bubbleTail.rotation.z=.3
+  // Dot dots inside bubble
+  const d1=box(.15,.15,.35,new THREE.MeshStandardMaterial({color:0xffffff}))
+  d1.position.set(-.35,.1,.12)
+  const d2=d1.clone(); d2.position.set(0,.1,.12)
+  const d3=d1.clone(); d3.position.set(.35,.1,.12)
+  bubbleGroup.add(bubbleBody,bubbleTail,d1,d2,d3)
+  bubbleGroup.position.set(0,2,0)
+  bubbleGroup.scale.set(0,0,0)
+  scene.add(bubbleGroup)
+
+  // Animation state
+  let t=0
+  const TOTAL=5 // seconds
+  let phase='run' // run -> catch -> merge -> done
+  let done=false
+
+  function animate(){
+    if(done) return
+    requestAnimationFrame(animate)
+    t+=0.016
+
+    const prog=Math.min(t/TOTAL,1)
+
+    // Running animation
+    const runSpeed=8
+    const legSwing=Math.sin(t*runSpeed)*.5
+    const armSwing=Math.sin(t*runSpeed+Math.PI)*.4
+    legLPivot.rotation.x=legSwing
+    legRPivot.rotation.x=-legSwing
+    armLPivot.rotation.x=armSwing
+    armRPivot.rotation.x=-armSwing
+    // Bob while running
+    man.position.y=Math.abs(Math.sin(t*runSpeed))*.08
+
+    if(phase==='run'){
+      // Man runs from left to center
+      const targetX=0
+      man.position.x=THREE.MathUtils.lerp(-5,targetX,Math.min(prog*2,1))
+      man.rotation.y=0
+
+      // Letters fall
+      if(t<2){
+        cGroup.position.y=THREE.MathUtils.lerp(4,.8,t/2)
+        xGroup.position.y=THREE.MathUtils.lerp(4,.8,t/2)
+        cGroup.rotation.z=Math.sin(t)*0.2
+        xGroup.rotation.z=-Math.sin(t)*0.2
+      }
+
+      if(t>2.2 && man.position.x>-0.5) phase='catch'
+    }
+
+    if(phase==='catch'){
+      // Letters zoom to man's hands
+      cGroup.position.x=THREE.MathUtils.lerp(cGroup.position.x,-.35,.12)
+      cGroup.position.y=THREE.MathUtils.lerp(cGroup.position.y,1.5,.12)
+      xGroup.position.x=THREE.MathUtils.lerp(xGroup.position.x,.35,.12)
+      xGroup.position.y=THREE.MathUtils.lerp(xGroup.position.y,1.5,.12)
+      // Arms reach up
+      armLPivot.rotation.x=THREE.MathUtils.lerp(armLPivot.rotation.x,-1.2,.1)
+      armRPivot.rotation.x=THREE.MathUtils.lerp(armRPivot.rotation.x,-1.2,.1)
+
+      if(t>3.2) phase='merge'
+    }
+
+    if(phase==='merge'){
+      // Letters shrink toward center
+      cGroup.position.x=THREE.MathUtils.lerp(cGroup.position.x,0,.1)
+      xGroup.position.x=THREE.MathUtils.lerp(xGroup.position.x,0,.1)
+      cGroup.position.y=THREE.MathUtils.lerp(cGroup.position.y,2,.1)
+      xGroup.position.y=THREE.MathUtils.lerp(xGroup.position.y,2,.1)
+      const s=Math.max(0,1-(t-3.2)*1.5)
+      cGroup.scale.set(s,s,s)
+      xGroup.scale.set(s,s,s)
+
+      // Chat bubble grows
+      const bs=Math.min((t-3.4)*2,1)
+      bubbleGroup.scale.set(bs,bs,bs)
+      bubbleGroup.rotation.y+=0.02
+
+      // Man celebrates - arms up
+      armLPivot.rotation.x=THREE.MathUtils.lerp(armLPivot.rotation.x,-2,.08)
+      armRPivot.rotation.x=THREE.MathUtils.lerp(armRPivot.rotation.x,-2,.08)
+      man.rotation.y+=0.03
+
+      if(t>4.5){
+        phase='done'
+        done=true
+        renderer.dispose()
+        // Fade to app
+        document.getElementById('splash').classList.add('hide')
+        setTimeout(()=>{
+          document.getElementById('splash').style.display='none'
+          document.getElementById('app').classList.add('show')
+          renderList()
+        },600)
+      }
+    }
+
+    renderer.render(scene,camera)
+  }
+  animate()
+}
 
 const contacts=[
   {id:'u2',name:'David Lawrence',av:'DL',status:'online',seen:'now',unread:3,last:'Can we jump on a call?',type:'dm'},
