@@ -265,13 +265,34 @@ input::placeholder,textarea::placeholder{color:#444}
       </button>
     </div>
     <div style="padding:16px;display:flex;flex-direction:column;gap:4px">
-      ${privacyRow('Read Receipts','Show when you have read messages','read-receipts',true)}
-      ${privacyRow('Last Seen','Show your last active time','last-seen',true)}
-      ${privacyRow('Online Status','Show when you are online','online-status',true)}
-      ${privacyRow('Disappearing Messages','Auto-delete messages after 7 days','disappearing',false)}
-      ${privacyRow('Two-Step Verification','Extra security for your account','two-step',false)}
-      ${privacyRow('Blocked Contacts','Manage blocked users','blocked',false)}
-      ${privacyRow('Screenshot Protection','Prevent screenshots in chat','screenshot',false)}
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid #1a1a1a">
+    <div><div style="font-size:14px;font-weight:500">Read Receipts</div><div style="font-size:12px;color:#555;margin-top:2px">Show when you have read messages</div></div>
+    <label class="toggle"><input type="checkbox" checked onchange="toast('Read Receipts updated')"><div class="toggle-slider"></div></label>
+  </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid #1a1a1a">
+    <div><div style="font-size:14px;font-weight:500">Last Seen</div><div style="font-size:12px;color:#555;margin-top:2px">Show your last active time</div></div>
+    <label class="toggle"><input type="checkbox" checked onchange="toast('Last Seen updated')"><div class="toggle-slider"></div></label>
+  </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid #1a1a1a">
+    <div><div style="font-size:14px;font-weight:500">Online Status</div><div style="font-size:12px;color:#555;margin-top:2px">Show when you are online</div></div>
+    <label class="toggle"><input type="checkbox" checked onchange="toast('Online Status updated')"><div class="toggle-slider"></div></label>
+  </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid #1a1a1a">
+    <div><div style="font-size:14px;font-weight:500">Disappearing Messages</div><div style="font-size:12px;color:#555;margin-top:2px">Auto-delete messages after 7 days</div></div>
+    <label class="toggle"><input type="checkbox"  onchange="toast('Disappearing Messages updated')"><div class="toggle-slider"></div></label>
+  </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid #1a1a1a">
+    <div><div style="font-size:14px;font-weight:500">Two-Step Verification</div><div style="font-size:12px;color:#555;margin-top:2px">Extra security for your account</div></div>
+    <label class="toggle"><input type="checkbox"  onchange="toast('Two-Step Verification updated')"><div class="toggle-slider"></div></label>
+  </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid #1a1a1a">
+    <div><div style="font-size:14px;font-weight:500">Blocked Contacts</div><div style="font-size:12px;color:#555;margin-top:2px">Manage blocked users</div></div>
+    <label class="toggle"><input type="checkbox"  onchange="toast('Blocked Contacts updated')"><div class="toggle-slider"></div></label>
+  </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid #1a1a1a">
+    <div><div style="font-size:14px;font-weight:500">Screenshot Protection</div><div style="font-size:12px;color:#555;margin-top:2px">Prevent screenshots in chat</div></div>
+    <label class="toggle"><input type="checkbox"  onchange="toast('Screenshot Protection updated')"><div class="toggle-slider"></div></label>
+  </div>
     </div>
   </div>
 </div>
@@ -316,12 +337,36 @@ input::placeholder,textarea::placeholder{color:#444}
   <div style="background:#111;border:1px solid #2a2a2a;border-radius:20px;padding:24px;width:340px;max-width:95vw;text-align:center" onclick="event.stopPropagation()">
     <div style="font-weight:700;font-size:16px;margin-bottom:16px">Share File</div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px">
-      ${fileOption('Document','📄','Share PDF, Word, Excel files')}
-      ${fileOption('Image','🖼️','Share photos and images')}
-      ${fileOption('Audio','🎵','Share voice notes and music')}
-      ${fileOption('Video','🎥','Share video clips')}
-      ${fileOption('Location','📍','Share your location')}
-      ${fileOption('Contact','👤','Share a contact card')}
+      <div onclick="sendFile('Document');document.getElementById('file-preview').classList.remove('show')" style="background:#1f1f1f;border:1px solid #2a2a2a;border-radius:12px;padding:14px;cursor:pointer;text-align:center" onmouseover="this.style.background='#2a2a2a'" onmouseout="this.style.background='#1f1f1f'">
+    <div style="font-size:24px;margin-bottom:6px">📄</div>
+    <div style="font-size:13px;font-weight:600">Document</div>
+    <div style="font-size:11px;color:#555;margin-top:2px">Share PDF, Word, Excel files</div>
+  </div>
+      <div onclick="sendFile('Image');document.getElementById('file-preview').classList.remove('show')" style="background:#1f1f1f;border:1px solid #2a2a2a;border-radius:12px;padding:14px;cursor:pointer;text-align:center" onmouseover="this.style.background='#2a2a2a'" onmouseout="this.style.background='#1f1f1f'">
+    <div style="font-size:24px;margin-bottom:6px">🖼️</div>
+    <div style="font-size:13px;font-weight:600">Image</div>
+    <div style="font-size:11px;color:#555;margin-top:2px">Share photos and images</div>
+  </div>
+      <div onclick="sendFile('Audio');document.getElementById('file-preview').classList.remove('show')" style="background:#1f1f1f;border:1px solid #2a2a2a;border-radius:12px;padding:14px;cursor:pointer;text-align:center" onmouseover="this.style.background='#2a2a2a'" onmouseout="this.style.background='#1f1f1f'">
+    <div style="font-size:24px;margin-bottom:6px">🎵</div>
+    <div style="font-size:13px;font-weight:600">Audio</div>
+    <div style="font-size:11px;color:#555;margin-top:2px">Share voice notes and music</div>
+  </div>
+      <div onclick="sendFile('Video');document.getElementById('file-preview').classList.remove('show')" style="background:#1f1f1f;border:1px solid #2a2a2a;border-radius:12px;padding:14px;cursor:pointer;text-align:center" onmouseover="this.style.background='#2a2a2a'" onmouseout="this.style.background='#1f1f1f'">
+    <div style="font-size:24px;margin-bottom:6px">🎥</div>
+    <div style="font-size:13px;font-weight:600">Video</div>
+    <div style="font-size:11px;color:#555;margin-top:2px">Share video clips</div>
+  </div>
+      <div onclick="sendFile('Location');document.getElementById('file-preview').classList.remove('show')" style="background:#1f1f1f;border:1px solid #2a2a2a;border-radius:12px;padding:14px;cursor:pointer;text-align:center" onmouseover="this.style.background='#2a2a2a'" onmouseout="this.style.background='#1f1f1f'">
+    <div style="font-size:24px;margin-bottom:6px">📍</div>
+    <div style="font-size:13px;font-weight:600">Location</div>
+    <div style="font-size:11px;color:#555;margin-top:2px">Share your location</div>
+  </div>
+      <div onclick="sendFile('Contact');document.getElementById('file-preview').classList.remove('show')" style="background:#1f1f1f;border:1px solid #2a2a2a;border-radius:12px;padding:14px;cursor:pointer;text-align:center" onmouseover="this.style.background='#2a2a2a'" onmouseout="this.style.background='#1f1f1f'">
+    <div style="font-size:24px;margin-bottom:6px">👤</div>
+    <div style="font-size:13px;font-weight:600">Contact</div>
+    <div style="font-size:11px;color:#555;margin-top:2px">Share a contact card</div>
+  </div>
     </div>
     <button onclick="document.getElementById('file-preview').classList.remove('show')" style="background:#1f1f1f;border:1px solid #2a2a2a;color:#f1f1f5;padding:10px 24px;border-radius:10px;cursor:pointer;font-family:'Inter',sans-serif;font-size:14px">Cancel</button>
   </div>
@@ -346,397 +391,7 @@ input::placeholder,textarea::placeholder{color:#444}
 
 <div id="toast"></div>
 
-<script>
-function privacyRow(label,desc,id,checked){
-  return`<div style="display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid #1a1a1a">
-    <div><div style="font-size:14px;font-weight:500">${label}</div><div style="font-size:12px;color:#555;margin-top:2px">${desc}</div></div>
-    <label class="toggle"><input type="checkbox" ${checked?'checked':''} onchange="toast('${label} updated')"><div class="toggle-slider"></div></label>
-  </div>`
-}
-function fileOption(name,icon,desc){
-  return`<div onclick="sendFile('${name}');document.getElementById('file-preview').classList.remove('show')" style="background:#1f1f1f;border:1px solid #2a2a2a;border-radius:12px;padding:14px;cursor:pointer;transition:background .15s;text-align:center" onmouseover="this.style.background='#2a2a2a'" onmouseout="this.style.background='#1f1f1f'">
-    <div style="font-size:24px;margin-bottom:6px">${icon}</div>
-    <div style="font-size:13px;font-weight:600">${name}</div>
-    <div style="font-size:11px;color:#555;margin-top:2px">${desc}</div>
-  </div>`
-}
-</script>
 
-<script>
-setTimeout(()=>{
-  document.getElementById('splash').classList.add('hide')
-  setTimeout(()=>{
-    document.getElementById('splash').style.display='none'
-    document.getElementById('app').classList.add('show')
-    renderList()
-  },600)
-},4500)eta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
-<meta http-equiv="Pragma" content="no-cache"/>
-<meta http-equiv="Expires" content="0"/>
-<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>Chat-X</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
-<style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Inter',sans-serif;background:#000;color:#f1f1f5;height:100vh;overflow:hidden}
-::-webkit-scrollbar{width:4px}
-::-webkit-scrollbar-thumb{background:#333;border-radius:2px}
-
-/* SPLASH */
-#splash{position:fixed;inset:0;background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;transition:opacity .6s ease}
-#splash.hide{opacity:0;pointer-events:none}
-/* SPLASH ANIMATION */
-#splash-logo{display:none}
-
-#sc{position:absolute;font-size:48px;font-weight:900;color:#fff;text-shadow:0 0 20px rgba(0,137,123,0.8);animation:cFall 4.5s cubic-bezier(.25,.46,.45,.94) forwards;left:40px;top:0}
-@keyframes cFall{0%{opacity:0;transform:translateY(-80px) rotate(-20deg)}15%{opacity:1;transform:translateY(0px) rotate(-10deg)}40%{opacity:1;transform:translateY(0px) rotate(-10deg)}58%{opacity:1;transform:translateY(140px) rotate(0deg) scale(0.7)}70%{opacity:0;transform:translateY(150px) scale(0.1)}100%{opacity:0}}
-#sx{position:absolute;font-size:48px;font-weight:900;color:#fff;text-shadow:0 0 20px rgba(0,137,123,0.8);animation:xFall 4.5s cubic-bezier(.25,.46,.45,.94) forwards;right:40px;top:0}
-@keyframes xFall{0%{opacity:0;transform:translateY(-80px) rotate(20deg)}20%{opacity:1;transform:translateY(0px) rotate(10deg)}45%{opacity:1;transform:translateY(0px) rotate(10deg)}58%{opacity:1;transform:translateY(140px) rotate(0deg) scale(0.7)}70%{opacity:0;transform:translateY(150px) scale(0.1)}100%{opacity:0}}
-
-45%{transform:translateX(170px)}70%{transform:translateX(170px)}100%{transform:translateX(170px)}}
-
-65%{opacity:1;transform:translateX(-50%) scale(1.3)}72%{opacity:1}78%{opacity:0}100%{opacity:0}}
-
-80%{opacity:1;transform:translateX(-50%) scale(1.1)}90%{opacity:1;transform:translateX(-50%) scale(0.95)}100%{opacity:1;transform:translateX(-50%) scale(1)}}
-#si{position:absolute;bottom:50px;left:50%;transform:translateX(-50%);opacity:0;z-index:1;animation:bubbleAppear 4.5s ease forwards}
-82%{opacity:1;transform:translateX(-50%) scale(1.2)}92%{opacity:1;transform:translateX(-50%) scale(0.95)}100%{opacity:1;transform:translateX(-50%) scale(1)}}
-@keyframes popIn{from{opacity:0;transform:scale(.5)}to{opacity:1;transform:scale(1)}}
-#splash-name{margin-top:24px;font-size:32px;font-weight:800;letter-spacing:-.5px;animation:fadeUp .5s ease .6s both}
-#splash-tag{margin-top:8px;font-size:14px;color:#8b8b9e;animation:fadeUp .5s ease .75s both}
-#splash-bottom{position:absolute;bottom:48px;text-align:center;animation:fadeUp .5s ease 1s both}
-#splash-from{font-size:13px;color:#4a4a5e;margin-bottom:4px}
-#splash-brand{font-size:15px;font-weight:700;color:#6b6b80;letter-spacing:.5px}
-@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
-
-/* APP */
-#app{display:none;height:100vh;flex-direction:row}
-#app.show{display:flex}
-
-/* SIDEBAR */
-#sidebar{width:300px;background:#111;border-right:1px solid #2a2a2a;display:flex;flex-direction:column;height:100vh;flex-shrink:0}
-#main{flex:1;display:flex;flex-direction:column;height:100vh;min-width:0;background:#000}
-
-@media(max-width:640px){
-  #sidebar{position:fixed;inset:0;width:100%;z-index:100;transition:transform .25s ease}
-  #sidebar.hidden{transform:translateX(-100%)}
-  .back-btn{display:flex !important}
-}
-
-.avatar{border-radius:50%;background:linear-gradient(135deg,#00897B,#00695C);display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;flex-shrink:0}
-.sdot{position:absolute;border-radius:50%}
-.chat-item{display:flex;align-items:center;gap:12px;padding:11px 14px;cursor:pointer;border-radius:12px;margin:2px 8px;border:1px solid transparent;transition:background .15s}
-.chat-item:hover{background:rgba(255,255,255,0.05)}
-.chat-item.active{background:rgba(0,137,123,0.12);border-color:rgba(0,137,123,0.3)}
-.tab-btn{flex:1;padding:8px 4px;border:none;border-radius:8px;font-size:11px;font-weight:600;cursor:pointer;transition:all .15s;background:transparent;color:#666;font-family:'Inter',sans-serif}
-.tab-btn.active{background:rgba(0,137,123,0.15);color:#00897B}
-.tab-btn:hover:not(.active){background:rgba(255,255,255,0.05);color:#f1f1f5}
-.icon-btn{background:none;border:none;color:#666;cursor:pointer;padding:8px;border-radius:8px;display:flex;align-items:center;justify-content:center;transition:all .15s;flex-shrink:0}
-.icon-btn:hover{background:rgba(255,255,255,0.08);color:#f1f1f5}
-.icon-btn:active{transform:scale(.9)}
-.send-btn{background:linear-gradient(135deg,#00897B,#00695C);border:none;color:#fff;width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .15s;flex-shrink:0}
-.send-btn:hover{opacity:.85}
-.send-btn:active{transform:scale(.93)}
-.msg-mine{background:linear-gradient(135deg,#00897B,#00695C);border-radius:18px 18px 4px 18px;color:#fff;padding:10px 14px;max-width:70%;font-size:14px;line-height:1.55;word-break:break-word}
-.msg-theirs{background:#1f1f1f;border:1px solid #2a2a2a;border-radius:18px 18px 18px 4px;color:#f1f1f5;padding:10px 14px;max-width:70%;font-size:14px;line-height:1.55;word-break:break-word}
-.msg-ai{background:#001210;border:1px solid #001a18;border-radius:18px 18px 18px 4px;color:#f1f1f5;padding:10px 14px;max-width:75%;font-size:14px;line-height:1.6;word-break:break-word}
-.msg-row{display:flex;align-items:flex-end;gap:8px;margin-bottom:6px}
-.msg-row.mine{flex-direction:row-reverse}
-@keyframes fadeMsg{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
-.fade{animation:fadeMsg .18s ease}
-#modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.88);align-items:center;justify-content:center;z-index:9998;backdrop-filter:blur(4px)}
-#modal-overlay.show{display:flex}
-#modal-box{background:#1f1f1f;border:1px solid #2a2a2a;border-radius:24px;padding:40px 48px;text-align:center;width:290px;max-width:90vw}
-.modal-btn{border:none;width:60px;height:60px;border-radius:50%;cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center}
-.modal-btn:hover{transform:scale(1.08)}
-.modal-btn:active{transform:scale(.93)}
-
-/* Group info panel */
-#group-panel{display:none;width:280px;background:#111;border-left:1px solid #2a2a2a;height:100vh;flex-direction:column;flex-shrink:0;overflow-y:auto}
-#group-panel.show{display:flex}
-
-/* Privacy panel */
-#privacy-panel{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.88);align-items:center;justify-content:center;z-index:9997;backdrop-filter:blur(4px)}
-#privacy-panel.show{display:flex}
-
-/* Event panel */
-#event-panel{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.88);align-items:center;justify-content:center;z-index:9997;backdrop-filter:blur(4px)}
-#event-panel.show{display:flex}
-
-/* File preview */
-#file-preview{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.95);align-items:center;justify-content:center;z-index:9997}
-#file-preview.show{display:flex}
-
-input,textarea,select{outline:none;font-family:'Inter',sans-serif;color:#f1f1f5}
-input::placeholder,textarea::placeholder{color:#444}
-.pill{background:#1f1f1f;border:1px solid #2a2a2a;border-radius:10px;padding:8px 14px;font-size:13px;color:#8b8b9e}
-.unread{background:#00897B;color:#fff;font-size:11px;font-weight:700;border-radius:10px;padding:2px 8px;min-width:22px;text-align:center;flex-shrink:0}
-#toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(20px);background:#1f1f1f;border:1px solid #2a2a2a;color:#f1f1f5;padding:10px 20px;border-radius:10px;font-size:13px;opacity:0;transition:all .3s;z-index:99999;pointer-events:none;white-space:nowrap}
-
-.typing-dot{width:7px;height:7px;border-radius:50%;background:#00897B;display:inline-block;animation:typingBounce 1.2s infinite}
-.typing-dot:nth-child(2){animation-delay:.2s}
-.typing-dot:nth-child(3){animation-delay:.4s}
-@keyframes typingBounce{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-6px)}}
-
-/* AI rotating dots logo */
-.ai-spinner{width:36px;height:36px;position:relative;display:inline-flex;align-items:center;justify-content:center}
-.ai-spinner-dot{position:absolute;width:8px;height:8px;border-radius:50%;animation:aiSpin 1.4s linear infinite}
-.ai-spinner-dot:nth-child(1){background:#00897B;animation-delay:0s}
-.ai-spinner-dot:nth-child(2){background:#4DB6AC;animation-delay:-1.2s}
-.ai-spinner-dot:nth-child(3){background:#00695C;animation-delay:-1.05s}
-.ai-spinner-dot:nth-child(4){background:#00897B;animation-delay:-0.9s}
-.ai-spinner-dot:nth-child(5){background:#4DB6AC;animation-delay:-0.75s}
-.ai-spinner-dot:nth-child(6){background:#00695C;animation-delay:-0.6s}
-.ai-spinner-dot:nth-child(7){background:#00897B;animation-delay:-0.45s}
-.ai-spinner-dot:nth-child(8){background:#4DB6AC;animation-delay:-0.3s}
-@keyframes aiSpin{
-  0%  {transform:rotate(0deg)   translateY(-14px) scale(1)}
-  50% {transform:rotate(180deg) translateY(-14px) scale(0.6)}
-  100%{transform:rotate(360deg) translateY(-14px) scale(1)}
-}
-
-.toggle{position:relative;width:44px;height:24px;flex-shrink:0}
-.toggle input{opacity:0;width:0;height:0}
-.toggle-slider{position:absolute;inset:0;background:#333;border-radius:24px;cursor:pointer;transition:.3s}
-.toggle-slider:before{content:'';position:absolute;width:18px;height:18px;left:3px;bottom:3px;background:#fff;border-radius:50%;transition:.3s}
-.toggle input:checked+.toggle-slider{background:#00897B}
-.toggle input:checked+.toggle-slider:before{transform:translateX(20px)}
-
-.member-item{display:flex;align-items:center;gap:10px;padding:10px 16px;border-radius:10px;transition:background .15s;cursor:pointer}
-.member-item:hover{background:rgba(255,255,255,0.05)}
-</style>
-</head>
-<body>
-
-<!-- SPLASH -->
-<div id="splash">
-  <div id="splash-logo">
-    <span id="sc">C</span>
-    <span id="sx">X</span>
-    <div id="si">
-      <svg width="52" height="52" fill="none" stroke="#fff" stroke-width="2.2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-    </div>
-  </div>
-  <div id="splash-name">Chat-X</div>
-  <div id="splash-tag">Next generation messaging</div>
-  <div id="splash-bottom">
-    <div id="splash-from">from</div>
-    <div id="splash-brand">GIDEON SAVIOUR</div>
-  </div>
-</div>
-
-<!-- APP -->
-<div id="app">
-
-<!-- SIDEBAR -->
-<div id="sidebar">
-  <div style="padding:16px 16px 12px;border-bottom:1px solid #2a2a2a;flex-shrink:0">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
-      <div style="display:flex;align-items:center;gap:10px">
-        <div style="position:relative">
-          <div class="avatar" style="width:36px;height:36px;font-size:13px;font-weight:800">CX</div>
-          <div class="sdot" style="width:10px;height:10px;background:#10b981;bottom:1px;right:1px;border:2px solid #111"></div>
-        </div>
-        <div>
-          <div style="font-weight:800;font-size:16px;letter-spacing:-.3px">Chat-X</div>
-          <div style="font-size:10px;color:#00897B;font-weight:600">End-to-end Encrypted</div>
-        </div>
-      </div>
-      <div style="display:flex;gap:2px">
-        <button class="icon-btn" onclick="showPrivacy()" title="Privacy & Security">
-          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-        </button>
-        <button class="icon-btn" onclick="toast('Settings coming soon!')">
-          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-        </button>
-        <button class="icon-btn" onclick="openChat('ai')" title="AI Assistant" style="background:linear-gradient(135deg,#00897B,#00695C);color:#fff;border-radius:8px">
-          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2a2 2 0 0 1 2 2c0 .74-.4 1.39-1 1.73V7h1a7 7 0 0 1 7 7h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v1a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1H2a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h1a7 7 0 0 1 7-7h1V5.73c-.6-.34-1-.99-1-1.73a2 2 0 0 1 2-2z"/></svg>
-        </button>
-      </div>
-    </div>
-    <div style="position:relative">
-      <svg width="14" height="14" fill="none" stroke="#444" stroke-width="2" viewBox="0 0 24 24" style="position:absolute;left:11px;top:50%;transform:translateY(-50%)"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-      <input id="search" oninput="renderList()" placeholder="Search conversations..." style="width:100%;padding:10px 12px 10px 33px;background:#1f1f1f;border:1px solid #2a2a2a;border-radius:10px;font-size:13px"/>
-    </div>
-  </div>
-  <div style="display:flex;padding:8px 12px;gap:4px;flex-shrink:0">
-    <button class="tab-btn active" onclick="switchTab(this,'chats')">Chats</button>
-    <button class="tab-btn" onclick="switchTab(this,'groups')">Groups</button>
-    <button class="tab-btn" onclick="switchTab(this,'calls')">Calls</button>
-    <button class="tab-btn" onclick="switchTab(this,'community')">Discover</button>
-  </div>
-  <div id="chat-list" style="flex:1;overflow-y:auto;padding-bottom:8px"></div>
-  <div style="padding:12px 16px;border-top:1px solid #2a2a2a;display:flex;align-items:center;gap:10px;flex-shrink:0">
-    <div style="position:relative;flex-shrink:0">
-      <div class="avatar" style="width:36px;height:36px;font-size:13px">GS</div>
-      <div class="sdot" style="width:10px;height:10px;background:#10b981;bottom:1px;right:1px;border:2px solid #111"></div>
-    </div>
-    <div style="flex:1">
-      <div style="font-size:13px;font-weight:600">Gideon Saviour</div>
-      <div style="font-size:11px;color:#10b981">Online</div>
-    </div>
-    <button class="icon-btn" onclick="toast('Profile coming soon!')">
-      <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
-    </button>
-  </div>
-</div>
-
-<!-- MAIN -->
-<div id="main">
-  <div id="empty-state" style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px">
-    <div style="width:80px;height:80px;border-radius:24px;background:linear-gradient(135deg,#00897B,#00695C);display:flex;align-items:center;justify-content:center;margin-bottom:24px;box-shadow:0 0 40px rgba(0,137,123,0.25)">
-      <svg width="36" height="36" fill="none" stroke="#fff" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-    </div>
-    <h2 style="font-size:24px;font-weight:700;margin-bottom:8px">Welcome to Chat-X</h2>
-    <p style="color:#666;font-size:15px;margin-bottom:32px;text-align:center;max-width:300px">Select a conversation or try the AI Assistant</p>
-    <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center">
-      <div class="pill">Encrypted</div>
-      <div class="pill">Real-time</div>
-      <div class="pill">Private</div>
-      <div class="pill">AI-powered</div>
-    </div>
-  </div>
-  <div id="chat-area" style="display:none;flex-direction:column;height:100vh">
-    <div id="chat-header" style="padding:12px 16px;border-bottom:1px solid #2a2a2a;background:#111;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;gap:8px"></div>
-    <div id="enc-notice" style="text-align:center;padding:5px 16px;font-size:11px;color:#444;flex-shrink:0">End-to-end encrypted</div>
-    <div id="messages" style="flex:1;overflow-y:auto;padding:8px 16px;display:flex;flex-direction:column"></div>
-    <div style="padding:10px 12px;border-top:1px solid #2a2a2a;background:#111;display:flex;align-items:flex-end;gap:8px;flex-shrink:0">
-      <button class="icon-btn" onclick="showFileShare()" title="Share file">
-        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
-      </button>
-      <button class="icon-btn" id="event-btn" onclick="showEvent()" title="Schedule event" style="display:none">
-        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-      </button>
-      <textarea id="msg-input" rows="1" placeholder="Type a message..." oninput="handleInput(this)" onkeydown="handleKey(event)"
-        style="flex:1;background:#1f1f1f;border:1px solid #2a2a2a;border-radius:12px;padding:10px 14px;font-size:14px;resize:none;max-height:100px;overflow-y:auto;line-height:1.5"></textarea>
-      <button class="icon-btn" onclick="toast('Emoji picker coming soon!')">
-        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 13s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
-      </button>
-      <button id="send-btn" class="send-btn" onclick="sendMessage()">
-        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
-      </button>
-    </div>
-  </div>
-</div>
-
-<!-- GROUP PANEL -->
-<div id="group-panel">
-  <div style="padding:16px;border-bottom:1px solid #2a2a2a;display:flex;align-items:center;gap:10px">
-    <button class="icon-btn" onclick="closeGroupPanel()">
-      <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-    </button>
-    <span style="font-weight:700;font-size:15px">Group Info</span>
-  </div>
-  <div id="group-panel-content" style="padding:16px;flex:1"></div>
-</div>
-
-</div><!-- end #app -->
-
-<!-- PRIVACY PANEL -->
-<div id="privacy-panel">
-  <div style="background:#111;border:1px solid #2a2a2a;border-radius:20px;width:360px;max-width:95vw;max-height:90vh;overflow-y:auto">
-    <div style="padding:20px;border-bottom:1px solid #2a2a2a;display:flex;align-items:center;justify-content:space-between">
-      <div style="font-weight:700;font-size:17px">Privacy & Security</div>
-      <button class="icon-btn" onclick="hidePrivacy()">
-        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-      </button>
-    </div>
-    <div style="padding:16px;display:flex;flex-direction:column;gap:4px">
-      ${privacyRow('Read Receipts','Show when you have read messages','read-receipts',true)}
-      ${privacyRow('Last Seen','Show your last active time','last-seen',true)}
-      ${privacyRow('Online Status','Show when you are online','online-status',true)}
-      ${privacyRow('Disappearing Messages','Auto-delete messages after 7 days','disappearing',false)}
-      ${privacyRow('Two-Step Verification','Extra security for your account','two-step',false)}
-      ${privacyRow('Blocked Contacts','Manage blocked users','blocked',false)}
-      ${privacyRow('Screenshot Protection','Prevent screenshots in chat','screenshot',false)}
-    </div>
-  </div>
-</div>
-
-<!-- EVENT PANEL -->
-<div id="event-panel">
-  <div style="background:#111;border:1px solid #2a2a2a;border-radius:20px;width:380px;max-width:95vw">
-    <div style="padding:20px;border-bottom:1px solid #2a2a2a;display:flex;align-items:center;justify-content:space-between">
-      <div style="font-weight:700;font-size:17px">Schedule Event</div>
-      <button class="icon-btn" onclick="hideEvent()">
-        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-      </button>
-    </div>
-    <div style="padding:20px;display:flex;flex-direction:column;gap:14px">
-      <div>
-        <label style="font-size:12px;color:#666;font-weight:600;display:block;margin-bottom:6px">EVENT TITLE</label>
-        <input id="ev-title" placeholder="e.g. Team standup" style="width:100%;padding:10px 14px;background:#1f1f1f;border:1px solid #2a2a2a;border-radius:10px;font-size:14px"/>
-      </div>
-      <div style="display:flex;gap:10px">
-        <div style="flex:1">
-          <label style="font-size:12px;color:#666;font-weight:600;display:block;margin-bottom:6px">DATE</label>
-          <input id="ev-date" type="date" style="width:100%;padding:10px 14px;background:#1f1f1f;border:1px solid #2a2a2a;border-radius:10px;font-size:14px"/>
-        </div>
-        <div style="flex:1">
-          <label style="font-size:12px;color:#666;font-weight:600;display:block;margin-bottom:6px">TIME</label>
-          <input id="ev-time" type="time" style="width:100%;padding:10px 14px;background:#1f1f1f;border:1px solid #2a2a2a;border-radius:10px;font-size:14px"/>
-        </div>
-      </div>
-      <div>
-        <label style="font-size:12px;color:#666;font-weight:600;display:block;margin-bottom:6px">DESCRIPTION</label>
-        <textarea id="ev-desc" placeholder="What's this event about?" rows="3" style="width:100%;padding:10px 14px;background:#1f1f1f;border:1px solid #2a2a2a;border-radius:10px;font-size:14px;resize:none;line-height:1.5"></textarea>
-      </div>
-      <button onclick="sendEvent()" style="background:linear-gradient(135deg,#00897B,#00695C);border:none;color:#fff;padding:12px;border-radius:12px;font-size:14px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif">
-        Send Event Invite
-      </button>
-    </div>
-  </div>
-</div>
-
-<!-- FILE SHARE -->
-<div id="file-preview" onclick="this.classList.remove('show')">
-  <div style="background:#111;border:1px solid #2a2a2a;border-radius:20px;padding:24px;width:340px;max-width:95vw;text-align:center" onclick="event.stopPropagation()">
-    <div style="font-weight:700;font-size:16px;margin-bottom:16px">Share File</div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px">
-      ${fileOption('Document','📄','Share PDF, Word, Excel files')}
-      ${fileOption('Image','🖼️','Share photos and images')}
-      ${fileOption('Audio','🎵','Share voice notes and music')}
-      ${fileOption('Video','🎥','Share video clips')}
-      ${fileOption('Location','📍','Share your location')}
-      ${fileOption('Contact','👤','Share a contact card')}
-    </div>
-    <button onclick="document.getElementById('file-preview').classList.remove('show')" style="background:#1f1f1f;border:1px solid #2a2a2a;color:#f1f1f5;padding:10px 24px;border-radius:10px;cursor:pointer;font-family:'Inter',sans-serif;font-size:14px">Cancel</button>
-  </div>
-</div>
-
-<!-- CALL MODAL -->
-<div id="modal-overlay" onclick="closeCall(event)">
-  <div id="modal-box">
-    <div id="modal-av" class="avatar" style="width:80px;height:80px;font-size:28px;margin:0 auto"></div>
-    <div id="modal-name" style="margin-top:20px;font-size:20px;font-weight:700"></div>
-    <div id="modal-sub" style="color:#666;margin-top:6px;font-size:14px"></div>
-    <div style="display:flex;gap:20px;justify-content:center;margin-top:36px">
-      <button class="modal-btn" onclick="closeCall()" style="background:#ef4444;color:#fff">
-        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-      </button>
-      <button class="modal-btn" onclick="acceptCall()" style="background:#10b981;color:#fff">
-        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-      </button>
-    </div>
-  </div>
-</div>
-
-<div id="toast"></div>
-
-<script>
-function privacyRow(label,desc,id,checked){
-  return`<div style="display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid #1a1a1a">
-    <div><div style="font-size:14px;font-weight:500">${label}</div><div style="font-size:12px;color:#555;margin-top:2px">${desc}</div></div>
-    <label class="toggle"><input type="checkbox" ${checked?'checked':''} onchange="toast('${label} updated')"><div class="toggle-slider"></div></label>
-  </div>`
-}
-function fileOption(name,icon,desc){
-  return`<div onclick="sendFile('${name}');document.getElementById('file-preview').classList.remove('show')" style="background:#1f1f1f;border:1px solid #2a2a2a;border-radius:12px;padding:14px;cursor:pointer;transition:background .15s;text-align:center" onmouseover="this.style.background='#2a2a2a'" onmouseout="this.style.background='#1f1f1f'">
-    <div style="font-size:24px;margin-bottom:6px">${icon}</div>
-    <div style="font-size:13px;font-weight:600">${name}</div>
-    <div style="font-size:11px;color:#555;margin-top:2px">${desc}</div>
-  </div>`
-}
-</script>
 
 <script>
 setTimeout(()=>{
