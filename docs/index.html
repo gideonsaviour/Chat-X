@@ -6,8 +6,20 @@
 <title>Chat-X</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
 <style>
+:root{
+  --bg1:#000;--bg2:#111;--bg3:#1a1a1a;--border:#222;
+  --text:#f1f1f5;--text2:#8b8b9e;--text3:#666;
+  --accent:#00897B;--accent2:#00695C;--accent-light:#4DB6AC;
+  --accent-rgb:0,137,123;--msg-bg:#1a1a1a;
+}
+body.light-theme{
+  --bg1:#f5f5f5;--bg2:#ffffff;--bg3:#eeeeee;--border:#ddd;
+  --text:#111;--text2:#444;--text3:#888;
+  --accent:#111;--accent2:#333;--accent-light:#555;
+  --accent-rgb:17,17,17;--msg-bg:#e8e8e8;
+}
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Inter',sans-serif;background:#000;color:#f1f1f5;height:100vh;overflow:hidden}
+body{font-family:'Inter',sans-serif;background:var(--bg1);color:var(--text);height:100vh;overflow:hidden}
 ::-webkit-scrollbar{width:4px}
 ::-webkit-scrollbar-thumb{background:#333;border-radius:2px}
 #splash{position:fixed;inset:0;background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;transition:opacity .6s ease}
@@ -26,8 +38,8 @@ body{font-family:'Inter',sans-serif;background:#000;color:#f1f1f5;height:100vh;o
 #splash-brand{font-size:15px;font-weight:700;color:#6b6b80;letter-spacing:.5px}
 #app{display:none;height:100vh;flex-direction:row}
 #app.show{display:flex}
-#sidebar{width:300px;background:#111;border-right:1px solid #222;display:flex;flex-direction:column;height:100vh;flex-shrink:0}
-#main{flex:1;display:flex;flex-direction:column;height:100vh;min-width:0;background:#000}
+#sidebar{width:300px;background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;height:100vh;flex-shrink:0}
+#main{flex:1;display:flex;flex-direction:column;height:100vh;min-width:0;background:var(--bg1)}
 @media(max-width:640px){
   #sidebar{position:fixed;inset:0;width:100%;z-index:100;transition:transform .25s ease}
   #sidebar.hidden{transform:translateX(-100%)}
@@ -36,7 +48,7 @@ body{font-family:'Inter',sans-serif;background:#000;color:#f1f1f5;height:100vh;o
 .avatar{border-radius:50%;background:linear-gradient(135deg,#00897B,#00695C);display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;flex-shrink:0}
 .sdot{position:absolute;border-radius:50%}
 .chat-item{display:flex;align-items:center;gap:12px;padding:11px 14px;cursor:pointer;border-radius:12px;margin:2px 8px;border:1px solid transparent;transition:background .15s}
-.chat-item:hover{background:rgba(255,255,255,0.05)}
+.chat-item:hover{background:rgba(var(--accent-rgb),0.06)}
 .chat-item.active{background:rgba(0,137,123,0.15);border-color:rgba(0,137,123,0.3)}
 .tab-btn{flex:1;padding:8px 4px;border:none;border-radius:8px;font-size:11px;font-weight:600;cursor:pointer;transition:all .15s;background:transparent;color:#666;font-family:'Inter',sans-serif}
 .tab-btn.active{background:rgba(0,137,123,0.2);color:#00897B}
@@ -48,8 +60,8 @@ body{font-family:'Inter',sans-serif;background:#000;color:#f1f1f5;height:100vh;o
 .send-btn:hover{opacity:.85}
 .send-btn:active{transform:scale(.93)}
 .msg-mine{background:linear-gradient(135deg,#00897B,#00695C);border-radius:18px 18px 4px 18px;color:#fff;padding:10px 14px;max-width:70%;font-size:14px;line-height:1.55;word-break:break-word}
-.msg-theirs{background:#1a1a1a;border:1px solid #222;border-radius:18px 18px 18px 4px;color:#f1f1f5;padding:10px 14px;max-width:70%;font-size:14px;line-height:1.55;word-break:break-word}
-.msg-ai{background:#0d1a18;border:1px solid #00695C44;border-radius:18px 18px 18px 4px;color:#f1f1f5;padding:10px 14px;max-width:75%;font-size:14px;line-height:1.6;word-break:break-word}
+.msg-theirs{background:var(--msg-bg);border:1px solid var(--border);border-radius:18px 18px 18px 4px;color:#f1f1f5;padding:10px 14px;max-width:70%;font-size:14px;line-height:1.55;word-break:break-word}
+.msg-ai{background:#0d1a18;border:1px solid var(--accent2)44;border-radius:18px 18px 18px 4px;color:#f1f1f5;padding:10px 14px;max-width:75%;font-size:14px;line-height:1.6;word-break:break-word}
 .msg-row{display:flex;align-items:flex-end;gap:8px;margin-bottom:6px}
 .msg-row.mine{flex-direction:row-reverse}
 @keyframes fadeMsg{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
@@ -259,22 +271,75 @@ input::placeholder,textarea::placeholder{color:#444}
 
 <!-- Chats Settings Panel -->
 <div id="chats-settings-panel" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.88);align-items:center;justify-content:center;z-index:9998;backdrop-filter:blur(4px)">
-  <div style="background:#111;border:1px solid #222;border-radius:20px;width:380px;max-width:95vw;max-height:90vh;overflow-y:auto">
-    <div style="padding:20px;border-bottom:1px solid #222;display:flex;align-items:center;gap:12px">
+  <div style="background:var(--bg2);border:1px solid var(--border);border-radius:20px;width:380px;max-width:95vw;max-height:90vh;overflow-y:auto">
+    <div style="padding:20px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px">
       <button class="icon-btn" onclick="hideChatsSettings()"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
       <div style="font-weight:700;font-size:17px">Chats</div>
     </div>
     <div style="padding:8px 0">
-      <div style="padding:12px 20px;font-size:11px;color:#555;font-weight:700;letter-spacing:.5px">DISPLAY</div>
-      <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border-bottom:1px solid #1a1a1a"><div><div style="font-size:14px;font-weight:500">Theme</div><div style="font-size:12px;color:#555;margin-top:2px">Dark</div></div><svg width="16" height="16" fill="none" stroke="#444" stroke-width="2" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
-      <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border-bottom:1px solid #1a1a1a"><div><div style="font-size:14px;font-weight:500">Wallpaper</div><div style="font-size:12px;color:#555;margin-top:2px">Default Chat-X dark</div></div><svg width="16" height="16" fill="none" stroke="#444" stroke-width="2" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
-      <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border-bottom:1px solid #1a1a1a"><div><div style="font-size:14px;font-weight:500">Font Size</div><div style="font-size:12px;color:#555;margin-top:2px">Medium</div></div><svg width="16" height="16" fill="none" stroke="#444" stroke-width="2" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
-      <div style="padding:12px 20px;font-size:11px;color:#555;font-weight:700;letter-spacing:.5px">MEDIA</div>
-      <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border-bottom:1px solid #1a1a1a"><div><div style="font-size:14px;font-weight:500">Auto-download Photos</div><div style="font-size:12px;color:#555;margin-top:2px">On Wi-Fi</div></div><label class="toggle"><input type="checkbox" checked onchange="toast('Updated')"><div class="toggle-slider"></div></label></div>
-      <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border-bottom:1px solid #1a1a1a"><div><div style="font-size:14px;font-weight:500">Auto-download Videos</div><div style="font-size:12px;color:#555;margin-top:2px">Never</div></div><label class="toggle"><input type="checkbox" onchange="toast('Updated')"><div class="toggle-slider"></div></label></div>
-      <div style="padding:12px 20px;font-size:11px;color:#555;font-weight:700;letter-spacing:.5px">BACKUP</div>
-      <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border-bottom:1px solid #1a1a1a"><div><div style="font-size:14px;font-weight:500">Chat Backup</div><div style="font-size:12px;color:#555;margin-top:2px">Last backup: Never</div></div><svg width="16" height="16" fill="none" stroke="#444" stroke-width="2" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
-      <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 20px"><div><div style="font-size:14px;font-weight:500">Auto Backup</div><div style="font-size:12px;color:#555;margin-top:2px">Daily</div></div><label class="toggle"><input type="checkbox" checked onchange="toast('Updated')"><div class="toggle-slider"></div></label></div>
+
+      <!-- THEME -->
+      <div style="padding:12px 20px;font-size:11px;color:#888;font-weight:700;letter-spacing:.5px">THEME</div>
+      <div style="padding:0 20px 16px;display:flex;gap:12px">
+        <div onclick="setTheme('dark')" id="theme-dark" style="flex:1;border-radius:14px;border:2px solid var(--accent);background:#000;padding:16px;cursor:pointer;text-align:center;transition:all .2s">
+          <div style="width:100%;height:50px;border-radius:8px;background:#111;margin-bottom:8px;display:flex;align-items:center;justify-content:center">
+            <div style="width:60%;height:8px;border-radius:4px;background:#00897B"></div>
+          </div>
+          <div style="font-size:13px;font-weight:600;color:#fff">Dark</div>
+          <div id="theme-dark-check" style="font-size:11px;color:#00897B;margin-top:2px">✓ Active</div>
+        </div>
+        <div onclick="setTheme('light')" id="theme-light" style="flex:1;border-radius:14px;border:2px solid #ddd;background:#fff;padding:16px;cursor:pointer;text-align:center;transition:all .2s">
+          <div style="width:100%;height:50px;border-radius:8px;background:#f5f5f5;margin-bottom:8px;display:flex;align-items:center;justify-content:center">
+            <div style="width:60%;height:8px;border-radius:4px;background:#222"></div>
+          </div>
+          <div style="font-size:13px;font-weight:600;color:#000">Light</div>
+          <div id="theme-light-check" style="font-size:11px;color:#999;margin-top:2px">Tap to switch</div>
+        </div>
+      </div>
+
+      <!-- WALLPAPER -->
+      <div style="padding:12px 20px;font-size:11px;color:#888;font-weight:700;letter-spacing:.5px;border-top:1px solid var(--border)">WALLPAPER</div>
+      <div style="padding:0 20px 16px;display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <div onclick="setWallpaper('none')" id="wp-none" style="border-radius:12px;border:2px solid var(--accent);overflow:hidden;cursor:pointer;aspect-ratio:1">
+          <div style="width:100%;height:100%;background:#000;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:#555">None</div>
+        </div>
+        <div onclick="setWallpaper('dots')" id="wp-dots" style="border-radius:12px;border:2px solid var(--border);overflow:hidden;cursor:pointer;aspect-ratio:1">
+          <div style="width:100%;height:100%;background:#0a0a0a;background-image:radial-gradient(circle,#00897B22 1px,transparent 1px);background-size:20px 20px"></div>
+        </div>
+        <div onclick="setWallpaper('grid')" id="wp-grid" style="border-radius:12px;border:2px solid var(--border);overflow:hidden;cursor:pointer;aspect-ratio:1">
+          <div style="width:100%;height:100%;background:#0a0a0a;background-image:linear-gradient(#00897B11 1px,transparent 1px),linear-gradient(90deg,#00897B11 1px,transparent 1px);background-size:24px 24px"></div>
+        </div>
+        <div onclick="setWallpaper('gradient')" id="wp-gradient" style="border-radius:12px;border:2px solid var(--border);overflow:hidden;cursor:pointer;aspect-ratio:1">
+          <div style="width:100%;height:100%;background:linear-gradient(135deg,#001a18,#000,#001208,#000)"></div>
+        </div>
+      </div>
+
+      <!-- FONT SIZE -->
+      <div style="padding:12px 20px;font-size:11px;color:#888;font-weight:700;letter-spacing:.5px;border-top:1px solid var(--border)">FONT SIZE</div>
+      <div style="padding:0 20px 20px;display:flex;flex-direction:column;gap:8px">
+        <div onclick="setFontSize('small')" id="fs-small" style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-radius:12px;border:1px solid var(--border);cursor:pointer;background:var(--bg3);transition:all .15s">
+          <div style="display:flex;align-items:center;gap:12px">
+            <span style="font-size:13px">Aa</span>
+            <div><div style="font-size:13px;font-weight:500">Small</div><div style="font-size:11px;color:#666;margin-top:1px">Compact text</div></div>
+          </div>
+          <div id="fs-small-check" style="display:none"><svg width="18" height="18" fill="none" stroke="#00897B" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+        </div>
+        <div onclick="setFontSize('medium')" id="fs-medium" style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-radius:12px;border:2px solid var(--accent);cursor:pointer;background:rgba(0,137,123,0.08);transition:all .15s">
+          <div style="display:flex;align-items:center;gap:12px">
+            <span style="font-size:17px">Aa</span>
+            <div><div style="font-size:14px;font-weight:500">Medium</div><div style="font-size:11px;color:#666;margin-top:1px">Default size</div></div>
+          </div>
+          <div id="fs-medium-check"><svg width="18" height="18" fill="none" stroke="#00897B" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+        </div>
+        <div onclick="setFontSize('large')" id="fs-large" style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-radius:12px;border:1px solid var(--border);cursor:pointer;background:var(--bg3);transition:all .15s">
+          <div style="display:flex;align-items:center;gap:12px">
+            <span style="font-size:22px">Aa</span>
+            <div><div style="font-size:15px;font-weight:500">Large</div><div style="font-size:11px;color:#666;margin-top:1px">Bigger text</div></div>
+          </div>
+          <div id="fs-large-check" style="display:none"><svg width="18" height="18" fill="none" stroke="#00897B" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+        </div>
+      </div>
+
     </div>
   </div>
 </div>
@@ -537,6 +602,10 @@ function openChat(id){
   const isGroup=active.type==='group',isAI=active.type==='ai',isCom=active.type==='community'
   document.getElementById('event-btn').style.display=isGroup?'flex':'none'
   document.getElementById('enc-notice').textContent=isAI?'Powered by Groq AI — conversations are private':isCom?active.members?.toLocaleString()+' members':'End-to-end encrypted'
+  // Apply wallpaper to message area
+  setTimeout(()=>{
+    if(currentWallpaper&&currentWallpaper!=='none') setWallpaper(currentWallpaper)
+  },50)
   document.getElementById('chat-header').innerHTML=`
     <div style="display:flex;align-items:center;gap:10px;flex:1;min-width:0">
       <button class="icon-btn back-btn" style="display:none;flex-shrink:0" onclick="goBack()"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
@@ -573,7 +642,7 @@ function renderMessages(){
     const mine=m.from==='me',isAI=m.from==='ai'
     return`<div class="msg-row${mine?' mine':''} fade">
       ${!mine&&active?mkAv(active.av,28,isAI?'ai':null):''}
-      <div class="${mine?'msg-mine':isAI?'msg-ai':'msg-theirs'}">
+      <div class="${mine?'msg-mine':isAI?'msg-ai':'msg-theirs'}" style="${window._fontSize?'font-size:'+window._fontSize:''};">
         ${isAI?'<div style="font-size:10px;color:#00897B;font-weight:700;margin-bottom:4px;letter-spacing:.5px">CHAT-X AI</div>':''}
         ${m.text.replace(/\n/g,'<br>')}
         <div style="display:flex;align-items:center;justify-content:flex-end;gap:2px;margin-top:4px">
@@ -696,6 +765,74 @@ function showNotifications(){document.getElementById('notifications-panel').styl
 function hideNotifications(){document.getElementById('notifications-panel').style.display='none'}
 function showChatsSettings(){document.getElementById('chats-settings-panel').style.display='flex'}
 function hideChatsSettings(){document.getElementById('chats-settings-panel').style.display='none'}
+
+// THEME
+let currentTheme='dark'
+function setTheme(theme){
+  currentTheme=theme
+  if(theme==='light'){
+    document.body.classList.add('light-theme')
+    document.getElementById('theme-dark').style.borderColor='#ddd'
+    document.getElementById('theme-dark-check').textContent=''
+    document.getElementById('theme-dark-check').style.color='#999'
+    document.getElementById('theme-light').style.borderColor='#111'
+    document.getElementById('theme-light-check').textContent='✓ Active'
+    document.getElementById('theme-light-check').style.color='#111'
+  } else {
+    document.body.classList.remove('light-theme')
+    document.getElementById('theme-dark').style.borderColor='#00897B'
+    document.getElementById('theme-dark-check').textContent='✓ Active'
+    document.getElementById('theme-dark-check').style.color='#00897B'
+    document.getElementById('theme-light').style.borderColor='#ddd'
+    document.getElementById('theme-light-check').textContent='Tap to switch'
+    document.getElementById('theme-light-check').style.color='#999'
+  }
+  toast(theme==='light'?'Light theme applied':'Dark theme applied')
+}
+
+// WALLPAPER
+let currentWallpaper='none'
+function setWallpaper(wp){
+  currentWallpaper=wp
+  const msgArea=document.getElementById('messages')
+  const ids=['none','dots','grid','gradient']
+  ids.forEach(id=>{
+    const el=document.getElementById('wp-'+id)
+    if(el)el.style.borderColor=id===wp?'var(--accent)':'var(--border)'
+  })
+  if(!msgArea)return
+  if(wp==='none') msgArea.style.backgroundImage='none'
+  else if(wp==='dots') msgArea.style.backgroundImage='radial-gradient(circle,#00897B22 1px,transparent 1px)',msgArea.style.backgroundSize='20px 20px'
+  else if(wp==='grid') msgArea.style.backgroundImage='linear-gradient(#00897B11 1px,transparent 1px),linear-gradient(90deg,#00897B11 1px,transparent 1px)',msgArea.style.backgroundSize='24px 24px'
+  else if(wp==='gradient') msgArea.style.backgroundImage='linear-gradient(135deg,#001a18,#000,#001208,#000)',msgArea.style.backgroundSize='100% 100%'
+  toast('Wallpaper updated')
+}
+
+// FONT SIZE
+let currentFontSize='medium'
+function setFontSize(size){
+  currentFontSize=size
+  const sizes={small:'13px',medium:'14px',large:'16px'}
+  document.querySelectorAll('.msg-mine,.msg-theirs,.msg-ai').forEach(el=>el.style.fontSize=sizes[size])
+  // Update active state
+  ;['small','medium','large'].forEach(s=>{
+    const el=document.getElementById('fs-'+s)
+    const check=document.getElementById('fs-'+s+'-check')
+    if(!el||!check)return
+    if(s===size){
+      el.style.border='2px solid var(--accent)'
+      el.style.background='rgba(0,137,123,0.08)'
+      check.style.display='block'
+    } else {
+      el.style.border='1px solid var(--border)'
+      el.style.background='var(--bg3)'
+      check.style.display='none'
+    }
+  })
+  // Store for future messages
+  window._fontSize=sizes[size]
+  toast('Font size set to '+size)
+}
 function showStorageSettings(){document.getElementById('storage-panel').style.display='flex'}
 function hideStorageSettings(){document.getElementById('storage-panel').style.display='none'}
 function showHelp(){document.getElementById('help-panel').style.display='flex'}
