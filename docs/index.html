@@ -17,15 +17,42 @@ body{font-family:'Inter',sans-serif;background:#000;color:#f1f1f5;height:100vh;o
 /* SPLASH */
 #splash{position:fixed;inset:0;background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;transition:opacity .6s ease}
 #splash.hide{opacity:0;pointer-events:none}
-#splash-logo{width:110px;height:110px;border-radius:28px;background:linear-gradient(135deg,#7c3aed,#4f46e5);display:flex;align-items:center;justify-content:center;box-shadow:0 0 60px rgba(124,58,237,0.5);position:relative;overflow:hidden}
-#splash-letters{position:absolute;display:flex;gap:4px;align-items:center;justify-content:center;animation:lettersOut .5s ease 2s both}
-#splash-letter-c{font-size:38px;font-weight:900;color:#fff;animation:letterC 1.5s ease .3s both;display:inline-block}
-#splash-letter-x{font-size:38px;font-weight:900;color:#fff;animation:letterX 1.5s ease .3s both;display:inline-block}
-#splash-icon{position:absolute;opacity:0;animation:iconIn .6s cubic-bezier(.34,1.56,.64,1) 2s both}
-@keyframes letterC{0%{opacity:0;transform:translateX(-30px) scale(.5)}40%{opacity:1;transform:translateX(0) scale(1)}80%{opacity:1;transform:translateX(0) scale(1)}100%{opacity:0;transform:scale(1.5)}}
-@keyframes letterX{0%{opacity:0;transform:translateX(30px) scale(.5)}40%{opacity:1;transform:translateX(0) scale(1)}80%{opacity:1;transform:translateX(0) scale(1)}100%{opacity:0;transform:scale(1.5)}}
-@keyframes lettersOut{to{opacity:0}}
-@keyframes iconIn{from{opacity:0;transform:scale(.3) rotate(-20deg)}to{opacity:1;transform:scale(1) rotate(0deg)}}
+#splash-logo{width:120px;height:120px;border-radius:30px;background:linear-gradient(135deg,#7c3aed,#4f46e5);display:flex;align-items:center;justify-content:center;box-shadow:0 0 60px rgba(124,58,237,0.5);position:relative;overflow:hidden;animation:logoAppear .4s ease both}
+@keyframes logoAppear{from{opacity:0;transform:scale(.6)}to{opacity:1;transform:scale(1)}}
+
+/* Phase 1: C slides in from left */
+#sc{position:absolute;font-size:44px;font-weight:900;color:#fff;
+  animation:cAnim 3.5s ease forwards}
+@keyframes cAnim{
+  0%  {opacity:0;transform:translateX(-50px)}
+  15% {opacity:1;transform:translateX(-18px)}
+  45% {opacity:1;transform:translateX(-18px)}
+  65% {opacity:1;transform:translateX(0px) scale(1.1)}
+  80% {opacity:0;transform:translateX(0px) scale(2);filter:blur(4px)}
+  100%{opacity:0}
+}
+
+/* Phase 1: X slides in from right */
+#sx{position:absolute;font-size:44px;font-weight:900;color:#fff;
+  animation:xAnim 3.5s ease forwards}
+@keyframes xAnim{
+  0%  {opacity:0;transform:translateX(50px)}
+  15% {opacity:1;transform:translateX(18px)}
+  45% {opacity:1;transform:translateX(18px)}
+  65% {opacity:1;transform:translateX(0px) scale(1.1)}
+  80% {opacity:0;transform:translateX(0px) scale(2);filter:blur(4px)}
+  100%{opacity:0}
+}
+
+/* Phase 2: Chat bubble appears after merge */
+#si{position:absolute;animation:iconAnim 3.5s ease forwards}
+@keyframes iconAnim{
+  0%  {opacity:0;transform:scale(0) rotate(-15deg)}
+  70% {opacity:0;transform:scale(0) rotate(-15deg)}
+  85% {opacity:1;transform:scale(1.2) rotate(5deg)}
+  95% {opacity:1;transform:scale(0.95) rotate(0deg)}
+  100%{opacity:1;transform:scale(1) rotate(0deg)}
+}
 @keyframes popIn{from{opacity:0;transform:scale(.5)}to{opacity:1;transform:scale(1)}}
 #splash-name{margin-top:24px;font-size:32px;font-weight:800;letter-spacing:-.5px;animation:fadeUp .5s ease .6s both}
 #splash-tag{margin-top:8px;font-size:14px;color:#8b8b9e;animation:fadeUp .5s ease .75s both}
@@ -136,12 +163,10 @@ input::placeholder,textarea::placeholder{color:#444}
 <!-- SPLASH -->
 <div id="splash">
   <div id="splash-logo">
-    <div id="splash-letters">
-      <span id="splash-letter-c">C</span>
-      <span id="splash-letter-x">X</span>
-    </div>
-    <div id="splash-icon">
-      <svg width="52" height="52" fill="none" stroke="#fff" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+    <span id="sc">C</span>
+    <span id="sx">X</span>
+    <div id="si">
+      <svg width="54" height="54" fill="none" stroke="#fff" stroke-width="2.2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
     </div>
   </div>
   <div id="splash-name">Chat-X</div>
