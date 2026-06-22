@@ -7,13 +7,13 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Inter',sans-serif;background:#0a0a0f;color:#f1f1f5;height:100vh;overflow:hidden}
+body{font-family:'Inter',sans-serif;background:#000000;color:#f1f1f5;height:100vh;overflow:hidden}
 ::-webkit-scrollbar{width:4px}
-::-webkit-scrollbar-thumb{background:#2a2a3a;border-radius:2px}
+::-webkit-scrollbar-thumb{background:#2a2a2a;border-radius:2px}
 
 /* SPLASH */
 #splash{
-  position:fixed;inset:0;background:#0a0a0f;
+  position:fixed;inset:0;background:#000000;
   display:flex;flex-direction:column;align-items:center;justify-content:center;
   z-index:9999;transition:opacity .6s ease;
 }
@@ -48,7 +48,7 @@ body{font-family:'Inter',sans-serif;background:#0a0a0f;color:#f1f1f5;height:100v
 
 /* LAYOUT */
 #sidebar{
-  width:300px;background:#111118;border-right:1px solid #2a2a3a;
+  width:300px;background:#111111;border-right:1px solid #2a2a2a;
   display:flex;flex-direction:column;height:100vh;flex-shrink:0;
 }
 #main{flex:1;display:flex;flex-direction:column;height:100vh;min-width:0}
@@ -76,22 +76,22 @@ body{font-family:'Inter',sans-serif;background:#0a0a0f;color:#f1f1f5;height:100v
 .send-btn:hover{opacity:.85}
 .send-btn:active{transform:scale(.93)}
 .msg-mine{background:linear-gradient(135deg,#7c3aed,#4f46e5);border-radius:18px 18px 4px 18px;color:#fff;padding:10px 14px;max-width:70%;font-size:14px;line-height:1.55;word-break:break-word}
-.msg-theirs{background:#1a1a24;border:1px solid #2a2a3a;border-radius:18px 18px 18px 4px;color:#f1f1f5;padding:10px 14px;max-width:70%;font-size:14px;line-height:1.55;word-break:break-word}
+.msg-theirs{background:#1f1f1f;border:1px solid #2a2a2a;border-radius:18px 18px 18px 4px;color:#f1f1f5;padding:10px 14px;max-width:70%;font-size:14px;line-height:1.55;word-break:break-word}
 .msg-row{display:flex;align-items:flex-end;gap:8px;margin-bottom:6px}
 .msg-row.mine{flex-direction:row-reverse}
 @keyframes fadeMsg{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
 .fade{animation:fadeMsg .18s ease}
 #modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);align-items:center;justify-content:center;z-index:9998;backdrop-filter:blur(4px)}
 #modal-overlay.show{display:flex}
-#modal-box{background:#1a1a24;border:1px solid #2a2a3a;border-radius:24px;padding:40px 48px;text-align:center;width:290px;max-width:90vw}
+#modal-box{background:#1f1f1f;border:1px solid #2a2a2a;border-radius:24px;padding:40px 48px;text-align:center;width:290px;max-width:90vw}
 .modal-btn{border:none;width:60px;height:60px;border-radius:50%;cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center}
 .modal-btn:hover{transform:scale(1.08)}
 .modal-btn:active{transform:scale(.93)}
 input,textarea{outline:none;font-family:'Inter',sans-serif;color:#f1f1f5}
 input::placeholder,textarea::placeholder{color:#4a4a5e}
-.pill{background:#1a1a24;border:1px solid #2a2a3a;border-radius:10px;padding:8px 14px;font-size:13px;color:#8b8b9e}
+.pill{background:#1f1f1f;border:1px solid #2a2a2a;border-radius:10px;padding:8px 14px;font-size:13px;color:#8b8b9e}
 .unread{background:#7c3aed;color:#fff;font-size:11px;font-weight:700;border-radius:10px;padding:2px 8px;min-width:22px;text-align:center;flex-shrink:0}
-#toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(20px);background:#1a1a24;border:1px solid #2a2a3a;color:#f1f1f5;padding:10px 20px;border-radius:10px;font-size:13px;opacity:0;transition:all .3s;z-index:9999;pointer-events:none;white-space:nowrap}
+#toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(20px);background:#1f1f1f;border:1px solid #2a2a2a;color:#f1f1f5;padding:10px 20px;border-radius:10px;font-size:13px;opacity:0;transition:all .3s;z-index:9999;pointer-events:none;white-space:nowrap}
 </style>
 </head>
 <body>
@@ -116,7 +116,7 @@ input::placeholder,textarea::placeholder{color:#4a4a5e}
 
 <!-- SIDEBAR -->
 <div id="sidebar">
-  <div style="padding:16px 16px 12px;border-bottom:1px solid #2a2a3a;flex-shrink:0">
+  <div style="padding:16px 16px 12px;border-bottom:1px solid #2a2a2a;flex-shrink:0">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
       <div style="display:flex;align-items:center;gap:10px">
         <div style="position:relative">
@@ -142,7 +142,7 @@ input::placeholder,textarea::placeholder{color:#4a4a5e}
     </div>
     <div style="position:relative">
       <svg width="14" height="14" fill="none" stroke="#4a4a5e" stroke-width="2" viewBox="0 0 24 24" style="position:absolute;left:11px;top:50%;transform:translateY(-50%)"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-      <input id="search" oninput="renderList()" placeholder="Search conversations..." style="width:100%;padding:10px 12px 10px 33px;background:#1a1a24;border:1px solid #2a2a3a;border-radius:10px;font-size:13px"/>
+      <input id="search" oninput="renderList()" placeholder="Search conversations..." style="width:100%;padding:10px 12px 10px 33px;background:#1f1f1f;border:1px solid #2a2a2a;border-radius:10px;font-size:13px"/>
     </div>
   </div>
   <div style="display:flex;padding:8px 12px;gap:4px;flex-shrink:0">
@@ -151,7 +151,7 @@ input::placeholder,textarea::placeholder{color:#4a4a5e}
     <button class="tab-btn" onclick="switchTab(this,'calls')">📞 Calls</button>
   </div>
   <div id="chat-list" style="flex:1;overflow-y:auto;padding-bottom:8px"></div>
-  <div style="padding:12px 16px;border-top:1px solid #2a2a3a;display:flex;align-items:center;gap:10px;flex-shrink:0">
+  <div style="padding:12px 16px;border-top:1px solid #2a2a2a;display:flex;align-items:center;gap:10px;flex-shrink:0">
     <div style="position:relative;flex-shrink:0">
       <div class="avatar" style="width:36px;height:36px;font-size:13px">GS</div>
       <div class="sdot" style="width:10px;height:10px;background:#10b981"></div>
@@ -181,15 +181,15 @@ input::placeholder,textarea::placeholder{color:#4a4a5e}
     </div>
   </div>
   <div id="chat-area" style="display:none;flex-direction:column;height:100vh">
-    <div id="chat-header" style="padding:12px 16px;border-bottom:1px solid #2a2a3a;background:#111118;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;gap:8px"></div>
+    <div id="chat-header" style="padding:12px 16px;border-bottom:1px solid #2a2a2a;background:#111111;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;gap:8px"></div>
     <div style="text-align:center;padding:5px 16px;font-size:11px;color:#3a3a4e;flex-shrink:0">🔒 End-to-end encrypted</div>
     <div id="messages" style="flex:1;overflow-y:auto;padding:8px 16px;display:flex;flex-direction:column"></div>
-    <div style="padding:10px 12px;border-top:1px solid #2a2a3a;background:#111118;display:flex;align-items:flex-end;gap:8px;flex-shrink:0">
+    <div style="padding:10px 12px;border-top:1px solid #2a2a2a;background:#111111;display:flex;align-items:flex-end;gap:8px;flex-shrink:0">
       <button class="icon-btn" onclick="toast('File sharing coming soon!')">
         <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
       </button>
       <textarea id="msg-input" rows="1" placeholder="Type a message..." oninput="handleInput(this)" onkeydown="handleKey(event)"
-        style="flex:1;background:#1a1a24;border:1px solid #2a2a3a;border-radius:12px;padding:10px 14px;font-size:14px;resize:none;max-height:100px;overflow-y:auto;line-height:1.5"></textarea>
+        style="flex:1;background:#1f1f1f;border:1px solid #2a2a2a;border-radius:12px;padding:10px 14px;font-size:14px;resize:none;max-height:100px;overflow-y:auto;line-height:1.5"></textarea>
       <button class="icon-btn" onclick="toast('Emoji picker coming soon!')">
         <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 13s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
       </button>
