@@ -1,340 +1,279 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Chat-X — Next Generation Messaging</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Chat-X</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Inter',sans-serif;background:#0a0a0f;color:#f1f1f5;height:100vh;overflow:hidden}
+body{font-family:'Inter',sans-serif;background:#0a0a0f;color:#f1f1f5;height:100vh;display:flex;overflow:hidden}
 ::-webkit-scrollbar{width:4px}
 ::-webkit-scrollbar-thumb{background:#2a2a3a;border-radius:2px}
-::-webkit-scrollbar-track{background:transparent}
+#sidebar{width:300px;background:#111118;border-right:1px solid #2a2a3a;display:flex;flex-direction:column;height:100vh;flex-shrink:0}
+#main{flex:1;display:flex;flex-direction:column;height:100vh}
+.avatar{border-radius:50%;background:linear-gradient(135deg,#7c3aed,#4f46e5);display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;flex-shrink:0;position:relative}
+.dot{position:absolute;bottom:1px;right:1px;border-radius:50%;border:2px solid #0a0a0f}
+.chat-item{display:flex;align-items:center;gap:12px;padding:10px 14px;cursor:pointer;border-radius:12px;margin:2px 8px;border:1px solid transparent;transition:all .15s}
+.chat-item:hover{background:rgba(255,255,255,0.04)}
+.chat-item.active{background:rgba(124,58,237,0.15);border-color:rgba(124,58,237,0.3)}
+.msg-bubble{max-width:65%;padding:10px 14px;line-height:1.55;font-size:14px;word-break:break-word}
+.msg-mine{background:linear-gradient(135deg,#7c3aed,#4f46e5);border-radius:18px 18px 4px 18px;color:#fff;align-self:flex-end}
+.msg-theirs{background:#1a1a24;border:1px solid #2a2a3a;border-radius:18px 18px 18px 4px;color:#f1f1f5;align-self:flex-start}
+.msg-row{display:flex;align-items:flex-end;gap:8px;margin-bottom:6px}
+.msg-row.mine{flex-direction:row-reverse}
+input,textarea{outline:none;font-family:'Inter',sans-serif}
+button{cursor:pointer;font-family:'Inter',sans-serif}
+.tab{flex:1;padding:7px 4px;border:none;border-radius:8px;font-size:11px;font-weight:600;transition:all .15s;background:transparent;color:#8b8b9e}
+.tab.active{background:rgba(124,58,237,0.2);color:#8b5cf6}
+#modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.88);align-items:center;justify-content:center;z-index:999}
+#modal.show{display:flex}
 @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
-.fade-in{animation:fadeIn 0.2s ease}
-textarea{font-family:'Inter',sans-serif}
+.fade{animation:fadeIn 0.2s ease}
 </style>
 </head>
 <body>
-<div id="root"></div>
-<script type="text/babel">
-const { useState, useRef, useEffect } = React;
 
-const COLORS = {
-  bg1:'#0a0a0f', bg2:'#111118', bg3:'#1a1a24',
-  accent:'#7c3aed', accentLight:'#8b5cf6',
-  text:'#f1f1f5', textSub:'#8b8b9e', textMuted:'#4a4a5e',
-  border:'#2a2a3a', success:'#10b981', danger:'#ef4444', warning:'#f59e0b'
-}
-
-const currentUser = { id:'u1', name:'Gideon Saviour', avatar:'GS' }
-
-const contacts = [
-  {id:'u2',name:'David Lawrence',avatar:'DL',status:'online',lastSeen:'now',unread:3,lastMessage:'Can we jump on a call?'},
-  {id:'u3',name:'Sarah Chen',avatar:'SC',status:'online',lastSeen:'now',unread:0,lastMessage:'The designs look amazing 🔥'},
-  {id:'u4',name:'Marcus Webb',avatar:'MW',status:'away',lastSeen:'5m ago',unread:1,lastMessage:'Check the repo when you can'},
-  {id:'u5',name:'Priya Sharma',avatar:'PS',status:'offline',lastSeen:'2h ago',unread:0,lastMessage:'See you tomorrow!'},
-  {id:'u6',name:'James Okafor',avatar:'JO',status:'online',lastSeen:'now',unread:0,lastMessage:'Sent you the files'},
-  {id:'u7',name:'Luna Park',avatar:'LP',status:'offline',lastSeen:'1d ago',unread:0,lastMessage:'Great working with you'},
-]
-
-const groups = [
-  {id:'g1',name:'Finite Brand Team',avatar:'FB',members:6,status:'group',unread:5,lastMessage:'Sarah: Pushing new designs now',lastSeen:'now'},
-  {id:'g2',name:'Chat-X Dev',avatar:'CX',members:4,status:'group',unread:0,lastMessage:'Marcus: All tests passing ✅',lastSeen:'10m ago'},
-  {id:'g3',name:'Bitcoin Builders',avatar:'BB',members:12,status:'group',unread:2,lastMessage:'James: Block 850,000 mined!',lastSeen:'30m ago'},
-]
-
-const seedMessages = (contactId) => [
-  {id:1,from:contactId,text:'Hey! How is everything going?',time:'10:00 AM',status:'read'},
-  {id:2,from:'u1',text:'All good! Just finishing up the Chat-X build. It\'s looking really clean.',time:'10:02 AM',status:'read'},
-  {id:3,from:contactId,text:'That\'s awesome. What features are you adding?',time:'10:03 AM',status:'read'},
-  {id:4,from:'u1',text:'Real-time messaging, group chats, voice/video calls, media sharing, end-to-end encryption and online status!',time:'10:05 AM',status:'read'},
-  {id:5,from:contactId,text:'End-to-end encryption? That\'s next level 🔐',time:'10:06 AM',status:'read'},
-  {id:6,from:'u1',text:'Yeah, privacy first. Every message encrypted before it leaves your device.',time:'10:08 AM',status:'read'},
-  {id:7,from:contactId,text:contacts.find(c=>c.id===contactId)?.lastMessage || 'Hey!',time:'10:10 AM',status:'delivered'},
-]
-
-const statusColor = s => s==='online'?COLORS.success:s==='away'?COLORS.warning:COLORS.textMuted
-
-const Avatar = ({initials,size=40,status}) => (
-  <div style={{position:'relative',width:size,height:size,flexShrink:0}}>
-    <div style={{
-      width:size,height:size,borderRadius:'50%',
-      background:'linear-gradient(135deg,#7c3aed,#4f46e5)',
-      display:'flex',alignItems:'center',justifyContent:'center',
-      fontSize:size*0.34,fontWeight:700,color:'#fff',letterSpacing:'-0.5px'
-    }}>{initials}</div>
-    {status&&status!=='group'&&(
-      <div style={{
-        position:'absolute',bottom:1,right:1,
-        width:size*0.28,height:size*0.28,borderRadius:'50%',
-        background:statusColor(status),border:`2px solid ${COLORS.bg1}`
-      }}/>
-    )}
+<!-- Sidebar -->
+<div id="sidebar">
+  <div style="padding:18px 16px 12px;border-bottom:1px solid #2a2a3a">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+      <div style="display:flex;align-items:center;gap:10">
+        <div class="avatar" style="width:34px;height:34px;font-size:12px">CX</div>
+        <div>
+          <div style="font-weight:800;font-size:16px;letter-spacing:-0.3px">Chat-X</div>
+          <div style="font-size:10px;color:#7c3aed">🔐 Encrypted</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:4px">
+        <button onclick="" style="background:none;border:none;color:#8b8b9e;padding:6px;border-radius:8px;font-size:16px">🔔</button>
+        <button onclick="" style="background:none;border:none;color:#8b8b9e;padding:6px;border-radius:8px;font-size:16px">⚙️</button>
+        <button onclick="" style="background:linear-gradient(135deg,#7c3aed,#4f46e5);border:none;color:#fff;padding:6px 8px;border-radius:8px;font-size:16px">✚</button>
+      </div>
+    </div>
+    <input id="search" oninput="filterChats()" placeholder="🔍  Search conversations..." style="width:100%;padding:9px 12px;background:#1a1a24;border:1px solid #2a2a3a;border-radius:10px;color:#f1f1f5;font-size:13px"/>
   </div>
-)
+  <div style="display:flex;padding:8px 12px;gap:4px">
+    <button class="tab active" onclick="switchTab(this,'chats')">💬 Chats</button>
+    <button class="tab" onclick="switchTab(this,'groups')">👥 Groups</button>
+    <button class="tab" onclick="switchTab(this,'calls')">📞 Calls</button>
+  </div>
+  <div id="chat-list" style="flex:1;overflow-y:auto;padding-bottom:8px"></div>
+  <div style="padding:12px 16px;border-top:1px solid #2a2a3a;display:flex;align-items:center;gap:10px">
+    <div style="position:relative;flex-shrink:0">
+      <div class="avatar" style="width:34px;height:34px;font-size:12px">GS</div>
+      <div class="dot" style="width:10px;height:10px;background:#10b981"></div>
+    </div>
+    <div style="flex:1">
+      <div style="font-size:13px;font-weight:600">Gideon Saviour</div>
+      <div style="font-size:11px;color:#10b981">● Online</div>
+    </div>
+    <button style="background:none;border:none;color:#8b8b9e;font-size:18px">⋯</button>
+  </div>
+</div>
 
-const Tick = ({status}) => {
-  if(status==='read') return <span style={{color:'#a78bfa',fontSize:13}}>✓✓</span>
-  if(status==='delivered') return <span style={{color:'#4a4a5e',fontSize:13}}>✓✓</span>
-  return <span style={{color:'#4a4a5e',fontSize:13}}>✓</span>
+<!-- Main -->
+<div id="main">
+  <div id="empty" style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px">
+    <div style="width:80px;height:80px;border-radius:24px;background:linear-gradient(135deg,#7c3aed,#4f46e5);display:flex;align-items:center;justify-content:center;margin-bottom:24px;box-shadow:0 0 40px rgba(124,58,237,0.4);font-size:36px">💬</div>
+    <h2 style="font-size:24px;font-weight:700;margin-bottom:8px">Welcome to Chat-X</h2>
+    <p style="color:#8b8b9e;font-size:15px;margin-bottom:32px;text-align:center;max-width:300px">Select a conversation to start messaging</p>
+    <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center">
+      <div style="background:#1a1a24;border:1px solid #2a2a3a;border-radius:10px;padding:8px 14px;font-size:13px;color:#8b8b9e">🔐 End-to-end encrypted</div>
+      <div style="background:#1a1a24;border:1px solid #2a2a3a;border-radius:10px;padding:8px 14px;font-size:13px;color:#8b8b9e">⚡ Real-time messaging</div>
+      <div style="background:#1a1a24;border:1px solid #2a2a3a;border-radius:10px;padding:8px 14px;font-size:13px;color:#8b8b9e">🛡️ Privacy first</div>
+    </div>
+  </div>
+  <div id="chat-area" style="display:none;flex-direction:column;height:100vh">
+    <div id="chat-header" style="padding:14px 20px;border-bottom:1px solid #2a2a3a;display:flex;align-items:center;justify-content:space-between;background:#111118"></div>
+    <div style="text-align:center;padding:6px;font-size:11px;color:#4a4a5e">🔒 End-to-end encrypted · No one outside this chat can read these messages</div>
+    <div id="messages" style="flex:1;overflow-y:auto;padding:8px 20px;display:flex;flex-direction:column;gap:4px"></div>
+    <div style="padding:12px 16px;border-top:1px solid #2a2a3a;background:#111118;display:flex;align-items:flex-end;gap:8px">
+      <div style="display:flex;gap:2px">
+        <button style="background:none;border:none;color:#8b8b9e;padding:8px;border-radius:8px;font-size:18px">📎</button>
+        <button style="background:none;border:none;color:#8b8b9e;padding:8px;border-radius:8px;font-size:18px">🖼️</button>
+      </div>
+      <textarea id="msg-input" rows="1" placeholder="Message..." oninput="autoResize(this)" onkeydown="handleKey(event)"
+        style="flex:1;background:#1a1a24;border:1px solid #2a2a3a;border-radius:12px;padding:10px 14px;color:#f1f1f5;font-size:14px;resize:none;max-height:100px;overflow-y:auto;line-height:1.5"></textarea>
+      <div style="display:flex;gap:4px">
+        <button style="background:none;border:none;color:#8b8b9e;padding:8px;border-radius:8px;font-size:18px">😊</button>
+        <button id="send-btn" onclick="sendMessage()"
+          style="background:linear-gradient(135deg,#7c3aed,#4f46e5);border:none;color:#fff;width:38px;height:38px;border-radius:10px;font-size:18px;display:flex;align-items:center;justify-content:center">🎤</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Call Modal -->
+<div id="modal">
+  <div style="background:#1a1a24;border:1px solid #2a2a3a;border-radius:24px;padding:48px;text-align:center;width:300px">
+    <div id="modal-avatar" class="avatar" style="width:80px;height:80px;font-size:28px;margin:0 auto"></div>
+    <div id="modal-name" style="margin-top:20px;font-size:20px;font-weight:700"></div>
+    <div id="modal-type" style="color:#8b8b9e;margin-top:6px;font-size:14px"></div>
+    <div style="display:flex;gap:20px;justify-content:center;margin-top:36px">
+      <button onclick="closeCall()" style="background:#ef4444;border:none;color:#fff;width:60px;height:60px;border-radius:50%;font-size:22px">✕</button>
+      <button id="modal-accept" style="background:#10b981;border:none;color:#fff;width:60px;height:60px;border-radius:50%;font-size:22px">📞</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const contacts = [
+  {id:'u2',name:'David Lawrence',av:'DL',status:'online',seen:'now',unread:3,last:'Can we jump on a call?',type:'dm'},
+  {id:'u3',name:'Sarah Chen',av:'SC',status:'online',seen:'now',unread:0,last:'The designs look amazing 🔥',type:'dm'},
+  {id:'u4',name:'Marcus Webb',av:'MW',status:'away',seen:'5m ago',unread:1,last:'Check the repo when you can',type:'dm'},
+  {id:'u5',name:'Priya Sharma',av:'PS',status:'offline',seen:'2h ago',unread:0,last:'See you tomorrow!',type:'dm'},
+  {id:'u6',name:'James Okafor',av:'JO',status:'online',seen:'now',unread:0,last:'Sent you the files',type:'dm'},
+  {id:'u7',name:'Luna Park',av:'LP',status:'offline',seen:'1d ago',unread:0,last:'Great working with you',type:'dm'},
+  {id:'g1',name:'Finite Brand Team',av:'FB',status:'group',seen:'now',unread:5,last:'Sarah: Pushing new designs now',type:'group',members:6},
+  {id:'g2',name:'Chat-X Dev',av:'CX',status:'group',seen:'10m ago',unread:0,last:'Marcus: All tests passing ✅',type:'group',members:4},
+  {id:'g3',name:'Bitcoin Builders',av:'BB',status:'group',seen:'30m ago',unread:2,last:'James: Block 850,000 mined!',type:'group',members:12},
+]
+
+const seedMsgs = (c) => [
+  {from:c.id,text:'Hey! How is everything going?',time:'10:00 AM',status:'read'},
+  {from:'me',text:"All good! Just finishing up Chat-X. It's looking really clean.",time:'10:02 AM',status:'read'},
+  {from:c.id,text:"That's awesome. What features are you adding?",time:'10:03 AM',status:'read'},
+  {from:'me',text:'Real-time messaging, group chats, voice/video calls, media sharing, end-to-end encryption and online status!',time:'10:05 AM',status:'read'},
+  {from:c.id,text:"End-to-end encryption? That's next level 🔐",time:'10:06 AM',status:'read'},
+  {from:'me',text:'Yeah, privacy first. Every message encrypted before it leaves your device.',time:'10:08 AM',status:'read'},
+  {from:c.id,text:c.last,time:'10:10 AM',status:'delivered'},
+]
+
+const statusColor = s => s==='online'?'#10b981':s==='away'?'#f59e0b':'#4a4a5e'
+let currentTab = 'chats'
+let activeContact = null
+let messages = []
+
+function avatar(initials, size, status) {
+  const dot = status && status !== 'group'
+    ? `<div class="dot" style="width:${Math.round(size*0.28)}px;height:${Math.round(size*0.28)}px;background:${statusColor(status)}"></div>` : ''
+  return `<div style="position:relative;width:${size}px;height:${size}px;flex-shrink:0">
+    <div class="avatar" style="width:${size}px;height:${size}px;font-size:${Math.round(size*0.34)}px">${initials}</div>${dot}</div>`
 }
 
-function CallModal({type,contact,onClose}){
-  return (
-    <div style={{position:'fixed',inset:0,background:'rgba(0,0,0,0.88)',display:'flex',alignItems:'center',justifyContent:'center',zIndex:999}}>
-      <div style={{background:COLORS.bg3,border:`1px solid ${COLORS.border}`,borderRadius:24,padding:48,textAlign:'center',width:300}}>
-        <Avatar initials={contact.avatar} size={80}/>
-        <div style={{marginTop:20,fontSize:20,fontWeight:700}}>{contact.name}</div>
-        <div style={{color:COLORS.textSub,marginTop:6,fontSize:14}}>{type==='video'?'📹 Video calling...':'📞 Calling...'}</div>
-        <div style={{display:'flex',gap:20,justifyContent:'center',marginTop:36}}>
-          <button onClick={onClose} style={{background:COLORS.danger,border:'none',color:'#fff',width:60,height:60,borderRadius:'50%',cursor:'pointer',fontSize:20}}>✕</button>
-          <button style={{background:COLORS.success,border:'none',color:'#fff',width:60,height:60,borderRadius:'50%',cursor:'pointer',fontSize:20}}>{type==='video'?'📹':'📞'}</button>
+function renderList() {
+  const search = document.getElementById('search').value.toLowerCase()
+  const list = document.getElementById('chat-list')
+  const filtered = contacts.filter(c => {
+    const matchTab = currentTab==='chats'?c.type==='dm':currentTab==='groups'?c.type==='group':true
+    return matchTab && c.name.toLowerCase().includes(search)
+  })
+  list.innerHTML = filtered.map(c => `
+    <div class="chat-item${activeContact?.id===c.id?' active':''}" onclick="openChat('${c.id}')">
+      ${avatar(c.av,44,c.status)}
+      <div style="flex:1;min-width:0">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span style="font-weight:600;font-size:14px">${c.name}</span>
+          <span style="font-size:11px;color:#4a4a5e">${c.seen}</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:2px">
+          <span style="font-size:12px;color:#8b8b9e;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:150px">${c.last}</span>
+          ${c.unread>0?`<span style="background:#7c3aed;color:#fff;font-size:11px;font-weight:700;border-radius:10px;padding:1px 7px">${c.unread}</span>`:''}
+        </div>
+      </div>
+    </div>`).join('')
+}
+
+function openChat(id) {
+  activeContact = contacts.find(c=>c.id===id)
+  messages = seedMsgs(activeContact)
+  document.getElementById('empty').style.display = 'none'
+  const area = document.getElementById('chat-area')
+  area.style.display = 'flex'
+
+  // Header
+  document.getElementById('chat-header').innerHTML = `
+    <div style="display:flex;align-items:center;gap:12px">
+      ${avatar(activeContact.av,42,activeContact.status)}
+      <div>
+        <div style="font-weight:700;font-size:15px">${activeContact.name}</div>
+        <div style="font-size:12px;color:${activeContact.status==='online'?'#10b981':'#8b8b9e'}">
+          ${activeContact.members?activeContact.members+' members':activeContact.status==='online'?'● Online':'Last seen '+activeContact.seen}
         </div>
       </div>
     </div>
-  )
+    <div style="display:flex;gap:4px">
+      <button onclick="openCall('voice')" style="background:none;border:none;color:#8b8b9e;padding:8px 10px;border-radius:8px;font-size:18px">📞</button>
+      <button onclick="openCall('video')" style="background:none;border:none;color:#8b8b9e;padding:8px 10px;border-radius:8px;font-size:18px">📹</button>
+      <button style="background:none;border:none;color:#8b8b9e;padding:8px 10px;border-radius:8px;font-size:18px">⋯</button>
+    </div>`
+
+  renderMessages()
+  renderList()
 }
 
-function ChatWindow({contact}){
-  const [messages,setMessages] = useState(seedMessages(contact.id))
-  const [input,setInput] = useState('')
-  const [call,setCall] = useState(null)
-  const [recording,setRecording] = useState(false)
-  const bottom = useRef(null)
-
-  useEffect(()=>{setMessages(seedMessages(contact.id))},[contact.id])
-  useEffect(()=>{bottom.current?.scrollIntoView({behavior:'smooth'})},[messages])
-
-  const send = () => {
-    if(!input.trim()) return
-    const msg = {id:Date.now(),from:'u1',text:input,time:new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}),status:'sent'}
-    setMessages(p=>[...p,msg])
-    setInput('')
-    setTimeout(()=>{
-      setMessages(p=>[...p,{id:Date.now()+1,from:contact.id,text:'Got it! 👍',time:new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}),status:'delivered'}])
-    },1500)
-  }
-
-  return (
-    <div style={{flex:1,display:'flex',flexDirection:'column',height:'100vh',background:COLORS.bg1}}>
-      {call&&<CallModal type={call} contact={contact} onClose={()=>setCall(null)}/>}
-
-      {/* Header */}
-      <div style={{padding:'14px 20px',borderBottom:`1px solid ${COLORS.border}`,display:'flex',alignItems:'center',justifyContent:'space-between',background:COLORS.bg2}}>
-        <div style={{display:'flex',alignItems:'center',gap:12}}>
-          <Avatar initials={contact.avatar} size={42} status={contact.status}/>
-          <div>
-            <div style={{fontWeight:700,fontSize:15}}>{contact.name}</div>
-            <div style={{fontSize:12,color:contact.status==='online'?COLORS.success:COLORS.textSub}}>
-              {contact.members?`${contact.members} members`:contact.status==='online'?'● Online':`Last seen ${contact.lastSeen}`}
-            </div>
-          </div>
-        </div>
-        <div style={{display:'flex',gap:4}}>
-          {[['📞','Voice call',()=>setCall('voice')],['📹','Video call',()=>setCall('video')],['⋯','More',()=>{}]].map(([icon,tip,fn])=>(
-            <button key={tip} onClick={fn} title={tip} style={{background:'none',border:'none',color:COLORS.textSub,cursor:'pointer',padding:'8px 10px',borderRadius:8,fontSize:18}}>{icon}</button>
-          ))}
+function renderMessages() {
+  const box = document.getElementById('messages')
+  box.innerHTML = messages.map(m => {
+    const mine = m.from==='me'
+    const tick = m.status==='read'?'<span style="color:#a78bfa;font-size:12px">✓✓</span>':
+                 m.status==='delivered'?'<span style="color:#4a4a5e;font-size:12px">✓✓</span>':
+                 '<span style="color:#4a4a5e;font-size:12px">✓</span>'
+    return `<div class="msg-row${mine?' mine':''} fade">
+      ${!mine?avatar(activeContact.av,28,null):''}
+      <div class="msg-bubble ${mine?'msg-mine':'msg-theirs'}">
+        ${m.text}
+        <div style="display:flex;align-items:center;justify-content:flex-end;gap:4px;margin-top:3px">
+          <span style="font-size:11px;color:${mine?'rgba(255,255,255,0.55)':'#4a4a5e'}">${m.time}</span>
+          ${mine?tick:''}
         </div>
       </div>
-
-      {/* Encryption badge */}
-      <div style={{textAlign:'center',padding:'6px 16px',fontSize:11,color:COLORS.textMuted}}>
-        🔒 End-to-end encrypted · No one outside this chat can read these messages
-      </div>
-
-      {/* Messages */}
-      <div style={{flex:1,overflowY:'auto',padding:'8px 20px',display:'flex',flexDirection:'column',gap:4}}>
-        {messages.map(msg=>{
-          const mine = msg.from==='u1'
-          return (
-            <div key={msg.id} className="fade-in" style={{display:'flex',justifyContent:mine?'flex-end':'flex-start',alignItems:'flex-end',gap:8}}>
-              {!mine&&<Avatar initials={contact.avatar} size={28}/>}
-              <div style={{
-                maxWidth:'65%',
-                background:mine?'linear-gradient(135deg,#7c3aed,#4f46e5)':COLORS.bg3,
-                border:mine?'none':`1px solid ${COLORS.border}`,
-                borderRadius:mine?'18px 18px 4px 18px':'18px 18px 18px 4px',
-                padding:'10px 14px',
-              }}>
-                <div style={{fontSize:14,lineHeight:1.55,color:mine?'#fff':COLORS.text}}>{msg.text}</div>
-                <div style={{display:'flex',alignItems:'center',justifyContent:'flex-end',gap:4,marginTop:3}}>
-                  <span style={{fontSize:11,color:mine?'rgba(255,255,255,0.55)':COLORS.textMuted}}>{msg.time}</span>
-                  {mine&&<Tick status={msg.status}/>}
-                </div>
-              </div>
-            </div>
-          )
-        })}
-        <div ref={bottom}/>
-      </div>
-
-      {/* Input */}
-      <div style={{padding:'12px 16px',borderTop:`1px solid ${COLORS.border}`,background:COLORS.bg2,display:'flex',alignItems:'flex-end',gap:8}}>
-        <div style={{display:'flex',gap:2}}>
-          <button title="Attach" style={{background:'none',border:'none',color:COLORS.textSub,cursor:'pointer',padding:8,borderRadius:8,fontSize:18}}>📎</button>
-          <button title="Image" style={{background:'none',border:'none',color:COLORS.textSub,cursor:'pointer',padding:8,borderRadius:8,fontSize:18}}>🖼️</button>
-        </div>
-        <textarea
-          value={input}
-          onChange={e=>setInput(e.target.value)}
-          onKeyDown={e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send()}}}
-          placeholder="Message..."
-          rows={1}
-          style={{
-            flex:1,background:COLORS.bg3,border:`1px solid ${COLORS.border}`,
-            borderRadius:12,padding:'10px 14px',color:COLORS.text,fontSize:14,
-            outline:'none',resize:'none',lineHeight:1.5,maxHeight:100,overflowY:'auto'
-          }}
-        />
-        <div style={{display:'flex',gap:4}}>
-          <button style={{background:'none',border:'none',color:COLORS.textSub,cursor:'pointer',padding:8,borderRadius:8,fontSize:18}}>😊</button>
-          {input.trim()?(
-            <button onClick={send} style={{
-              background:'linear-gradient(135deg,#7c3aed,#4f46e5)',border:'none',color:'#fff',
-              cursor:'pointer',width:38,height:38,borderRadius:10,fontSize:18,display:'flex',alignItems:'center',justifyContent:'center'
-            }}>➤</button>
-          ):(
-            <button
-              onMouseDown={()=>setRecording(true)}
-              onMouseUp={()=>setRecording(false)}
-              style={{
-                background:recording?`linear-gradient(135deg,${COLORS.danger},#dc2626)`:'linear-gradient(135deg,#7c3aed,#4f46e5)',
-                border:'none',color:'#fff',cursor:'pointer',width:38,height:38,borderRadius:10,fontSize:18,
-                display:'flex',alignItems:'center',justifyContent:'center',transition:'all 0.15s'
-              }}>🎤</button>
-          )}
-        </div>
-      </div>
-    </div>
-  )
+    </div>`
+  }).join('')
+  box.scrollTop = box.scrollHeight
 }
 
-function EmptyState(){
-  return (
-    <div style={{flex:1,display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',background:COLORS.bg1,padding:40}}>
-      <div style={{
-        width:80,height:80,borderRadius:24,
-        background:'linear-gradient(135deg,#7c3aed,#4f46e5)',
-        display:'flex',alignItems:'center',justifyContent:'center',marginBottom:24,
-        boxShadow:'0 0 40px rgba(124,58,237,0.4)',fontSize:36
-      }}>💬</div>
-      <h2 style={{fontSize:24,fontWeight:700,marginBottom:8}}>Welcome to Chat-X</h2>
-      <p style={{color:COLORS.textSub,fontSize:15,marginBottom:32,textAlign:'center',maxWidth:300}}>
-        Select a conversation to start messaging
-      </p>
-      <div style={{display:'flex',gap:12,flexWrap:'wrap',justifyContent:'center'}}>
-        {['🔐 End-to-end encrypted','⚡ Real-time messaging','🛡️ Privacy first'].map(f=>(
-          <div key={f} style={{background:COLORS.bg3,border:`1px solid ${COLORS.border}`,borderRadius:10,padding:'8px 14px',fontSize:13,color:COLORS.textSub}}>{f}</div>
-        ))}
-      </div>
-    </div>
-  )
+function sendMessage() {
+  const input = document.getElementById('msg-input')
+  const text = input.value.trim()
+  if(!text) return
+  const time = new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'})
+  messages.push({from:'me',text,time,status:'sent'})
+  input.value = ''
+  input.style.height = 'auto'
+  document.getElementById('send-btn').innerHTML = '🎤'
+  renderMessages()
+  setTimeout(()=>{
+    messages[messages.length-1].status = 'delivered'
+    messages.push({from:activeContact.id,text:'Got it! 👍',time:new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}),status:'delivered'})
+    renderMessages()
+  },1500)
 }
 
-function Sidebar({active,setActive}){
-  const [tab,setTab] = useState('chats')
-  const [search,setSearch] = useState('')
-
-  const all = tab==='groups'?groups:tab==='chats'?contacts:[...contacts,...groups]
-  const filtered = all.filter(c=>c.name.toLowerCase().includes(search.toLowerCase()))
-
-  return (
-    <div style={{width:300,background:COLORS.bg2,borderRight:`1px solid ${COLORS.border}`,display:'flex',flexDirection:'column',height:'100vh',flexShrink:0}}>
-      {/* Header */}
-      <div style={{padding:'18px 16px 12px',borderBottom:`1px solid ${COLORS.border}`}}>
-        <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:14}}>
-          <div style={{display:'flex',alignItems:'center',gap:10}}>
-            <Avatar initials="CX" size={34}/>
-            <div>
-              <div style={{fontWeight:800,fontSize:16,letterSpacing:'-0.3px'}}>Chat-X</div>
-              <div style={{fontSize:10,color:COLORS.accent}}>🔐 Encrypted</div>
-            </div>
-          </div>
-          <div style={{display:'flex',gap:4}}>
-            <button style={{background:'none',border:'none',color:COLORS.textSub,cursor:'pointer',padding:6,borderRadius:8,fontSize:16}}>🔔</button>
-            <button style={{background:'none',border:'none',color:COLORS.textSub,cursor:'pointer',padding:6,borderRadius:8,fontSize:16}}>⚙️</button>
-            <button style={{background:'linear-gradient(135deg,#7c3aed,#4f46e5)',border:'none',color:'#fff',cursor:'pointer',padding:'6px 8px',borderRadius:8,fontSize:16}}>✚</button>
-          </div>
-        </div>
-        <input
-          value={search}
-          onChange={e=>setSearch(e.target.value)}
-          placeholder="🔍  Search conversations..."
-          style={{
-            width:'100%',padding:'9px 12px',background:COLORS.bg3,
-            border:`1px solid ${COLORS.border}`,borderRadius:10,
-            color:COLORS.text,fontSize:13,outline:'none'
-          }}
-        />
-      </div>
-
-      {/* Tabs */}
-      <div style={{display:'flex',padding:'8px 12px',gap:4}}>
-        {[['chats','💬 Chats'],['groups','👥 Groups'],['calls','📞 Calls']].map(([id,label])=>(
-          <button key={id} onClick={()=>setTab(id)} style={{
-            flex:1,padding:'7px 4px',border:'none',borderRadius:8,cursor:'pointer',
-            background:tab===id?'rgba(124,58,237,0.2)':'transparent',
-            color:tab===id?COLORS.accentLight:COLORS.textSub,
-            fontSize:11,fontWeight:600,transition:'all 0.15s'
-          }}>{label}</button>
-        ))}
-      </div>
-
-      {/* List */}
-      <div style={{flex:1,overflowY:'auto',paddingBottom:8}}>
-        {filtered.map(chat=>(
-          <div key={chat.id} onClick={()=>setActive(chat)} style={{
-            display:'flex',alignItems:'center',gap:12,padding:'10px 14px',
-            cursor:'pointer',borderRadius:12,margin:'2px 8px',
-            background:active?.id===chat.id?'rgba(124,58,237,0.15)':'transparent',
-            border:active?.id===chat.id?`1px solid rgba(124,58,237,0.3)`:'1px solid transparent',
-            transition:'all 0.15s'
-          }}>
-            <Avatar initials={chat.avatar} size={44} status={chat.status}/>
-            <div style={{flex:1,minWidth:0}}>
-              <div style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
-                <span style={{fontWeight:600,fontSize:14}}>{chat.name}</span>
-                <span style={{fontSize:11,color:COLORS.textMuted}}>{chat.lastSeen}</span>
-              </div>
-              <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginTop:2}}>
-                <span style={{fontSize:12,color:COLORS.textSub,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap',maxWidth:150}}>{chat.lastMessage}</span>
-                {chat.unread>0&&<span style={{background:COLORS.accent,color:'#fff',fontSize:11,fontWeight:700,borderRadius:10,padding:'1px 7px'}}>{chat.unread}</span>}
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
-
-      {/* Profile */}
-      <div style={{padding:'12px 16px',borderTop:`1px solid ${COLORS.border}`,display:'flex',alignItems:'center',gap:10}}>
-        <Avatar initials={currentUser.avatar} size={34} status="online"/>
-        <div style={{flex:1}}>
-          <div style={{fontSize:13,fontWeight:600}}>{currentUser.name}</div>
-          <div style={{fontSize:11,color:COLORS.success}}>● Online</div>
-        </div>
-        <button style={{background:'none',border:'none',color:COLORS.textSub,cursor:'pointer',fontSize:16}}>⋯</button>
-      </div>
-    </div>
-  )
+function handleKey(e) {
+  if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMessage()}
 }
 
-function App(){
-  const [active,setActive] = useState(null)
-  return (
-    <div style={{display:'flex',height:'100vh',overflow:'hidden'}}>
-      <Sidebar active={active} setActive={setActive}/>
-      {active?<ChatWindow contact={active}/>:<EmptyState/>}
-    </div>
-  )
+function autoResize(el) {
+  el.style.height='auto'
+  el.style.height=Math.min(el.scrollHeight,100)+'px'
+  document.getElementById('send-btn').innerHTML = el.value.trim()?'➤':'🎤'
 }
 
-ReactDOM.createRoot(document.getElementById('root')).render(<App/>)
+function switchTab(btn, tab) {
+  currentTab = tab
+  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'))
+  btn.classList.add('active')
+  renderList()
+}
+
+function filterChats() { renderList() }
+
+function openCall(type) {
+  document.getElementById('modal-avatar').textContent = activeContact.av
+  document.getElementById('modal-name').textContent = activeContact.name
+  document.getElementById('modal-type').textContent = type==='video'?'📹 Video calling...':'📞 Calling...'
+  document.getElementById('modal-accept').textContent = type==='video'?'📹':'📞'
+  document.getElementById('modal').classList.add('show')
+}
+
+function closeCall() {
+  document.getElementById('modal').classList.remove('show')
+}
+
+// Init
+renderList()
 </script>
 </body>
 </html>
