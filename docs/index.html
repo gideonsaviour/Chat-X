@@ -7,69 +7,45 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Inter',sans-serif;background:#000000;color:#f1f1f5;height:100vh;overflow:hidden}
+body{font-family:'Inter',sans-serif;background:#000;color:#f1f1f5;height:100vh;overflow:hidden}
 ::-webkit-scrollbar{width:4px}
-::-webkit-scrollbar-thumb{background:#2a2a2a;border-radius:2px}
+::-webkit-scrollbar-thumb{background:#333;border-radius:2px}
 
 /* SPLASH */
-#splash{
-  position:fixed;inset:0;background:#000000;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  z-index:9999;transition:opacity .6s ease;
-}
+#splash{position:fixed;inset:0;background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;transition:opacity .6s ease}
 #splash.hide{opacity:0;pointer-events:none}
-#splash-logo{
-  width:100px;height:100px;border-radius:28px;
-  background:linear-gradient(135deg,#7c3aed,#4f46e5);
-  display:flex;align-items:center;justify-content:center;
-  box-shadow:0 0 60px rgba(124,58,237,0.5);
-  animation:popIn .5s cubic-bezier(.34,1.56,.64,1) .2s both;
-}
+#splash-logo{width:100px;height:100px;border-radius:28px;background:linear-gradient(135deg,#7c3aed,#4f46e5);display:flex;align-items:center;justify-content:center;box-shadow:0 0 60px rgba(124,58,237,0.5);animation:popIn .5s cubic-bezier(.34,1.56,.64,1) .2s both}
 @keyframes popIn{from{opacity:0;transform:scale(.5)}to{opacity:1;transform:scale(1)}}
-#splash-name{
-  margin-top:24px;font-size:32px;font-weight:800;letter-spacing:-.5px;
-  animation:fadeUp .5s ease .6s both;
-}
-#splash-tag{
-  margin-top:8px;font-size:14px;color:#8b8b9e;
-  animation:fadeUp .5s ease .75s both;
-}
-#splash-bottom{
-  position:absolute;bottom:48px;text-align:center;
-  animation:fadeUp .5s ease 1s both;
-}
-#splash-from{font-size:13px;color:#4a4a5e;margin-bottom:6px}
+#splash-name{margin-top:24px;font-size:32px;font-weight:800;letter-spacing:-.5px;animation:fadeUp .5s ease .6s both}
+#splash-tag{margin-top:8px;font-size:14px;color:#8b8b9e;animation:fadeUp .5s ease .75s both}
+#splash-bottom{position:absolute;bottom:48px;text-align:center;animation:fadeUp .5s ease 1s both}
+#splash-from{font-size:13px;color:#4a4a5e;margin-bottom:4px}
 #splash-brand{font-size:15px;font-weight:700;color:#6b6b80;letter-spacing:.5px}
 @keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
 
 /* APP */
-#app{display:none;height:100vh}
+#app{display:none;height:100vh;flex-direction:row}
 #app.show{display:flex}
 
-/* LAYOUT */
-#sidebar{
-  width:300px;background:#111111;border-right:1px solid #2a2a2a;
-  display:flex;flex-direction:column;height:100vh;flex-shrink:0;
-}
-#main{flex:1;display:flex;flex-direction:column;height:100vh;min-width:0}
+/* SIDEBAR */
+#sidebar{width:300px;background:#111;border-right:1px solid #2a2a2a;display:flex;flex-direction:column;height:100vh;flex-shrink:0}
+#main{flex:1;display:flex;flex-direction:column;height:100vh;min-width:0;background:#000}
 
 @media(max-width:640px){
   #sidebar{position:fixed;inset:0;width:100%;z-index:100;transition:transform .25s ease}
   #sidebar.hidden{transform:translateX(-100%)}
-  #main{width:100%}
   .back-btn{display:flex !important}
 }
 
 .avatar{border-radius:50%;background:linear-gradient(135deg,#7c3aed,#4f46e5);display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;flex-shrink:0}
-.sdot{position:absolute;bottom:1px;right:1px;border-radius:50%;border:2px solid #111118}
-.sdot2{position:absolute;bottom:1px;right:1px;border-radius:50%;border:2px solid #0a0a0f}
+.sdot{position:absolute;border-radius:50%}
 .chat-item{display:flex;align-items:center;gap:12px;padding:11px 14px;cursor:pointer;border-radius:12px;margin:2px 8px;border:1px solid transparent;transition:background .15s}
 .chat-item:hover{background:rgba(255,255,255,0.05)}
 .chat-item.active{background:rgba(124,58,237,0.15);border-color:rgba(124,58,237,0.3)}
-.tab-btn{flex:1;padding:8px 4px;border:none;border-radius:8px;font-size:11px;font-weight:600;cursor:pointer;transition:all .15s;background:transparent;color:#8b8b9e;font-family:'Inter',sans-serif}
+.tab-btn{flex:1;padding:8px 4px;border:none;border-radius:8px;font-size:11px;font-weight:600;cursor:pointer;transition:all .15s;background:transparent;color:#666;font-family:'Inter',sans-serif}
 .tab-btn.active{background:rgba(124,58,237,0.2);color:#8b5cf6}
 .tab-btn:hover:not(.active){background:rgba(255,255,255,0.05);color:#f1f1f5}
-.icon-btn{background:none;border:none;color:#8b8b9e;cursor:pointer;padding:8px;border-radius:8px;display:flex;align-items:center;justify-content:center;transition:all .15s;flex-shrink:0}
+.icon-btn{background:none;border:none;color:#666;cursor:pointer;padding:8px;border-radius:8px;display:flex;align-items:center;justify-content:center;transition:all .15s;flex-shrink:0}
 .icon-btn:hover{background:rgba(255,255,255,0.08);color:#f1f1f5}
 .icon-btn:active{transform:scale(.9)}
 .send-btn{background:linear-gradient(135deg,#7c3aed,#4f46e5);border:none;color:#fff;width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .15s;flex-shrink:0}
@@ -77,31 +53,62 @@ body{font-family:'Inter',sans-serif;background:#000000;color:#f1f1f5;height:100v
 .send-btn:active{transform:scale(.93)}
 .msg-mine{background:linear-gradient(135deg,#7c3aed,#4f46e5);border-radius:18px 18px 4px 18px;color:#fff;padding:10px 14px;max-width:70%;font-size:14px;line-height:1.55;word-break:break-word}
 .msg-theirs{background:#1f1f1f;border:1px solid #2a2a2a;border-radius:18px 18px 18px 4px;color:#f1f1f5;padding:10px 14px;max-width:70%;font-size:14px;line-height:1.55;word-break:break-word}
+.msg-ai{background:#1a1a2e;border:1px solid #2d2b55;border-radius:18px 18px 18px 4px;color:#f1f1f5;padding:10px 14px;max-width:75%;font-size:14px;line-height:1.6;word-break:break-word}
 .msg-row{display:flex;align-items:flex-end;gap:8px;margin-bottom:6px}
 .msg-row.mine{flex-direction:row-reverse}
 @keyframes fadeMsg{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
 .fade{animation:fadeMsg .18s ease}
-#modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);align-items:center;justify-content:center;z-index:9998;backdrop-filter:blur(4px)}
+#modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.88);align-items:center;justify-content:center;z-index:9998;backdrop-filter:blur(4px)}
 #modal-overlay.show{display:flex}
 #modal-box{background:#1f1f1f;border:1px solid #2a2a2a;border-radius:24px;padding:40px 48px;text-align:center;width:290px;max-width:90vw}
 .modal-btn{border:none;width:60px;height:60px;border-radius:50%;cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center}
 .modal-btn:hover{transform:scale(1.08)}
 .modal-btn:active{transform:scale(.93)}
-input,textarea{outline:none;font-family:'Inter',sans-serif;color:#f1f1f5}
-input::placeholder,textarea::placeholder{color:#4a4a5e}
+
+/* Group info panel */
+#group-panel{display:none;width:280px;background:#111;border-left:1px solid #2a2a2a;height:100vh;flex-direction:column;flex-shrink:0;overflow-y:auto}
+#group-panel.show{display:flex}
+
+/* Privacy panel */
+#privacy-panel{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.88);align-items:center;justify-content:center;z-index:9997;backdrop-filter:blur(4px)}
+#privacy-panel.show{display:flex}
+
+/* Event panel */
+#event-panel{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.88);align-items:center;justify-content:center;z-index:9997;backdrop-filter:blur(4px)}
+#event-panel.show{display:flex}
+
+/* File preview */
+#file-preview{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.95);align-items:center;justify-content:center;z-index:9997}
+#file-preview.show{display:flex}
+
+input,textarea,select{outline:none;font-family:'Inter',sans-serif;color:#f1f1f5}
+input::placeholder,textarea::placeholder{color:#444}
 .pill{background:#1f1f1f;border:1px solid #2a2a2a;border-radius:10px;padding:8px 14px;font-size:13px;color:#8b8b9e}
 .unread{background:#7c3aed;color:#fff;font-size:11px;font-weight:700;border-radius:10px;padding:2px 8px;min-width:22px;text-align:center;flex-shrink:0}
-#toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(20px);background:#1f1f1f;border:1px solid #2a2a2a;color:#f1f1f5;padding:10px 20px;border-radius:10px;font-size:13px;opacity:0;transition:all .3s;z-index:9999;pointer-events:none;white-space:nowrap}
+#toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(20px);background:#1f1f1f;border:1px solid #2a2a2a;color:#f1f1f5;padding:10px 20px;border-radius:10px;font-size:13px;opacity:0;transition:all .3s;z-index:99999;pointer-events:none;white-space:nowrap}
+
+.typing-dot{width:7px;height:7px;border-radius:50%;background:#8b5cf6;display:inline-block;animation:typingBounce 1.2s infinite}
+.typing-dot:nth-child(2){animation-delay:.2s}
+.typing-dot:nth-child(3){animation-delay:.4s}
+@keyframes typingBounce{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-6px)}}
+
+.toggle{position:relative;width:44px;height:24px;flex-shrink:0}
+.toggle input{opacity:0;width:0;height:0}
+.toggle-slider{position:absolute;inset:0;background:#333;border-radius:24px;cursor:pointer;transition:.3s}
+.toggle-slider:before{content:'';position:absolute;width:18px;height:18px;left:3px;bottom:3px;background:#fff;border-radius:50%;transition:.3s}
+.toggle input:checked+.toggle-slider{background:#7c3aed}
+.toggle input:checked+.toggle-slider:before{transform:translateX(20px)}
+
+.member-item{display:flex;align-items:center;gap:10px;padding:10px 16px;border-radius:10px;transition:background .15s;cursor:pointer}
+.member-item:hover{background:rgba(255,255,255,0.05)}
 </style>
 </head>
 <body>
 
-<!-- SPLASH SCREEN -->
+<!-- SPLASH -->
 <div id="splash">
   <div id="splash-logo">
-    <svg width="52" height="52" fill="none" stroke="#fff" stroke-width="2" viewBox="0 0 24 24">
-      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
-    </svg>
+    <svg width="52" height="52" fill="none" stroke="#fff" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
   </div>
   <div id="splash-name">Chat-X</div>
   <div id="splash-tag">Next generation messaging</div>
@@ -121,27 +128,27 @@ input::placeholder,textarea::placeholder{color:#4a4a5e}
       <div style="display:flex;align-items:center;gap:10px">
         <div style="position:relative">
           <div class="avatar" style="width:36px;height:36px;font-size:13px;font-weight:800">CX</div>
-          <div class="sdot" style="width:10px;height:10px;background:#10b981"></div>
+          <div class="sdot" style="width:10px;height:10px;background:#10b981;bottom:1px;right:1px;border:2px solid #111"></div>
         </div>
         <div>
           <div style="font-weight:800;font-size:16px;letter-spacing:-.3px">Chat-X</div>
-          <div style="font-size:10px;color:#7c3aed;font-weight:600">Encrypted</div>
+          <div style="font-size:10px;color:#7c3aed;font-weight:600">End-to-end Encrypted</div>
         </div>
       </div>
       <div style="display:flex;gap:2px">
-        <button class="icon-btn" onclick="toast('Notifications coming soon!')">
-          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+        <button class="icon-btn" onclick="showPrivacy()" title="Privacy & Security">
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
         </button>
         <button class="icon-btn" onclick="toast('Settings coming soon!')">
           <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
         </button>
-        <button class="icon-btn" onclick="toast('New chat coming soon!')" style="background:linear-gradient(135deg,#7c3aed,#4f46e5);color:#fff;border-radius:8px">
-          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        <button class="icon-btn" onclick="openChat('ai')" title="AI Assistant" style="background:linear-gradient(135deg,#7c3aed,#4f46e5);color:#fff;border-radius:8px">
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2a2 2 0 0 1 2 2c0 .74-.4 1.39-1 1.73V7h1a7 7 0 0 1 7 7h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v1a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1H2a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h1a7 7 0 0 1 7-7h1V5.73c-.6-.34-1-.99-1-1.73a2 2 0 0 1 2-2z"/></svg>
         </button>
       </div>
     </div>
     <div style="position:relative">
-      <svg width="14" height="14" fill="none" stroke="#4a4a5e" stroke-width="2" viewBox="0 0 24 24" style="position:absolute;left:11px;top:50%;transform:translateY(-50%)"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <svg width="14" height="14" fill="none" stroke="#444" stroke-width="2" viewBox="0 0 24 24" style="position:absolute;left:11px;top:50%;transform:translateY(-50%)"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
       <input id="search" oninput="renderList()" placeholder="Search conversations..." style="width:100%;padding:10px 12px 10px 33px;background:#1f1f1f;border:1px solid #2a2a2a;border-radius:10px;font-size:13px"/>
     </div>
   </div>
@@ -149,16 +156,17 @@ input::placeholder,textarea::placeholder{color:#4a4a5e}
     <button class="tab-btn active" onclick="switchTab(this,'chats')">Chats</button>
     <button class="tab-btn" onclick="switchTab(this,'groups')">Groups</button>
     <button class="tab-btn" onclick="switchTab(this,'calls')">Calls</button>
+    <button class="tab-btn" onclick="switchTab(this,'community')">Discover</button>
   </div>
   <div id="chat-list" style="flex:1;overflow-y:auto;padding-bottom:8px"></div>
   <div style="padding:12px 16px;border-top:1px solid #2a2a2a;display:flex;align-items:center;gap:10px;flex-shrink:0">
     <div style="position:relative;flex-shrink:0">
       <div class="avatar" style="width:36px;height:36px;font-size:13px">GS</div>
-      <div class="sdot" style="width:10px;height:10px;background:#10b981"></div>
+      <div class="sdot" style="width:10px;height:10px;background:#10b981;bottom:1px;right:1px;border:2px solid #111"></div>
     </div>
     <div style="flex:1">
       <div style="font-size:13px;font-weight:600">Gideon Saviour</div>
-      <div style="font-size:11px;color:#10b981">● Online</div>
+      <div style="font-size:11px;color:#10b981">Online</div>
     </div>
     <button class="icon-btn" onclick="toast('Profile coming soon!')">
       <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
@@ -173,20 +181,24 @@ input::placeholder,textarea::placeholder{color:#4a4a5e}
       <svg width="36" height="36" fill="none" stroke="#fff" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
     </div>
     <h2 style="font-size:24px;font-weight:700;margin-bottom:8px">Welcome to Chat-X</h2>
-    <p style="color:#8b8b9e;font-size:15px;margin-bottom:32px;text-align:center;max-width:300px">Select a conversation to start messaging</p>
+    <p style="color:#666;font-size:15px;margin-bottom:32px;text-align:center;max-width:300px">Select a conversation or try the AI Assistant</p>
     <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center">
       <div class="pill">Encrypted</div>
       <div class="pill">Real-time</div>
       <div class="pill">Private</div>
+      <div class="pill">AI-powered</div>
     </div>
   </div>
   <div id="chat-area" style="display:none;flex-direction:column;height:100vh">
-    <div id="chat-header" style="padding:12px 16px;border-bottom:1px solid #2a2a2a;background:#111111;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;gap:8px"></div>
-    <div style="text-align:center;padding:5px 16px;font-size:11px;color:#3a3a4e;flex-shrink:0">End-to-end encrypted</div>
+    <div id="chat-header" style="padding:12px 16px;border-bottom:1px solid #2a2a2a;background:#111;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;gap:8px"></div>
+    <div id="enc-notice" style="text-align:center;padding:5px 16px;font-size:11px;color:#444;flex-shrink:0">End-to-end encrypted</div>
     <div id="messages" style="flex:1;overflow-y:auto;padding:8px 16px;display:flex;flex-direction:column"></div>
-    <div style="padding:10px 12px;border-top:1px solid #2a2a2a;background:#111111;display:flex;align-items:flex-end;gap:8px;flex-shrink:0">
-      <button class="icon-btn" onclick="toast('File sharing coming soon!')">
+    <div style="padding:10px 12px;border-top:1px solid #2a2a2a;background:#111;display:flex;align-items:flex-end;gap:8px;flex-shrink:0">
+      <button class="icon-btn" onclick="showFileShare()" title="Share file">
         <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
+      </button>
+      <button class="icon-btn" id="event-btn" onclick="showEvent()" title="Schedule event" style="display:none">
+        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
       </button>
       <textarea id="msg-input" rows="1" placeholder="Type a message..." oninput="handleInput(this)" onkeydown="handleKey(event)"
         style="flex:1;background:#1f1f1f;border:1px solid #2a2a2a;border-radius:12px;padding:10px 14px;font-size:14px;resize:none;max-height:100px;overflow-y:auto;line-height:1.5"></textarea>
@@ -200,17 +212,97 @@ input::placeholder,textarea::placeholder{color:#4a4a5e}
   </div>
 </div>
 
+<!-- GROUP PANEL -->
+<div id="group-panel">
+  <div style="padding:16px;border-bottom:1px solid #2a2a2a;display:flex;align-items:center;gap:10px">
+    <button class="icon-btn" onclick="closeGroupPanel()">
+      <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+    <span style="font-weight:700;font-size:15px">Group Info</span>
+  </div>
+  <div id="group-panel-content" style="padding:16px;flex:1"></div>
+</div>
+
 </div><!-- end #app -->
 
-<!-- Toast -->
-<div id="toast"></div>
+<!-- PRIVACY PANEL -->
+<div id="privacy-panel">
+  <div style="background:#111;border:1px solid #2a2a2a;border-radius:20px;width:360px;max-width:95vw;max-height:90vh;overflow-y:auto">
+    <div style="padding:20px;border-bottom:1px solid #2a2a2a;display:flex;align-items:center;justify-content:space-between">
+      <div style="font-weight:700;font-size:17px">Privacy & Security</div>
+      <button class="icon-btn" onclick="hidePrivacy()">
+        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div style="padding:16px;display:flex;flex-direction:column;gap:4px">
+      ${privacyRow('Read Receipts','Show when you have read messages','read-receipts',true)}
+      ${privacyRow('Last Seen','Show your last active time','last-seen',true)}
+      ${privacyRow('Online Status','Show when you are online','online-status',true)}
+      ${privacyRow('Disappearing Messages','Auto-delete messages after 7 days','disappearing',false)}
+      ${privacyRow('Two-Step Verification','Extra security for your account','two-step',false)}
+      ${privacyRow('Blocked Contacts','Manage blocked users','blocked',false)}
+      ${privacyRow('Screenshot Protection','Prevent screenshots in chat','screenshot',false)}
+    </div>
+  </div>
+</div>
 
-<!-- Call Modal -->
+<!-- EVENT PANEL -->
+<div id="event-panel">
+  <div style="background:#111;border:1px solid #2a2a2a;border-radius:20px;width:380px;max-width:95vw">
+    <div style="padding:20px;border-bottom:1px solid #2a2a2a;display:flex;align-items:center;justify-content:space-between">
+      <div style="font-weight:700;font-size:17px">Schedule Event</div>
+      <button class="icon-btn" onclick="hideEvent()">
+        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div style="padding:20px;display:flex;flex-direction:column;gap:14px">
+      <div>
+        <label style="font-size:12px;color:#666;font-weight:600;display:block;margin-bottom:6px">EVENT TITLE</label>
+        <input id="ev-title" placeholder="e.g. Team standup" style="width:100%;padding:10px 14px;background:#1f1f1f;border:1px solid #2a2a2a;border-radius:10px;font-size:14px"/>
+      </div>
+      <div style="display:flex;gap:10px">
+        <div style="flex:1">
+          <label style="font-size:12px;color:#666;font-weight:600;display:block;margin-bottom:6px">DATE</label>
+          <input id="ev-date" type="date" style="width:100%;padding:10px 14px;background:#1f1f1f;border:1px solid #2a2a2a;border-radius:10px;font-size:14px"/>
+        </div>
+        <div style="flex:1">
+          <label style="font-size:12px;color:#666;font-weight:600;display:block;margin-bottom:6px">TIME</label>
+          <input id="ev-time" type="time" style="width:100%;padding:10px 14px;background:#1f1f1f;border:1px solid #2a2a2a;border-radius:10px;font-size:14px"/>
+        </div>
+      </div>
+      <div>
+        <label style="font-size:12px;color:#666;font-weight:600;display:block;margin-bottom:6px">DESCRIPTION</label>
+        <textarea id="ev-desc" placeholder="What's this event about?" rows="3" style="width:100%;padding:10px 14px;background:#1f1f1f;border:1px solid #2a2a2a;border-radius:10px;font-size:14px;resize:none;line-height:1.5"></textarea>
+      </div>
+      <button onclick="sendEvent()" style="background:linear-gradient(135deg,#7c3aed,#4f46e5);border:none;color:#fff;padding:12px;border-radius:12px;font-size:14px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif">
+        Send Event Invite
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- FILE SHARE -->
+<div id="file-preview" onclick="this.classList.remove('show')">
+  <div style="background:#111;border:1px solid #2a2a2a;border-radius:20px;padding:24px;width:340px;max-width:95vw;text-align:center" onclick="event.stopPropagation()">
+    <div style="font-weight:700;font-size:16px;margin-bottom:16px">Share File</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px">
+      ${fileOption('Document','📄','Share PDF, Word, Excel files')}
+      ${fileOption('Image','🖼️','Share photos and images')}
+      ${fileOption('Audio','🎵','Share voice notes and music')}
+      ${fileOption('Video','🎥','Share video clips')}
+      ${fileOption('Location','📍','Share your location')}
+      ${fileOption('Contact','👤','Share a contact card')}
+    </div>
+    <button onclick="document.getElementById('file-preview').classList.remove('show')" style="background:#1f1f1f;border:1px solid #2a2a2a;color:#f1f1f5;padding:10px 24px;border-radius:10px;cursor:pointer;font-family:'Inter',sans-serif;font-size:14px">Cancel</button>
+  </div>
+</div>
+
+<!-- CALL MODAL -->
 <div id="modal-overlay" onclick="closeCall(event)">
   <div id="modal-box">
     <div id="modal-av" class="avatar" style="width:80px;height:80px;font-size:28px;margin:0 auto"></div>
     <div id="modal-name" style="margin-top:20px;font-size:20px;font-weight:700"></div>
-    <div id="modal-sub" style="color:#8b8b9e;margin-top:6px;font-size:14px"></div>
+    <div id="modal-sub" style="color:#666;margin-top:6px;font-size:14px"></div>
     <div style="display:flex;gap:20px;justify-content:center;margin-top:36px">
       <button class="modal-btn" onclick="closeCall()" style="background:#ef4444;color:#fff">
         <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
@@ -222,109 +314,158 @@ input::placeholder,textarea::placeholder{color:#4a4a5e}
   </div>
 </div>
 
+<div id="toast"></div>
+
 <script>
-// SPLASH → APP transition
+function privacyRow(label,desc,id,checked){
+  return`<div style="display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid #1a1a1a">
+    <div><div style="font-size:14px;font-weight:500">${label}</div><div style="font-size:12px;color:#555;margin-top:2px">${desc}</div></div>
+    <label class="toggle"><input type="checkbox" ${checked?'checked':''} onchange="toast('${label} updated')"><div class="toggle-slider"></div></label>
+  </div>`
+}
+function fileOption(name,icon,desc){
+  return`<div onclick="sendFile('${name}');document.getElementById('file-preview').classList.remove('show')" style="background:#1f1f1f;border:1px solid #2a2a2a;border-radius:12px;padding:14px;cursor:pointer;transition:background .15s;text-align:center" onmouseover="this.style.background='#2a2a2a'" onmouseout="this.style.background='#1f1f1f'">
+    <div style="font-size:24px;margin-bottom:6px">${icon}</div>
+    <div style="font-size:13px;font-weight:600">${name}</div>
+    <div style="font-size:11px;color:#555;margin-top:2px">${desc}</div>
+  </div>`
+}
+</script>
+
+<script>
 setTimeout(()=>{
-  const splash=document.getElementById('splash')
-  splash.classList.add('hide')
+  document.getElementById('splash').classList.add('hide')
   setTimeout(()=>{
-    splash.style.display='none'
-    const app=document.getElementById('app')
-    app.classList.add('show')
+    document.getElementById('splash').style.display='none'
+    document.getElementById('app').classList.add('show')
     renderList()
   },600)
 },4000)
 
 const contacts=[
   {id:'u2',name:'David Lawrence',av:'DL',status:'online',seen:'now',unread:3,last:'Can we jump on a call?',type:'dm'},
-  {id:'u3',name:'Sarah Chen',av:'SC',status:'online',seen:'now',unread:0,last:'The designs look amazing 🔥',type:'dm'},
+  {id:'u3',name:'Sarah Chen',av:'SC',status:'online',seen:'now',unread:0,last:'The designs look amazing',type:'dm'},
   {id:'u4',name:'Marcus Webb',av:'MW',status:'away',seen:'5m ago',unread:1,last:'Check the repo when you can',type:'dm'},
   {id:'u5',name:'Priya Sharma',av:'PS',status:'offline',seen:'2h ago',unread:0,last:'See you tomorrow!',type:'dm'},
   {id:'u6',name:'James Okafor',av:'JO',status:'online',seen:'now',unread:0,last:'Sent you the files',type:'dm'},
   {id:'u7',name:'Luna Park',av:'LP',status:'offline',seen:'1d ago',unread:0,last:'Great working with you',type:'dm'},
-  {id:'g1',name:'Finite Brand Team',av:'FB',status:'group',seen:'now',unread:5,last:'Sarah: Pushing new designs now',type:'group',members:6},
-  {id:'g2',name:'Chat-X Dev',av:'CX',status:'group',seen:'10m ago',unread:0,last:'Marcus: All tests passing ✅',type:'group',members:4},
-  {id:'g3',name:'Bitcoin Builders',av:'BB',status:'group',seen:'30m ago',unread:2,last:'James: Block 850,000 mined!',type:'group',members:12},
+  {id:'g1',name:'Finite Brand Team',av:'FB',status:'group',seen:'now',unread:5,last:'Sarah: Pushing new designs now',type:'group',members:['David L','Sarah C','Marcus W','Priya S','James O','You'],admin:'David L'},
+  {id:'g2',name:'Chat-X Dev',av:'CX',status:'group',seen:'10m ago',unread:0,last:'Marcus: All tests passing',type:'group',members:['Marcus W','Priya S','James O','You'],admin:'You'},
+  {id:'g3',name:'Bitcoin Builders',av:'BB',status:'group',seen:'30m ago',unread:2,last:'James: Block 850,000 mined!',type:'group',members:['James O','David L','Sarah C','Marcus W','Priya S','Luna P','You','Alex B','Tom K','Nina R','Chris M','Sam T'],admin:'James O'},
+  {id:'ai',name:'Chat-X AI Assistant',av:'AI',status:'online',seen:'now',unread:0,last:'How can I help you today?',type:'ai'},
+  {id:'c1',name:'Tech Enthusiasts',av:'TE',status:'group',seen:'2h ago',unread:0,last:'New AI models dropping this week',type:'community',members:1240},
+  {id:'c2',name:'Bitcoin Network',av:'BN',status:'group',seen:'1h ago',unread:0,last:'BTC just hit a new milestone',type:'community',members:8900},
+  {id:'c3',name:'Developers Hub',av:'DH',status:'group',seen:'30m ago',unread:3,last:'Anyone tried the new VS Code update?',type:'community',members:3200},
 ]
 
-const sColor=s=>s==='online'?'#10b981':s==='away'?'#f59e0b':'#3a3a4e'
-let tab='chats',active=null,msgs=[]
+const sColor=s=>s==='online'?'#10b981':s==='away'?'#f59e0b':'#3a3a3a'
+let tab='chats',active=null,msgs=[],callType=null
 
-function av(i,s,status,border='#111118'){
+function av(i,s,status,border='#111'){
   const f=Math.round(s*.34),d=Math.round(s*.28)
-  const dot=status&&status!=='group'?`<div class="sdot" style="width:${d}px;height:${d}px;background:${sColor(status)};border-color:${border}"></div>`:''
-  return`<div style="position:relative;width:${s}px;height:${s}px;flex-shrink:0"><div class="avatar" style="width:${s}px;height:${s}px;font-size:${f}px">${i}</div>${dot}</div>`
+  const dot=status&&status!=='group'&&status!=='ai'&&status!=='community'
+    ?`<div class="sdot" style="width:${d}px;height:${d}px;background:${sColor(status)};bottom:1px;right:1px;border:2px solid ${border}"></div>`:
+    status==='ai'?`<div class="sdot" style="width:${d}px;height:${d}px;background:#7c3aed;bottom:1px;right:1px;border:2px solid ${border}"></div>`:''
+  return`<div style="position:relative;width:${s}px;height:${s}px;flex-shrink:0"><div class="avatar" style="width:${s}px;height:${s}px;font-size:${f}px;${status==='ai'?'background:linear-gradient(135deg,#4f46e5,#7c3aed)':''}">${i}</div>${dot}</div>`
 }
 
-function seedMsgs(c){return[
-  {from:c.id,text:'Hey! How is everything going?',time:'10:00 AM',st:'read'},
-  {from:'me',text:"All good! Just finishing Chat-X — it's looking really clean.",time:'10:02 AM',st:'read'},
-  {from:c.id,text:"That's awesome. What features are you adding?",time:'10:03 AM',st:'read'},
-  {from:'me',text:'Real-time messaging, group chats, voice & video calls, media sharing, end-to-end encryption and online status!',time:'10:05 AM',st:'read'},
-  {from:c.id,text:"End-to-end encryption? That's next level 🔐",time:'10:06 AM',st:'read'},
-  {from:'me',text:'Yeah — privacy first. Every message is encrypted before it leaves your device.',time:'10:08 AM',st:'read'},
-  {from:c.id,text:c.last,time:'10:10 AM',st:'delivered'},
-]}
+function seedMsgs(c){
+  if(c.type==='ai') return[{from:'ai',text:"Hi! I'm your Chat-X AI assistant. I can help you with anything — answering questions, writing messages, summarising conversations, or just having a chat. What can I do for you?",time:'now',st:'read'}]
+  if(c.type==='community') return[
+    {from:c.id,text:`Welcome to ${c.name}! This is a community of ${c.members?.toLocaleString()} members.`,time:'9:00 AM',st:'read'},
+    {from:'u6',text:c.last,time:'10:30 AM',st:'read'},
+  ]
+  return[
+    {from:c.id,text:'Hey! How is everything going?',time:'10:00 AM',st:'read'},
+    {from:'me',text:"All good! Just finishing Chat-X — it's looking really clean.",time:'10:02 AM',st:'read'},
+    {from:c.id,text:"That's awesome. What features are you adding?",time:'10:03 AM',st:'read'},
+    {from:'me',text:'Real-time messaging, group chats, voice & video calls, AI assistant, file sharing, event scheduling and more!',time:'10:05 AM',st:'read'},
+    {from:c.id,text:"That's next level!",time:'10:06 AM',st:'read'},
+    {from:c.id,text:c.last,time:'10:10 AM',st:'delivered'},
+  ]
+}
 
 function tick(st){
   if(st==='read')return'<span style="color:#a78bfa;font-size:12px;margin-left:2px">✓✓</span>'
-  if(st==='delivered')return'<span style="color:#555568;font-size:12px;margin-left:2px">✓✓</span>'
-  return'<span style="color:#555568;font-size:12px;margin-left:2px">✓</span>'
+  if(st==='delivered')return'<span style="color:#444;font-size:12px;margin-left:2px">✓✓</span>'
+  return'<span style="color:#444;font-size:12px;margin-left:2px">✓</span>'
 }
 
 function isMobile(){return window.innerWidth<=640}
 
 function renderList(){
   const q=document.getElementById('search').value.toLowerCase()
-  document.getElementById('chat-list').innerHTML=contacts
-    .filter(c=>(tab==='chats'?c.type==='dm':tab==='groups'?c.type==='group':true)&&c.name.toLowerCase().includes(q))
-    .map(c=>`<div class="chat-item${active?.id===c.id?' active':''}" onclick="openChat('${c.id}')">
-      ${av(c.av,44,c.status)}
+  const filtered=contacts.filter(c=>{
+    if(tab==='chats') return(c.type==='dm'||c.type==='ai')&&c.name.toLowerCase().includes(q)
+    if(tab==='groups') return c.type==='group'&&c.name.toLowerCase().includes(q)
+    if(tab==='community') return c.type==='community'&&c.name.toLowerCase().includes(q)
+    return c.name.toLowerCase().includes(q)
+  })
+  document.getElementById('chat-list').innerHTML=filtered.map(c=>`
+    <div class="chat-item${active?.id===c.id?' active':''}" onclick="openChat('${c.id}')">
+      ${av(c.av,44,c.type==='ai'?'ai':c.status)}
       <div style="flex:1;min-width:0">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px">
-          <span style="font-weight:600;font-size:14px">${c.name}</span>
-          <span style="font-size:11px;color:#4a4a5e">${c.seen}</span>
+          <span style="font-weight:600;font-size:14px;display:flex;align-items:center;gap:5px">
+            ${c.name}
+            ${c.type==='ai'?'<span style="background:#7c3aed;color:#fff;font-size:9px;padding:1px 5px;border-radius:4px;font-weight:700">AI</span>':''}
+            ${c.type==='community'?'<span style="background:#1a1a2e;color:#8b5cf6;font-size:9px;padding:1px 5px;border-radius:4px;border:1px solid #2d2b55">COMMUNITY</span>':''}
+          </span>
+          <span style="font-size:11px;color:#444">${c.seen||''}</span>
         </div>
         <div style="display:flex;justify-content:space-between;align-items:center;gap:8px">
-          <span style="font-size:12px;color:#8b8b9e;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${c.last}</span>
+          <span style="font-size:12px;color:#666;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${c.last}</span>
           ${c.unread>0?`<span class="unread">${c.unread}</span>`:''}
+          ${c.members&&typeof c.members==='number'?`<span style="font-size:11px;color:#444">${c.members.toLocaleString()} members</span>`:''}
         </div>
       </div>
     </div>`).join('')
 }
 
 function openChat(id){
-  active=contacts.find(c=>c.id===id)
+  active=contacts.find(c=>c.id===id)||{id:'ai',name:'Chat-X AI Assistant',av:'AI',status:'ai',type:'ai'}
   msgs=seedMsgs(active)
-  if(isMobile())document.getElementById('sidebar').classList.add('hidden')
+  if(isMobile()) document.getElementById('sidebar').classList.add('hidden')
   document.getElementById('empty-state').style.display='none'
   const area=document.getElementById('chat-area')
   area.style.display='flex'
+  closeGroupPanel()
+
+  const isGroup=active.type==='group'
+  const isAI=active.type==='ai'
+  const isCommunity=active.type==='community'
+
+  document.getElementById('event-btn').style.display=isGroup?'flex':'none'
+  document.getElementById('enc-notice').textContent=isAI?'Powered by Claude AI — conversations are private':isCommunity?`${active.members?.toLocaleString()} members`:'End-to-end encrypted'
+
   document.getElementById('chat-header').innerHTML=`
     <div style="display:flex;align-items:center;gap:10px;flex:1;min-width:0">
       <button class="icon-btn back-btn" style="display:none;flex-shrink:0" onclick="goBack()">
         <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
       </button>
-      ${av(active.av,40,active.status,'#0a0a0f')}
-      <div style="min-width:0">
+      ${av(active.av,40,isAI?'ai':active.status,'#000')}
+      <div style="min-width:0;cursor:${isGroup?'pointer':'default'}" onclick="${isGroup?'showGroupPanel()':''}">
         <div style="font-weight:700;font-size:15px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${active.name}</div>
-        <div style="font-size:12px;color:${active.status==='online'?'#10b981':active.status==='away'?'#f59e0b':'#8b8b9e'}">
-          ${active.members?active.members+' members':active.status==='online'?'● Online':active.status==='away'?'● Away':'Last seen '+active.seen}
+        <div style="font-size:12px;color:${active.status==='online'||isAI?'#10b981':active.status==='away'?'#f59e0b':'#666'}">
+          ${isAI?'AI Assistant — Always available':isCommunity?active.members?.toLocaleString()+' members':isGroup?active.members?.length+' members — tap for info':active.status==='online'?'Online':active.status==='away'?'Away':'Last seen '+active.seen}
         </div>
       </div>
     </div>
     <div style="display:flex;gap:2px;flex-shrink:0">
+      ${!isAI&&!isCommunity?`
       <button class="icon-btn" onclick="startCall('voice')">
         <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
       </button>
       <button class="icon-btn" onclick="startCall('video')">
         <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
-      </button>
+      </button>`:''}
+      ${isGroup?`<button class="icon-btn" onclick="showGroupPanel()"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></button>`:''}
       <button class="icon-btn" onclick="toast('More options coming soon!')">
         <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg>
       </button>
     </div>`
-  if(isMobile())document.querySelector('.back-btn').style.display='flex'
+
+  if(isMobile()) document.querySelector('.back-btn').style.display='flex'
   renderMessages()
   renderList()
   document.getElementById('msg-input').focus()
@@ -334,6 +475,7 @@ function goBack(){
   document.getElementById('sidebar').classList.remove('hidden')
   document.getElementById('chat-area').style.display='none'
   document.getElementById('empty-state').style.display='flex'
+  closeGroupPanel()
   active=null;renderList()
 }
 
@@ -341,12 +483,14 @@ function renderMessages(){
   const box=document.getElementById('messages')
   box.innerHTML=msgs.map(m=>{
     const mine=m.from==='me'
+    const isAI=m.from==='ai'
     return`<div class="msg-row${mine?' mine':''} fade">
-      ${!mine?av(active.av,28,null):''}
-      <div class="${mine?'msg-mine':'msg-theirs'}">
+      ${(!mine&&active)?av(active.av,28,isAI?'ai':null):''}
+      <div class="${mine?'msg-mine':isAI?'msg-ai':'msg-theirs'}">
+        ${isAI?`<div style="font-size:10px;color:#7c3aed;font-weight:700;margin-bottom:4px;letter-spacing:.5px">CHAT-X AI</div>`:''}
         ${m.text}
         <div style="display:flex;align-items:center;justify-content:flex-end;gap:2px;margin-top:4px">
-          <span style="font-size:11px;color:${mine?'rgba(255,255,255,.5)':'#4a4a5e'}">${m.time}</span>
+          <span style="font-size:11px;color:${mine?'rgba(255,255,255,.4)':'#444'}">${m.time}</span>
           ${mine?tick(m.st):''}
         </div>
       </div>
@@ -355,19 +499,49 @@ function renderMessages(){
   box.scrollTop=box.scrollHeight
 }
 
-function sendMessage(){
+let aiTyping=false
+async function sendMessage(){
   const inp=document.getElementById('msg-input')
   const text=inp.value.trim()
-  if(!text||!active)return
+  if(!text||!active||aiTyping)return
   const time=new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'})
   msgs.push({from:'me',text,time,st:'sent'})
   inp.value='';inp.style.height='auto'
   updateBtn(false);renderMessages()
-  setTimeout(()=>{msgs[msgs.length-1].st='delivered';renderMessages()},800)
-  setTimeout(()=>{
-    msgs.push({from:active.id,text:'Got it! 👍',time:new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}),st:'delivered'})
+
+  if(active.type==='ai'){
+    aiTyping=true
+    // Show typing indicator
+    msgs.push({from:'ai',text:'<span style="display:inline-flex;gap:4px;align-items:center"><span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span></span>',time:'',st:'',isTyping:true})
     renderMessages()
-  },1800)
+    try{
+      const res=await fetch('https://api.anthropic.com/v1/messages',{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({
+          model:'claude-sonnet-4-6',
+          max_tokens:1000,
+          system:"You are Chat-X AI Assistant, a helpful, friendly assistant built into the Chat-X messaging app. Keep responses concise and conversational. You help users with questions, writing, summarising, and general assistance.",
+          messages:[{role:'user',content:text}]
+        })
+      })
+      const data=await res.json()
+      msgs.pop()
+      const reply=data.content?.[0]?.text||"Sorry, I couldn't process that. Please try again."
+      msgs.push({from:'ai',text:reply,time:new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}),st:'read'})
+    }catch(e){
+      msgs.pop()
+      msgs.push({from:'ai',text:"I'm having trouble connecting right now. Please try again in a moment.",time:new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}),st:'read'})
+    }
+    aiTyping=false
+    renderMessages()
+  } else {
+    setTimeout(()=>{msgs[msgs.length-1].st='delivered';renderMessages()},800)
+    setTimeout(()=>{
+      msgs.push({from:active.id,text:'Got it! 👍',time:new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}),st:'delivered'})
+      renderMessages()
+    },1800)
+  }
 }
 
 function handleInput(el){
@@ -375,7 +549,6 @@ function handleInput(el){
   el.style.height=Math.min(el.scrollHeight,100)+'px'
   updateBtn(el.value.trim().length>0)
 }
-
 function updateBtn(hasText){
   const b=document.getElementById('send-btn')
   b.innerHTML=hasText
@@ -383,16 +556,82 @@ function updateBtn(hasText){
     :`<svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>`
   b.onclick=hasText?sendMessage:()=>toast('Voice recording coming soon!')
 }
-
 function handleKey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMessage()}}
 function switchTab(btn,t){tab=t;document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderList()}
 
-let callType=null
+// GROUP PANEL
+function showGroupPanel(){
+  if(!active||active.type!=='group')return
+  const panel=document.getElementById('group-panel')
+  panel.classList.add('show')
+  const members=active.members||[]
+  document.getElementById('group-panel-content').innerHTML=`
+    <div style="text-align:center;margin-bottom:20px">
+      <div class="avatar" style="width:64px;height:64px;font-size:22px;margin:0 auto 12px">${active.av}</div>
+      <div style="font-weight:700;font-size:17px">${active.name}</div>
+      <div style="font-size:13px;color:#666;margin-top:4px">${members.length} members</div>
+    </div>
+    <div style="display:flex;gap:8px;margin-bottom:20px">
+      <button onclick="toast('Mute group coming soon!')" style="flex:1;background:#1f1f1f;border:1px solid #2a2a2a;color:#f1f1f5;padding:10px;border-radius:10px;cursor:pointer;font-size:12px;font-family:'Inter',sans-serif">Mute</button>
+      <button onclick="toast('Search in group coming soon!')" style="flex:1;background:#1f1f1f;border:1px solid #2a2a2a;color:#f1f1f5;padding:10px;border-radius:10px;cursor:pointer;font-size:12px;font-family:'Inter',sans-serif">Search</button>
+      <button onclick="toast('Leave group coming soon!')" style="flex:1;background:#1f1f1f;border:1px solid #ef444433;color:#ef4444;padding:10px;border-radius:10px;cursor:pointer;font-size:12px;font-family:'Inter',sans-serif">Leave</button>
+    </div>
+    <div style="font-size:11px;color:#555;font-weight:700;letter-spacing:.5px;margin-bottom:8px;padding:0 2px">MEMBERS</div>
+    ${members.map(m=>`
+      <div class="member-item">
+        <div class="avatar" style="width:36px;height:36px;font-size:13px">${m.split(' ').map(w=>w[0]).join('').slice(0,2)}</div>
+        <div style="flex:1">
+          <div style="font-size:14px;font-weight:500">${m}</div>
+          ${m===active.admin?'<div style="font-size:11px;color:#7c3aed">Admin</div>':m==='You'?'<div style="font-size:11px;color:#666">You</div>':''}
+        </div>
+      </div>`).join('')}
+    <div style="margin-top:16px;padding-top:16px;border-top:1px solid #2a2a2a">
+      <button onclick="toast('Add member coming soon!')" style="width:100%;background:#1f1f1f;border:1px solid #2a2a2a;color:#7c3aed;padding:12px;border-radius:10px;cursor:pointer;font-size:14px;font-weight:600;font-family:'Inter',sans-serif">+ Add Member</button>
+    </div>`
+}
+function closeGroupPanel(){document.getElementById('group-panel').classList.remove('show')}
+
+// PRIVACY
+function showPrivacy(){document.getElementById('privacy-panel').classList.add('show')}
+function hidePrivacy(){document.getElementById('privacy-panel').classList.remove('show')}
+document.getElementById('privacy-panel').addEventListener('click',function(e){if(e.target===this)hidePrivacy()})
+
+// EVENT
+function showEvent(){document.getElementById('event-panel').classList.add('show')}
+function hideEvent(){document.getElementById('event-panel').classList.remove('show')}
+document.getElementById('event-panel').addEventListener('click',function(e){if(e.target===this)hideEvent()})
+function sendEvent(){
+  const title=document.getElementById('ev-title').value.trim()
+  const date=document.getElementById('ev-date').value
+  const time=document.getElementById('ev-time').value
+  const desc=document.getElementById('ev-desc').value.trim()
+  if(!title){toast('Please enter an event title');return}
+  const t=new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'})
+  msgs.push({from:'me',text:`📅 Event Invite\n\n${title}${date?' — '+date:''}${time?' at '+time:''}\n${desc?'\n'+desc:''}`,time:t,st:'sent'})
+  hideEvent()
+  document.getElementById('ev-title').value=''
+  document.getElementById('ev-date').value=''
+  document.getElementById('ev-time').value=''
+  document.getElementById('ev-desc').value=''
+  renderMessages()
+  toast('Event invite sent!')
+}
+
+// FILE SHARE
+function showFileShare(){document.getElementById('file-preview').classList.add('show')}
+function sendFile(type){
+  const t=new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'})
+  msgs.push({from:'me',text:`📎 ${type} shared`,time:t,st:'sent'})
+  renderMessages()
+  toast(`${type} shared successfully!`)
+}
+
+// CALL
 function startCall(type){
   callType=type
   document.getElementById('modal-av').textContent=active.av
   document.getElementById('modal-name').textContent=active.name
-  document.getElementById('modal-sub').textContent=type==='video'?'📹 Video calling...':'📞 Calling...'
+  document.getElementById('modal-sub').textContent=type==='video'?'Video calling...':'Calling...'
   document.getElementById('modal-overlay').classList.add('show')
 }
 function acceptCall(){toast(`${callType==='video'?'Video':'Voice'} call — WebRTC coming soon!`);closeCall()}
