@@ -708,8 +708,68 @@ function selectSound(name){
       <div style="flex:1;font-size:14px;font-weight:${n===name?'600':'400'}">${n}</div>
       ${n===name?'<svg width="18" height="18" fill="none" stroke="#00897B" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>':''}
     </div>`).join('')
-  // Play preview tone
-  try{const a=new AudioContext();const o=a.createOscillator();const g=a.createGain();o.connect(g);g.connect(a.destination);o.frequency.value=name==='None'?0:name==='Alert'?880:name==='Ping'?1200:name==='Digital'?600:name==='Pulse'?440:520;g.gain.setValueAtTime(.3,a.currentTime);g.gain.exponentialRampToValueAtTime(.001,a.currentTime+.3);o.start();o.stop(a.currentTime+.3)}catch(e){}
+  // Play distinct preview tone
+  try{
+    stopPreviewSound()
+    if(name==='None')return
+    if(currentSoundKey==='call-tone'){playCallRingtone();return}
+    const a=new(window.AudioContext||window.webkitAudioContext)()
+    window._previewAudio=a
+    const play=(freq,type,start,dur,vol=0.3)=>{
+      const o=a.createOscillator(),g=a.createGain()
+      o.type=type;o.frequency.value=freq
+      o.connect(g);g.connect(a.destination)
+      g.gain.setValueAtTime(0,a.currentTime+start)
+      g.gain.linearRampToValueAtTime(vol,a.currentTime+start+0.02)
+      g.gain.exponentialRampToValueAtTime(0.001,a.currentTime+start+dur)
+      o.start(a.currentTime+start);o.stop(a.currentTime+start+dur)
+    }
+    const t=a.currentTime
+    if(name==='Default'){play(880,'sine',0,.15);play(1100,'sine',.18,.15)}
+    else if(name==='Chime'){[0,.15,.3].forEach((s,i)=>play([523,659,784][i],'sine',s,.4))}
+    else if(name==='Bell'){play(987,'sine',0,.6,.2);play(1318,'sine',0,.4,.1)}
+    else if(name==='Ping'){play(1567,'sine',0,.08,.2);play(1174,'sine',.1,.3,.1)}
+    else if(name==='Pop'){play(200,'sine',0,.05,.4);play(150,'sine',.04,.08,.3)}
+    else if(name==='Swoosh'){const o=a.createOscillator(),g=a.createGain();o.type='sawtooth';o.frequency.setValueAtTime(800,t);o.frequency.linearRampToValueAtTime(200,t+.3);o.connect(g);g.connect(a.destination);g.gain.setValueAtTime(.15,t);g.gain.exponentialRampToValueAtTime(.001,t+.3);o.start(t);o.stop(t+.3)}
+    else if(name==='Ding'){play(1760,'triangle',0,.5,.15);play(2093,'triangle',.02,.4,.08)}
+    else if(name==='Alert'){play(440,'square',0,.1,.15);play(440,'square',.15,.1,.15);play(440,'square',.3,.1,.15)}
+    else if(name==='Soft Bell'){play(528,'sine',0,.8,.15);play(660,'sine',.05,.6,.08)}
+    else if(name==='Digital'){[0,.1,.2,.3].forEach(s=>play(1000,'square',s,.08,.1))}
+    else if(name==='Echo'){[0,.2,.4,.6].forEach((s,i)=>play(660,'sine',s,.3,.2/Math.pow(2,i)))}
+    else if(name==='Classic'){play(392,'triangle',0,.2);play(494,'triangle',.22,.2);play(587,'triangle',.44,.4)}
+    else if(name==='Gentle'){play(392,'sine',0,.6,.1);play(330,'sine',.1,.5,.08);play(262,'sine',.2,.8,.06)}
+    else if(name==='Pulse'){[0,.25,.5,.75].forEach(s=>{play(440,'sine',s,.2,.15);play(554,'sine',s+.05,.15,.08)})}
+  }catch(e){console.log(e)}
+}
+
+function playCallRingtone(){
+  stopPreviewSound()
+  function ring(){
+    try{
+      const a=new(window.AudioContext||window.webkitAudioContext)()
+      window._previewAudio=a
+      const t=a.currentTime
+      // Phone ring pattern - two bursts
+      for(let i=0;i<30;i++){
+        const s=i*0.5
+        if(s>29)break
+        const o=a.createOscillator(),g=a.createGain()
+        o.type='sine';o.frequency.value=i%2===0?480:440
+        o.connect(g);g.connect(a.destination)
+        g.gain.setValueAtTime(0,t+s)
+        g.gain.linearRampToValueAtTime(0.3,t+s+0.05)
+        g.gain.setValueAtTime(0.3,t+s+0.4)
+        g.gain.linearRampToValueAtTime(0,t+s+0.45)
+        o.start(t+s);o.stop(t+s+0.5)
+      }
+      // After 30s stop 1s then repeat
+      window._callRingInterval=setTimeout(()=>{
+        try{a.close()}catch(e){}
+        window._callRingTimeout=setTimeout(ring,1000)
+      },30000)
+    }catch(e){}
+  }
+  ring()
 }
 
 function confirmSound(){
@@ -719,7 +779,14 @@ function confirmSound(){
   toast(document.getElementById('sound-picker-title').textContent+' set to '+selectedSound)
 }
 
-function hideSoundPicker(){document.getElementById('sound-picker').style.display='none'}
+function stopPreviewSound(){
+  try{if(window._previewAudio){window._previewAudio.close();window._previewAudio=null}}catch(e){}
+  if(window._callRingInterval){clearInterval(window._callRingInterval);window._callRingInterval=null}
+}
+function hideSoundPicker(){
+  stopPreviewSound()
+  document.getElementById('sound-picker').style.display='none'
+}
 function hideHelp(){document.getElementById('help-panel').style.display='none'}
 document.getElementById('event-panel').addEventListener('click',function(e){if(e.target===this)hideEvent()})
 
