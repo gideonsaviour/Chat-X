@@ -425,7 +425,7 @@ function renderList(){
 function openChat(id){
   active=contacts.find(c=>c.id===id)||{id:'ai',name:'Chat-X AI Assistant',av:'AI',status:'ai',type:'ai'}
   msgs=seedMsgs(active)
-  if(active.type==='ai') aiHistory=[]
+  if(active.type==='ai'){aiHistory=[]}
   if(isMobile()) document.getElementById('sidebar').classList.add('hidden')
   document.getElementById('empty-state').style.display='none'
   const area=document.getElementById('chat-area')
@@ -502,7 +502,7 @@ function renderMessages(){
 
 let aiTyping=false
 let aiHistory=[]
-const BACKEND='https://chat-x-backend.onrender.com'
+const GROQ_KEY='REMOVED'
 
 async function sendMessage(){
   const inp=document.getElementById('msg-input')
@@ -515,30 +515,36 @@ async function sendMessage(){
 
   if(active.type==='ai'){
     aiTyping=true
-    // Show typing indicator
     msgs.push({from:'ai',text:'<span style="display:inline-flex;gap:4px;align-items:center"><span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span></span>',time:'',st:'',isTyping:true})
     renderMessages()
     try{
-      // Add to history for context
       aiHistory.push({role:'user',content:text})
+      // Build Gemini conversation history
+      aiHistory.push({role:'user',parts:[{text}]})
+      const geminiMsgs = aiHistory.slice(-10).map(m=>({role:m.role,parts:m.parts||[{text:m.content||''}]}))
 
-      const res=await fetch(`${BACKEND}/chat`,{
+      const res=await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key='+GEMINI_KEY,{
         method:'POST',
         headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({message:text, history:aiHistory.slice(-10)})
+        body:JSON.stringify({
+          system_instruction:{parts:[{text:'You are Chat-X AI Assistant — a smart, helpful assistant built into the Chat-X messaging app. Give accurate, concise, friendly answers. Keep responses conversational and to the point.'}]},
+          contents:geminiMsgs,
+          tools:[{google_search:{}}]
+        })
       })
       const data=await res.json()
       msgs.pop()
-
       if(data.error){
-        msgs.push({from:'ai',text:'Sorry, something went wrong. Please try again.',time:new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}),st:'read'})
+        msgs.push({from:'ai',text:'Sorry — '+data.error.message,time:new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}),st:'read'})
       } else {
-        aiHistory.push({role:'assistant',content:data.reply})
-        msgs.push({from:'ai',text:(data.searched?'🔍 <em style="font-size:11px;color:#7c3aed">Searched the web</em><br><br>':'')+data.reply.replace(/\n/g,'<br>'),time:new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}),st:'read'})
+        const reply=data.candidates?.[0]?.content?.parts?.[0]?.text||"Sorry, I couldn't process that."
+        const searched=data.candidates?.[0]?.groundingMetadata?.webSearchQueries?.length>0
+        aiHistory.push({role:'model',parts:[{text:reply}]})
+        msgs.push({from:'ai',text:(searched?'🔍 <em style="font-size:11px;color:#7c3aed">Searched the web</em><br><br>':'')+reply.replace(/\n/g,'<br>'),time:new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}),st:'read'})
       }
     }catch(e){
       msgs.pop()
-      msgs.push({from:'ai',text:"I'm having trouble connecting right now. Please try again in a moment.",time:new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}),st:'read'})
+      msgs.push({from:'ai',text:"Connection error. Please check your internet and try again.",time:new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}),st:'read'})
     }
     aiTyping=false
     renderMessages()
