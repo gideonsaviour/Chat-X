@@ -106,6 +106,11 @@ body{font-family:'Inter',sans-serif;background:var(--bg1);color:var(--text);heig
 .typing-dot:nth-child(3){animation-delay:.4s}
 @keyframes typingBounce{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-6px)}}
 @keyframes rotateSlow{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+@keyframes cxFadeIn{0%{opacity:0;transform:scale(.3)}100%{opacity:1;transform:scale(1)}}
+@keyframes cxFadeOut{0%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(.3)}}
+@keyframes bubbleFadeIn{0%{opacity:0;transform:scale(.3) rotate(-10deg)}100%{opacity:1;transform:scale(1) rotate(0deg)}}
+#ai-btn-bubble{transition:all .3s}
+#ai-btn-cx{display:none;font-size:11px;font-weight:900;color:#fff;letter-spacing:-1px;line-height:1}
 .settings-spin{animation:rotateSlow 4s linear infinite}
 .settings-spin:hover{animation:rotateSlow 1s linear infinite}
 .ai-spinner{width:100%;height:100%;position:relative;display:flex;align-items:center;justify-content:center}
@@ -1141,6 +1146,43 @@ function hideRingtonePicker(){
   stopRingtone()
   document.getElementById('ringtone-picker').style.display='none'
 }
+
+// AI button CX morphing animation
+(function(){
+  let showingCX = false
+  function morphToCX(){
+    const bubble = document.getElementById('ai-btn-bubble')
+    const cx = document.getElementById('ai-btn-cx')
+    if(!bubble||!cx)return
+    showingCX = true
+    // Fade out bubble
+    bubble.style.animation='cxFadeOut .4s ease forwards'
+    setTimeout(()=>{
+      bubble.style.display='none'
+      cx.style.display='flex'
+      cx.style.animation='cxFadeIn .4s ease forwards'
+      // After 3s merge back
+      setTimeout(morphToBubble, 3000)
+    },400)
+  }
+  function morphToBubble(){
+    const bubble = document.getElementById('ai-btn-bubble')
+    const cx = document.getElementById('ai-btn-cx')
+    if(!bubble||!cx)return
+    showingCX = false
+    cx.style.animation='cxFadeOut .4s ease forwards'
+    setTimeout(()=>{
+      cx.style.display='none'
+      bubble.style.display='flex'
+      bubble.style.animation='bubbleFadeIn .4s ease forwards'
+    },400)
+  }
+  // Start loop: every 20 seconds show CX
+  setTimeout(()=>{
+    morphToCX()
+    setInterval(morphToCX, 20000)
+  },20000)
+})()
 
 function stopPreviewSound(){
   try{if(window._previewAudio){window._previewAudio.close();window._previewAudio=null}}catch(e){}
