@@ -106,6 +106,14 @@ body{font-family:'Inter',sans-serif;background:var(--bg1);color:var(--text);heig
 .typing-dot:nth-child(3){animation-delay:.4s}
 @keyframes typingBounce{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-6px)}}
 @keyframes rotateSlow{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+
+/* AI button C X animation */
+@keyframes cSlideIn{0%{opacity:0;transform:translateX(-8px)}100%{opacity:1;transform:translateX(-5px)}}
+@keyframes xSlideIn{0%{opacity:0;transform:translateX(8px)}100%{opacity:1;transform:translateX(5px)}}
+@keyframes cMerge{0%{opacity:1;transform:translateX(-5px)}100%{opacity:0;transform:translateX(0) scale(1.5);filter:blur(3px)}}
+@keyframes xMerge{0%{opacity:1;transform:translateX(5px)}100%{opacity:0;transform:translateX(0) scale(1.5);filter:blur(3px)}}
+@keyframes bubbleOut{0%{opacity:0;transform:scale(0)}100%{opacity:1;transform:scale(1)}}
+@keyframes bubbleHide{0%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(0)}}
 @keyframes cxFadeIn{0%{opacity:0;transform:scale(.3)}100%{opacity:1;transform:scale(1)}}
 @keyframes cxFadeOut{0%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(.3)}}
 @keyframes bubbleFadeIn{0%{opacity:0;transform:scale(.3) rotate(-10deg)}100%{opacity:1;transform:scale(1) rotate(0deg)}}
@@ -152,7 +160,13 @@ input::placeholder,textarea::placeholder{color:#444}
       <div style="display:flex;gap:2px">
         
         <button class="icon-btn" onclick="showSettings()"><svg class="settings-spin" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>
-        <button class="icon-btn" onclick="openChat('ai')" style="background:linear-gradient(135deg,#00897B,#00695C);color:#fff;border-radius:8px"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></button>
+        <button id="ai-btn" class="icon-btn" onclick="openChat('ai')" style="background:linear-gradient(135deg,#00897B,#00695C);color:#fff;border-radius:8px;position:relative;overflow:hidden;width:34px;height:34px;padding:0">
+  <span id="ai-letter-c" style="position:absolute;font-size:13px;font-weight:900;color:#fff;display:none;left:4px;top:50%;transform:translateY(-50%)">C</span>
+  <span id="ai-letter-x" style="position:absolute;font-size:13px;font-weight:900;color:#fff;display:none;right:4px;top:50%;transform:translateY(-50%)">X</span>
+  <span id="ai-bubble" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center">
+    <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+  </span>
+</button>
       </div>
     </div>
     <div style="position:relative">
@@ -1194,6 +1208,47 @@ function hideSoundPicker(){
 }
 function hideHelp(){document.getElementById('help-panel').style.display='none'}
 document.getElementById('event-panel').addEventListener('click',function(e){if(e.target===this)hideEvent()})
+
+// AI button C X animation cycle every 20 seconds
+function runAiBtnAnimation(){
+  const c=document.getElementById('ai-letter-c')
+  const x=document.getElementById('ai-letter-x')
+  const bubble=document.getElementById('ai-bubble')
+  if(!c||!x||!bubble)return
+
+  // Phase 1: Hide bubble, show C and X sliding in
+  bubble.style.animation='bubbleHide 0.3s ease forwards'
+  setTimeout(()=>{
+    bubble.style.display='none'
+    bubble.style.animation=''
+    c.style.display='block'
+    x.style.display='block'
+    c.style.animation='cSlideIn 0.3s ease forwards'
+    x.style.animation='xSlideIn 0.3s ease forwards'
+  },300)
+
+  // Phase 2: Hold C and X for 2 seconds, then merge
+  setTimeout(()=>{
+    c.style.animation='cMerge 0.4s ease forwards'
+    x.style.animation='xMerge 0.4s ease forwards'
+  },2500)
+
+  // Phase 3: Show bubble again
+  setTimeout(()=>{
+    c.style.display='none'
+    x.style.display='none'
+    c.style.animation=''
+    x.style.animation=''
+    bubble.style.display='flex'
+    bubble.style.animation='bubbleOut 0.4s cubic-bezier(.34,1.56,.64,1) forwards'
+  },3000)
+}
+
+// Start cycle: run every 20 seconds
+setTimeout(()=>{
+  runAiBtnAnimation()
+  setInterval(runAiBtnAnimation, 20000)
+}, 5000) // start 5s after app loads
 
 // Splash to app transition
 setTimeout(function(){
