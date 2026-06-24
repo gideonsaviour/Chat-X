@@ -128,13 +128,13 @@ body{font-family:'Inter',sans-serif;background:var(--bg1);color:var(--text);heig
 #bottom-nav{position:fixed;bottom:0;left:0;right:0;background:var(--bg2);border-top:1px solid var(--border);display:none;align-items:center;justify-content:space-around;padding:8px 0 20px;z-index:200;box-shadow:0 -4px 20px rgba(0,0,0,0.3)}
 #app.show #bottom-nav{display:flex}
 #sidebar{padding-bottom:80px}
-.nav-btn{display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;padding:4px 6px;border:none;background:transparent;color:#888;font-family:'Inter',sans-serif;font-size:11px;font-weight:500;transition:all .2s;position:relative;min-width:62px}
-.nav-btn svg{stroke:#888;transition:all .2s}
-.nav-btn.active{color:#fff}
-.nav-btn.active svg{stroke:#fff}
-.nav-icon-wrap{display:flex;align-items:center;justify-content:center;padding:5px 20px;border-radius:999px;transition:all .25s;position:relative}
-.nav-btn.active .nav-icon-wrap{background:rgba(255,255,255,0.18)}
-.nav-badge{position:absolute;top:2px;right:8px;background:#10b981;color:#fff;font-size:10px;font-weight:700;border-radius:10px;padding:1px 5px;min-width:18px;text-align:center;border:2px solid var(--bg2)}
+.nav-btn{display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;padding:4px 6px;border:none;background:transparent;color:#666;font-family:'Inter',sans-serif;font-size:11px;font-weight:500;transition:all .2s;position:relative;min-width:64px}
+.nav-btn svg{stroke:#666;transition:all .2s}
+.nav-btn.active{color:#fff;font-weight:700}
+.nav-btn.active svg{stroke:#fff;stroke-width:2.5}
+.nav-icon-wrap{display:flex;align-items:center;justify-content:center;padding:6px 22px;border-radius:999px;transition:all .25s;position:relative;min-width:56px}
+.nav-btn.active .nav-icon-wrap{background:#3a3a3a}
+.nav-badge{position:absolute;top:-2px;right:-2px;background:#00897B;color:#fff;font-size:10px;font-weight:700;border-radius:10px;padding:1px 5px;min-width:18px;text-align:center;border:2px solid #000}
 
 /* Adjust for bottom nav */
 #app.show{padding-bottom:0}
