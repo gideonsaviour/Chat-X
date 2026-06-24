@@ -1376,7 +1376,9 @@ setTimeout(function(){
   setTimeout(function(){
     document.getElementById('splash').style.display='none'
     document.getElementById('app').classList.add('show')
+    document.getElementById('bottom-nav').classList.add('visible')
     renderList()
+    updateNavBadge()
   },600)
 },4000)
 </script>
