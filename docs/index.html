@@ -945,6 +945,36 @@ body.light-theme #messages{background:transparent}
 #splash-status{position:absolute;left:0;right:0;top:92.55%;text-align:center;
   font-size:clamp(11px,1.42vh,15px);font-weight:500;color:#5B6B85;letter-spacing:.005em}
 @media(prefers-reduced-motion:reduce){#splash-fill{transition:none}}
+/* ===== Chat-X C→X signature animation ===== */
+.cx-anim{position:relative;overflow:hidden}
+.cx-anim .cx-c,.cx-anim .cx-x{position:absolute;font-size:26px;font-weight:900;color:#fff;line-height:1}
+.cx-anim .cx-b{position:absolute;display:flex;align-items:center;justify-content:center;opacity:0}
+.cx-anim .cx-c{animation:cxC 6s cubic-bezier(.4,0,.2,1) infinite}
+.cx-anim .cx-x{animation:cxX 6s cubic-bezier(.4,0,.2,1) infinite}
+.cx-anim .cx-b{animation:cxB 6s cubic-bezier(.4,0,.2,1) infinite}
+@keyframes cxC{
+  0%{opacity:0;transform:translateX(-26px)}
+  8%{opacity:1;transform:translateX(-11px)}
+  30%{opacity:1;transform:translateX(-11px)}
+  38%{opacity:1;transform:translateX(0) scale(1.1)}
+  44%{opacity:0;transform:translateX(0) scale(1.9);filter:blur(4px)}
+  100%{opacity:0}}
+@keyframes cxX{
+  0%{opacity:0;transform:translateX(26px)}
+  8%{opacity:1;transform:translateX(11px)}
+  30%{opacity:1;transform:translateX(11px)}
+  38%{opacity:1;transform:translateX(0) scale(1.1)}
+  44%{opacity:0;transform:translateX(0) scale(1.9);filter:blur(4px)}
+  100%{opacity:0}}
+@keyframes cxB{
+  0%,42%{opacity:0;transform:scale(.25)}
+  50%{opacity:1;transform:scale(1.14)}
+  56%{transform:scale(.97)}
+  62%,92%{opacity:1;transform:scale(1)}
+  100%{opacity:0;transform:scale(.9)}}
+@media(prefers-reduced-motion:reduce){
+  .cx-anim .cx-c,.cx-anim .cx-x{display:none}
+  .cx-anim .cx-b{animation:none;opacity:1}}
 </style>
 </head>
 <body>
@@ -954,8 +984,10 @@ body.light-theme #messages{background:transparent}
 
     <!-- WELCOME -->
     <div id="au-welcome">
-      <div class="auth-logo">
-        <svg width="30" height="30" fill="none" stroke="#fff" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      <div class="auth-logo cx-anim">
+        <span class="cx-c">C</span>
+        <span class="cx-x">X</span>
+        <span class="cx-b"><svg width="30" height="30" fill="none" stroke="#fff" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span>
       </div>
       <div class="auth-h1">Welcome to Chat-X</div>
       <div class="auth-sub">Private messaging, end to end encrypted.</div>
@@ -2439,11 +2471,13 @@ function runAiBtnAnimation(){
   },3000)
 }
 
-// Start cycle: run every 20 seconds
-setTimeout(()=>{
-  runAiBtnAnimation()
-  setInterval(runAiBtnAnimation, 20000)
-}, 5000) // start 5s after app loads
+// Cycle starts once the app is actually on screen (not behind the splash)
+let _aiCycle=null
+function startAiCycle(){
+  if(_aiCycle) return
+  setTimeout(runAiBtnAnimation, 900)
+  _aiCycle=setInterval(runAiBtnAnimation, 20000)
+}
 
 
 ;
@@ -2722,6 +2756,7 @@ function enterApp(){
   applyUserToUI()
   loadMuted(); loadSocial(); loadP3(); loadNotifs(); loadBlocked(); loadSaved(); loadChatMeta(); loadPrefs()
   navStack=[{v:'chats'}]; renderView(); updateNavBadge()
+  startAiCycle()
   try{ history.replaceState({d:1},'') }catch(e){}
 }
 
