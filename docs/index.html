@@ -41,17 +41,19 @@
   --msg-bg:var(--surface); --accent-rgb:59,130,246;
 }
 body.light-theme{
-  --bg:#F6F7FA; --card:#FFFFFF; --surface:#EDF0F5; --surface-2:#E1E6EF;
-  --text-1:#111827; --text-2:#6B7280; --text-3:#9CA3AF;
-  --border:#E4E8EF; --border-strong:#CFD6E2;
+  --bg:#F8FAFC; --card:#FFFFFF; --surface:#F1F5F9; --surface-2:#E8EDF5;
+  --text-1:#111827; --text-2:#64748B; --text-3:#94A3B8;
+  --border:#E2E8F0; --border-strong:#CBD5E1;
   --primary:#2563EB; --primary-deep:#1D4ED8; --primary-soft:#60A5FA;
   --accent:#10B981; --accent-deep:#059669;
-  --danger:#DC2626; --warning:#D97706; --success:#10B981;
-  --hover:rgba(15,23,42,.055);
-  --shadow-sm:0 1px 2px rgba(15,23,42,.06);
-  --shadow:0 4px 16px rgba(15,23,42,.09);
-  --shadow-lg:0 12px 34px rgba(15,23,42,.13);
-  --accent-rgb:37,99,235;
+  --tint-blue:#DBEAFE; --tint-lavender:#E9D5FF; --tint-purple:#DDD6FE; --tint-cyan:#CFFAFE;
+  --glass:rgba(255,255,255,.72); --glass-line:rgba(226,232,240,.9);
+  --grad:linear-gradient(135deg,#2563EB 0%,#4F46E5 55%,#7C3AED 100%);
+  --grad-ring:linear-gradient(135deg,#2563EB,#7C3AED 45%,#06B6D4);
+  --shadow-sm:0 1px 3px rgba(17,24,39,.06);
+  --shadow:0 4px 18px rgba(17,24,39,.08);
+  --shadow-lg:0 14px 40px rgba(17,24,39,.12);
+  --hover:rgba(37,99,235,.06);
 }
 *,*::before,*::after{transition:background-color .22s var(--ease),border-color .22s var(--ease),color .22s var(--ease)}
 *{box-sizing:border-box;margin:0;padding:0}
@@ -703,31 +705,121 @@ body.in-chat #bottom-nav{display:none}
 #nav-create{justify-content:center !important}
 #pill-chats,#pill-notifs,#pill-profile,#pill-home{position:relative}
 #bottom-nav .nav-avatar{width:26px;height:26px;font-size:10px}
-/* light theme: white surfaces, clearly defined edges */
-body.light-theme #main,body.light-theme #sidebar,
-body.light-theme #feed,body.light-theme #profile,body.light-theme #notifs,
-body.light-theme #hub,body.light-theme #groups,body.light-theme #pages,
-body.light-theme #events,body.light-theme #market{background:#FFFFFF}
-body.light-theme #messages{background-color:#FFFFFF}
+/* ================= PREMIUM LIGHT MODE ================= */
+body.light-theme{
+  background:
+    radial-gradient(1100px 620px at 12% -8%, #DBEAFE 0%, rgba(219,234,254,0) 62%),
+    radial-gradient(900px 560px at 92% 4%, #E9D5FF 0%, rgba(233,213,255,0) 58%),
+    radial-gradient(760px 520px at 50% 108%, #CFFAFE 0%, rgba(207,250,254,0) 60%),
+    #F8FAFC;
+  background-attachment:fixed;
+}
+/* let the ambient wash show through the scaffolding */
+body.light-theme #main,
+body.light-theme #sidebar,
+body.light-theme #feed,  body.light-theme #profile, body.light-theme #notifs,
+body.light-theme #hub,   body.light-theme #groups,  body.light-theme #pages,
+body.light-theme #events,body.light-theme #market{background:transparent}
 body.light-theme #sidebar{border-right:1px solid var(--border)}
-body.light-theme .card,body.light-theme .listing,body.light-theme #sheet>div,
-body.light-theme #modal-box{background:#FFFFFF;border:1px solid var(--border)}
-body.light-theme .chat-item{border-bottom:1px solid var(--border)}
-body.light-theme .msg-theirs{background:#FFFFFF !important;border:1px solid var(--border-strong) !important;color:#0B1220 !important}
-body.light-theme .msg-ai{background:#FFFFFF !important;border:1px solid var(--primary) !important;color:#0B1220 !important}
-body.light-theme .auth-input,body.light-theme #msg-input{background:#FFFFFF;border:1px solid var(--border-strong);color:#0B1220}
-body.light-theme .filt{border:1px solid var(--border-strong);color:#48546B}
-body.light-theme .auth-ghost,body.light-theme .pill-btn.ghost{background:#FFFFFF;border:1px solid var(--border-strong);color:#0B1220}
-body.light-theme .prof-stats-row{background:#FFFFFF;border:1px solid var(--border)}
-body.light-theme .prof-stats-row>div+div{border-left:1px solid var(--border)}
-body.light-theme .post{border-bottom:1px solid var(--border)}
-body.light-theme #composer{background:#FFFFFF !important;border-top:1px solid var(--border) !important}
-body.light-theme #bottom-nav{background:rgba(255,255,255,.94);border-top:1px solid var(--border)}
-body.light-theme .toggle-slider{background:#B4BFCF}
-body.light-theme .react{background:#FFFFFF;border:1px solid var(--border-strong)}
-body.light-theme .sugg{background:#FFFFFF;border:1px solid var(--border)}
+body.light-theme #messages{background:transparent}
+
+/* cards: white, large radius, soft shadow, hairline border */
+body.light-theme .card,
+body.light-theme .listing,
+body.light-theme .sugg,
+body.light-theme .prof-stats-row,
+body.light-theme #sheet>div,
+body.light-theme #modal-box{
+  background:#FFFFFF;
+  border:1px solid var(--border);
+  border-radius:20px;
+  box-shadow:var(--shadow);
+}
+body.light-theme .post{
+  background:#FFFFFF;
+  border:1px solid var(--border);
+  border-radius:20px;
+  box-shadow:var(--shadow);
+  margin:14px 16px;
+  padding:16px 0;
+}
+body.light-theme .post-acts{border-top:1px solid var(--border)}
+
+/* chat rows: structured, dividers, tinted when unread or active */
+body.light-theme #chat-list{background:#FFFFFF;border-radius:20px;margin:0 12px 12px;
+  border:1px solid var(--border);box-shadow:var(--shadow);overflow:hidden}
+body.light-theme .chat-item{border-bottom:1px solid var(--border);border-radius:0;margin:0}
+body.light-theme .chat-item:last-child{border-bottom:none}
+body.light-theme .chat-item:hover{background:linear-gradient(90deg,var(--tint-blue),rgba(219,234,254,0))}
+body.light-theme .chat-item.active{background:linear-gradient(90deg,#DBEAFE,#EDE9FE)}
+body.light-theme .chat-item.pinned{background:linear-gradient(90deg,rgba(233,213,255,.55),rgba(233,213,255,0))}
+
+/* headers + primary actions carry the gradient */
+body.light-theme .scr-head{background:var(--grad) !important}
+body.light-theme .auth-btn,
+body.light-theme .pill-btn:not(.ghost),
+body.light-theme .fab,
+body.light-theme #create-fab{background:var(--grad) !important;color:#fff !important}
+body.light-theme .filt.on{background:var(--grad);border-color:transparent;color:#fff}
+
+/* story rings: full circle, tri-tone gradient */
+body.light-theme .story-ring{background:var(--grad-ring) !important}
+body.light-theme .story-ring.seen{background:var(--border-strong) !important}
 body.light-theme .story-inner{background:#FFFFFF !important}
+
+/* messages */
+body.light-theme .msg-theirs{
+  background:#FFFFFF !important;border:1px solid var(--border) !important;
+  color:#111827 !important;box-shadow:var(--shadow-sm)}
+body.light-theme .msg-ai{
+  background:linear-gradient(135deg,#F5F3FF,#EFF6FF) !important;
+  border:1px solid var(--tint-purple) !important;color:#111827 !important}
+body.light-theme .msg-mine{background:var(--grad) !important;color:#fff !important}
+
+/* inputs + secondary buttons */
+body.light-theme .auth-input,
+body.light-theme #msg-input{background:#FFFFFF;border:1px solid var(--border-strong);color:#111827}
+body.light-theme #composer{background:rgba(255,255,255,.9) !important;
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border-top:1px solid var(--border) !important}
+body.light-theme .auth-ghost,
+body.light-theme .pill-btn.ghost,
+body.light-theme .filt{background:#FFFFFF;border:1px solid var(--border-strong);color:#111827}
+body.light-theme .react{background:#FFFFFF;border:1px solid var(--border-strong)}
+body.light-theme .toggle-slider{background:#CBD5E1}
+
+/* stats: high contrast, never faint */
+body.light-theme .prof-stat b{color:#111827 !important;font-size:20px;font-weight:700}
+body.light-theme .prof-stat span{color:#475569 !important;font-weight:600;font-size:12px}
+body.light-theme .prof-stats-row>div+div{border-left:1px solid var(--border)}
+body.light-theme .post-act{color:#475569}
+body.light-theme .story-name{color:#475569}
 body.light-theme .nrow{border-bottom:1px solid var(--border)}
+body.light-theme .nrow.unread{background:linear-gradient(90deg,var(--tint-blue),rgba(219,234,254,.25))}
+body.light-theme .hub-tile{border-bottom:1px solid var(--border)}
+body.light-theme .hub-ico{background:linear-gradient(135deg,var(--tint-blue),var(--tint-purple))}
+body.light-theme .chip{background:linear-gradient(135deg,var(--tint-blue),var(--tint-cyan));color:#1D4ED8}
+body.light-theme .unread{background:var(--grad);color:#fff}
+
+/* floating glass nav */
+body.light-theme #bottom-nav{
+  background:rgba(255,255,255,.72) !important;
+  backdrop-filter:blur(26px) saturate(180%);-webkit-backdrop-filter:blur(26px) saturate(180%);
+  border-top:1px solid rgba(226,232,240,.9) !important;
+  box-shadow:0 -6px 26px rgba(17,24,39,.07)}
+body.light-theme #bottom-nav [id^="pill-"].on,
+body.light-theme #bottom-nav [id^="pill-"]{transition:background .22s var(--ease)}
+
+/* prominent create button */
+#create-fab{width:54px !important;height:54px !important;border-radius:18px !important;
+  box-shadow:0 8px 22px rgba(37,99,235,.42)}
+#nav-create{margin-top:-14px}
+#bottom-nav{align-items:center}
+/* green: bright fill keeps dark text; green ON white uses the deeper tone */
+body.light-theme .accent-text,
+body.light-theme [data-accent-text]{color:#047857 !important}
+body.light-theme .sdot[data-online]{box-shadow:0 0 0 2px #FFFFFF}
+body.light-theme #badge-chats{background:#059669;color:#FFFFFF}
 </style>
 </head>
 <body>
@@ -1422,7 +1514,7 @@ function mkAv(i,s,status,border='var(--card)'){
     return`<div style="position:relative;width:${s}px;height:${s}px;flex-shrink:0"><div style="width:${s}px;height:${s}px;border-radius:50%;background:var(--surface);display:flex;align-items:center;justify-content:center;border:1px solid rgba(59,130,246,.28)"><div class="ai-spinner">${dots}</div></div></div>`
   }
   const f=Math.round(s*.34),d=Math.round(s*.28)
-  const dot=status&&status!=='group'&&status!=='community'?`<div class="sdot" style="width:${d}px;height:${d}px;background:${sc(status)};bottom:1px;right:1px;border:2px solid ${border}"></div>`:''
+  const dot=status&&status!=='group'&&status!=='community'?`<div class="sdot" data-online style="width:${d}px;height:${d}px;background:${sc(status)};box-shadow:0 0 0 1.5px var(--card);bottom:1px;right:1px;border:2px solid ${border}"></div>`:''
   return`<div style="position:relative;width:${s}px;height:${s}px;flex-shrink:0"><div class="avatar" style="width:${s}px;height:${s}px;font-size:${f}px">${i}</div>${dot}</div>`
 }
 
