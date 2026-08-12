@@ -2,21 +2,18 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>Chat-X</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
-
-<!-- PWA -->
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover,user-scalable=no"/>
 <link rel="manifest" href="manifest.json"/>
 <meta name="theme-color" content="#000000"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
 <meta name="apple-mobile-web-app-title" content="Chat-X"/>
+<meta name="mobile-web-app-capable" content="yes"/>
 <link rel="apple-touch-icon" href="icon-192.png"/>
 <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png"/>
 <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png"/>
-<meta name="mobile-web-app-capable" content="yes"/>
-<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover,user-scalable=no"/>
+<title>Chat-X</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
 <style>
 :root{
   --bg1:#000;--bg2:#111;--bg3:#1a1a1a;--border:#222;
@@ -220,14 +217,9 @@ html,body{
   position:relative;
 }
 
-/* PWA safe areas for notch */
 @supports(padding:max(0px)){
-  #bottom-nav{padding-bottom:max(24px, env(safe-area-inset-bottom)) !important}
-  #sidebar > div:first-child{padding-top:max(16px, env(safe-area-inset-top))}
-  #chat-header{padding-top:max(12px, env(safe-area-inset-top))}
+  #bottom-nav{padding-bottom:max(24px,env(safe-area-inset-bottom)) !important}
 }
-/* Prevent overscroll bounce in PWA */
-body{overscroll-behavior:none;-webkit-overflow-scrolling:touch}
 </style>
 </head>
 <body>
@@ -1467,18 +1459,11 @@ setTimeout(()=>{
   setInterval(runAiBtnAnimation, 20000)
 }, 5000) // start 5s after app loads
 
-// Register service worker for PWA
 if('serviceWorker' in navigator){
   window.addEventListener('load',()=>{
-    navigator.serviceWorker.register('sw.js')
-      .then(reg=>console.log('SW registered'))
-      .catch(err=>console.log('SW failed:',err))
+    navigator.serviceWorker.register('sw.js').catch(()=>{})
   })
 }
-
-// Detect if running as installed PWA
-const isPWA = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone
-if(isPWA) document.body.classList.add('pwa-mode')
 
 // Splash to app transition
 setTimeout(function(){
