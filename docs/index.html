@@ -488,6 +488,10 @@ h1,h2,.scr-title,.auth-h1{letter-spacing:-.02em}
     animation:slideIn .22s var(--ease) both}
   @keyframes slideIn{from{opacity:0;transform:translateX(14px)}to{opacity:1;transform:translateX(0)}}
 }
+/* profile avatar in the nav stays dark and legible in both themes */
+.nav-avatar{background:#1E293B !important;color:#F8FAFC !important;
+  box-shadow:0 0 0 2px var(--border);background-size:cover !important;background-position:center !important}
+#nav-profile[data-on="1"] .nav-avatar{box-shadow:0 0 0 2px var(--primary)}
 </style>
 </head>
 <body>
@@ -1132,7 +1136,7 @@ h1,h2,.scr-title,.auth-h1{letter-spacing:-.02em}
     <div id="pill-notifs" style="padding:6px 14px;border-radius:var(--r-full);position:relative"><svg width="24" height="24" fill="none" stroke="var(--text-2)" stroke-width="2" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg><span id="badge-notifs" style="position:absolute;top:-3px;right:-3px;background:var(--danger);color:#fff;font-size:9px;font-weight:700;border-radius:var(--r-full);padding:1px 5px;border:2px solid var(--card);display:none">0</span></div>
     <span id="lbl-notifs" style="font-size:10px;color:var(--text-2);font-weight:500">Alerts</span></button>
   <button onclick="switchNav('profile')" id="nav-profile" style="display:flex;flex-direction:column;align-items:center;gap:3px;background:none;border:none;cursor:pointer;font-family:Inter,sans-serif;flex:1;min-width:0">
-    <div id="pill-profile" style="padding:4px 10px;border-radius:var(--r-full)"><div data-user-initials style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--primary-deep));display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;background-size:cover;background-position:center">?</div></div>
+    <div id="pill-profile" style="padding:4px 10px;border-radius:var(--r-full)"><div class="nav-avatar" data-user-initials style="width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;background-size:cover;background-position:center">?</div></div>
     <span id="lbl-profile" style="font-size:10px;color:var(--text-2);font-weight:500">Profile</span></button>
 </div>
 
@@ -3584,6 +3588,8 @@ function paintNav(){
     if(p) p.style.background = on ? 'rgba(var(--accent-rgb),.14)' : 'transparent'
     if(sv) sv.setAttribute('stroke', on?'var(--primary)':'var(--text-2)')
     if(l){ l.style.color = on?'var(--primary)':'var(--text-2)'; l.style.fontWeight = on?'700':'500' }
+    const btn=document.getElementById('nav-'+k)
+    if(btn) btn.setAttribute('data-on', on?'1':'0')
   })
 }
 
