@@ -965,7 +965,19 @@ function updateNavBadge(){
   if(badge){badge.textContent=total;badge.style.display=total>0?'inline-block':'none'}
 }
 
+function setNavActive(section){
+  ['updates','calls','communities','chats','you'].forEach(s=>{
+    const pill=document.getElementById('pill-'+s)
+    const lbl=document.getElementById('lbl-'+s)
+    const svg=document.querySelector('#nav-'+s+' svg')
+    if(pill)pill.style.background=s===section?'rgba(120,120,120,0.4)':'transparent'
+    if(svg)svg.setAttribute('stroke',s===section?'#fff':'#777')
+    if(lbl){lbl.style.color=s===section?'#fff':'#777';lbl.style.fontWeight=s===section?'700':'500'}
+  })
+}
+
 function switchNav(section){
+  setNavActive(section)
   document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'))
   const activeBtn=document.getElementById('nav-'+section)
   if(activeBtn)activeBtn.classList.add('active')
