@@ -981,15 +981,17 @@ body.light-theme #messages{background:transparent}
 .hdr-mark .cx-c,.hdr-mark .cx-x{font-size:16px}
 
 /* + badges for profile and cover */
-.prof-av-wrap{position:relative;width:104px;margin:0 auto;z-index:2}
-.prof-av-wrap .prof-av{margin:-54px auto 0 !important}
+.prof-av-wrap{position:relative;width:104px;height:104px;margin:-54px auto 0;z-index:2}
+.prof-av-wrap .prof-av{margin:0 !important;width:104px !important;height:104px !important}
 .add-badge{position:absolute;border:none;cursor:pointer;border-radius:50%;
   background:var(--grad);display:flex;align-items:center;justify-content:center;
-  box-shadow:0 3px 10px rgba(37,99,235,.42);padding:0;transition:transform .16s var(--ease)}
-.add-badge:active{transform:scale(.9)}
-.avatar-add{width:32px;height:32px;right:0;bottom:0;border:3px solid var(--bg)}
-.cover-add{width:34px;height:34px;right:14px;bottom:14px;border:2px solid rgba(255,255,255,.55)}
-@media(min-width:641px){.cover-add{right:18px;bottom:18px}}
+  box-shadow:0 2px 6px rgba(17,24,39,.28);padding:0;
+  transition:transform .16s var(--ease),opacity .16s var(--ease)}
+.add-badge:active{transform:scale(.88)}
+/* tucked inside the avatar circle, lower-right */
+.avatar-add{width:24px;height:24px;right:13px;bottom:13px}
+.cover-add{width:26px;height:26px;right:12px;bottom:12px}
+@media(min-width:641px){.cover-add{right:16px;bottom:16px}}
 </style>
 </head>
 <body>
@@ -3337,12 +3339,12 @@ function paintProfile(uid){
   document.getElementById('prof-body').innerHTML=
     '<div class="prof-cover" style="'+cover+'">'
    +(isMe?'<button class="add-badge cover-add" onclick="pickCover()" aria-label="Add cover photo" title="Add cover photo">'
-     +'<svg width="16" height="16" fill="none" stroke="#fff" stroke-width="2.6" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>':'')
+     +'<svg width="13" height="13" fill="none" stroke="#fff" stroke-width="3" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>':'')
    +'</div>'
    +'<div class="prof-av-wrap">'
    +'<div class="prof-av" style="'+avStyle+'">'+(avStyle?'':av)+'</div>'
    +(isMe?'<button class="add-badge avatar-add" onclick="pickAvatarDirect()" aria-label="Add profile photo" title="Add profile photo">'
-     +'<svg width="15" height="15" fill="none" stroke="#fff" stroke-width="2.8" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>':'')
+     +'<svg width="12" height="12" fill="none" stroke="#fff" stroke-width="3.2" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>':'')
    +'<input type="file" id="pf-file" accept="image/*" style="display:none" onchange="onProfileAvatarFile(event)"/>'
    +'</div>'
    +'<div style="text-align:center;padding:12px 20px 0">'
