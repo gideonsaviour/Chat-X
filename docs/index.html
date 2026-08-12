@@ -983,10 +983,14 @@ body.light-theme #messages{background:transparent}
 /* + badges for profile and cover */
 .prof-av-wrap{position:relative;width:104px;height:104px;margin:-54px auto 0;z-index:2}
 .prof-av-wrap .prof-av{margin:0 !important;width:104px !important;height:104px !important}
-.add-badge{position:absolute;border:none;cursor:pointer;border-radius:50%;
+.add-badge{position:absolute;z-index:5;border:none;cursor:pointer;border-radius:50%;
   background:var(--grad);display:flex;align-items:center;justify-content:center;
-  box-shadow:0 2px 6px rgba(17,24,39,.28);padding:0;
+  box-shadow:0 2px 6px rgba(17,24,39,.32);padding:0;
   transition:transform .16s var(--ease),opacity .16s var(--ease)}
+/* the wrapper owns the stacking context; the avatar must not paint over the badge */
+.prof-av-wrap{isolation:isolate}
+.prof-av-wrap .prof-av{z-index:1 !important}
+.prof-av-wrap .avatar-add{z-index:5}
 .add-badge:active{transform:scale(.88)}
 /* tucked inside the avatar circle, lower-right */
 .avatar-add{width:24px;height:24px;right:13px;bottom:13px}
