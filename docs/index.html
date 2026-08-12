@@ -898,6 +898,35 @@ body.light-theme .chat-item,body.light-theme .nrow{opacity:1 !important}
 /* small markers must not be faded */
 body.light-theme .edited{color:#475569 !important}
 body.light-theme .vn span{color:inherit !important}
+/* ===== EXCLUSIVE SCREEN RENDERING — no bleed-through ===== */
+/* one surface at a time */
+body.view-screen #app{display:none !important}
+#feed,#profile,#notifs,#hub,#groups,#pages,#events,#market{
+  position:fixed; inset:0; z-index:40;
+  display:none; flex-direction:column;
+  overflow:hidden;
+  background:var(--bg);           /* opaque so nothing shows through */
+}
+#feed.show,#profile.show,#notifs.show,#hub.show,
+#groups.show,#pages.show,#events.show,#market.show{display:flex !important}
+
+/* light mode keeps the ambient wash, but each screen paints its own copy */
+body.light-theme #feed,   body.light-theme #profile, body.light-theme #notifs,
+body.light-theme #hub,    body.light-theme #groups,  body.light-theme #pages,
+body.light-theme #events, body.light-theme #market{
+  background:
+    radial-gradient(1100px 620px at 12% -8%, #DBEAFE 0%, rgba(219,234,254,0) 62%),
+    radial-gradient(900px 560px at 92% 4%, #E9D5FF 0%, rgba(233,213,255,0) 58%),
+    radial-gradient(760px 520px at 50% 108%, #CFFAFE 0%, rgba(207,250,254,0) 60%),
+    #F8FAFC;
+}
+body.light-theme #main,body.light-theme #sidebar{background:transparent}
+body.light-theme #messages{background:transparent}
+
+/* screens scroll internally, clear of the nav */
+#feed .scr-body,#profile .scr-body,#notifs .scr-body,#hub .scr-body,
+#groups .scr-body,#pages .scr-body,#events .scr-body,#market .scr-body{
+  flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;padding-bottom:104px}
 </style>
 </head>
 <body>
@@ -3968,13 +3997,15 @@ let navStack=[{v:'chats'}]
 
 function hideAllScreens(){
   Object.values(SCREENS).forEach(id=>{
-    const el=document.getElementById(id); if(el) el.classList.remove('show')
+    const el=document.getElementById(id)
+    if(el){ el.classList.remove('show'); el.style.display='none' }
   })
 }
 
 function navTo(v,p,fromTab){
   const top=navStack[navStack.length-1]
-  if(top && top.v===v && JSON.stringify(top.p||null)===JSON.stringify(p||null)) return
+  const same = top && top.v===v && JSON.stringify(top.p||null)===JSON.stringify(p||null)
+  if(same){ if(fromTab){ navStack=[{v,p}]; renderView() } return }
   if(fromTab) navStack=[{v,p}]                // only a tab press resets the stack
   else navStack.push({v,p})
   renderView()
@@ -3988,11 +4019,20 @@ function navBack(){
 
 function renderView(){
   const s=navStack[navStack.length-1]
+  const isChatArea = (s.v==='chat' || s.v==='chats')
+
+  // exactly one surface visible: either #app (chats) or one overlay screen
   hideAllScreens()
   document.body.classList.toggle('in-chat', s.v==='chat')
+  document.body.classList.toggle('view-screen', !isChatArea)
+
+  const app=document.getElementById('app')
+  if(app){
+    if(isChatArea){ app.classList.add('show'); app.style.display='flex' }
+    else { app.classList.remove('show'); app.style.display='none' }
+  }
 
   if(s.v==='chat'){
-    // chat list stays mounted underneath so returning is instant
     document.getElementById('sidebar').classList.add('hidden')
     document.getElementById('empty-state').style.display='none'
     document.getElementById('chat-area').style.display='flex'
@@ -4005,7 +4045,7 @@ function renderView(){
   } else {
     const id=SCREENS[s.v]
     const el=id&&document.getElementById(id)
-    if(el) el.classList.add('show')
+    if(el){ el.classList.add('show'); el.style.display='flex' }
     if(s.v==='home'){ renderStories(); renderSuggested(); renderPosts() }
     if(s.v==='notifs') renderNotifs()
     if(s.v==='profile') paintProfile(s.p||meId())
