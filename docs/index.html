@@ -518,6 +518,11 @@ html,body{
         </div>
       </div>
 
+      <div id="chats-save-bar" style="position:sticky;bottom:0;display:flex;gap:10px;padding:14px 20px;background:var(--bg2);border-top:1px solid var(--border)">
+        <button onclick="hideChatsSettings()" style="flex:1;background:var(--bg3);border:1px solid var(--border);color:var(--text);padding:12px;border-radius:12px;cursor:pointer;font-family:Inter,sans-serif;font-size:14px;font-weight:600">Cancel</button>
+        <button id="chats-save-btn" onclick="saveChatsSettings()" disabled style="flex:2;background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;color:#fff;padding:12px;border-radius:12px;font-family:Inter,sans-serif;font-size:14px;font-weight:600;opacity:.45;cursor:default">Save changes</button>
+      </div>
+
     </div>
   </div>
 </div>
@@ -1062,8 +1067,52 @@ function showSettings(){document.getElementById('settings-panel').style.display=
 function hideSettings(){document.getElementById('settings-panel').style.display='none'}
 function showNotifications(){document.getElementById('notifications-panel').style.display='flex'}
 function hideNotifications(){document.getElementById('notifications-panel').style.display='none'}
-function showChatsSettings(){document.getElementById('chats-settings-panel').style.display='flex'}
-function hideChatsSettings(){document.getElementById('chats-settings-panel').style.display='none'}
+let prefsSnapshot=null
+
+function showChatsSettings(){
+  prefsSnapshot={theme:currentTheme,wallpaper:currentWallpaper,fontSize:currentFontSize}
+  markDirty(false)
+  document.getElementById('chats-settings-panel').style.display='flex'
+}
+
+// close without saving -> put everything back
+function hideChatsSettings(){
+  if(prefsSnapshot && isDirty()){
+    currentWallpaper=prefsSnapshot.wallpaper
+    setTheme(prefsSnapshot.theme,true)
+    setFontSizeSilent(prefsSnapshot.fontSize)
+    applyWallpaper()
+  }
+  prefsSnapshot=null
+  document.getElementById('chats-settings-panel').style.display='none'
+}
+
+function isDirty(){
+  if(!prefsSnapshot) return false
+  return prefsSnapshot.theme!==currentTheme
+      || prefsSnapshot.wallpaper!==currentWallpaper
+      || prefsSnapshot.fontSize!==currentFontSize
+}
+
+function markDirty(on){
+  const bar=document.getElementById('chats-save-bar')
+  const btn=document.getElementById('chats-save-btn')
+  if(!bar||!btn) return
+  const dirty = (on===undefined) ? isDirty() : on
+  btn.disabled=!dirty
+  btn.style.opacity=dirty?'1':'.45'
+  btn.style.cursor=dirty?'pointer':'default'
+  bar.style.borderTopColor=dirty?'var(--accent)':'var(--border)'
+}
+
+function saveChatsSettings(){
+  if(!isDirty()){ hideChatsSettings(); return }
+  savePrefs()
+  prefsSnapshot={theme:currentTheme,wallpaper:currentWallpaper,fontSize:currentFontSize}
+  markDirty(false)
+  toast('Settings saved')
+  setTimeout(function(){ document.getElementById('chats-settings-panel').style.display='none'; prefsSnapshot=null },400)
+}
 
 // THEME
 let currentTheme='dark'
@@ -1087,7 +1136,7 @@ function setTheme(theme,silent){
     document.getElementById('theme-light-check').style.color='#999'
   }
   applyWallpaper()
-  savePrefs()
+  markDirty()
   if(!silent) toast(theme==='light'?'Light theme applied':'Dark theme applied')
 }
 
@@ -1105,7 +1154,7 @@ function onWallpaperFile(e){
     downscale(ev.target.result, 1080, 0.82, function(dataUrl){
       currentWallpaper=dataUrl
       applyWallpaper()
-      savePrefs()
+      markDirty()
       toast('Wallpaper set')
     })
   }
@@ -1160,7 +1209,7 @@ function applyWallpaper(){
 function clearWallpaper(){
   currentWallpaper=null
   applyWallpaper()
-  savePrefs()
+  markDirty()
   toast('Wallpaper removed')
 }
 
@@ -1187,7 +1236,7 @@ function setFontSize(size){
   })
   // Store for future messages
   window._fontSize=sizes[size]
-  savePrefs()
+  markDirty()
   toast('Font size set to '+size)
 }
 function showStorageSettings(){document.getElementById('storage-panel').style.display='flex'}
