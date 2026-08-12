@@ -1064,7 +1064,7 @@ function hideChatsSettings(){document.getElementById('chats-settings-panel').sty
 
 // THEME
 let currentTheme='dark'
-function setTheme(theme){
+function setTheme(theme,silent){
   currentTheme=theme
   if(theme==='light'){
     document.body.classList.add('light-theme')
@@ -1083,12 +1083,15 @@ function setTheme(theme){
     document.getElementById('theme-light-check').textContent='Tap to switch'
     document.getElementById('theme-light-check').style.color='#999'
   }
-  setWallpaper(currentWallpaper,true)
-  toast(theme==='light'?'Light theme applied':'Dark theme applied')
+  const auto = (theme==='light') ? 'white' : 'black'
+  setWallpaper(userPickedWallpaper ? currentWallpaper : auto, true)
+  savePrefs()
+  if(!silent) toast(theme==='light'?'Light theme applied':'Dark theme applied')
 }
 
 // WALLPAPER
 let currentWallpaper='black'
+let userPickedWallpaper=false
 function setWallpaper(wp,silent){
   currentWallpaper=wp
   const msgArea=document.getElementById('messages')
@@ -1124,7 +1127,7 @@ function setWallpaper(wp,silent){
   const lightWall = (wp==='white')
   msgArea.classList.toggle('wp-light', lightWall)
   msgArea.classList.toggle('wp-dark', !lightWall)
-  if(!silent) toast('Wallpaper updated')
+  if(!silent){ userPickedWallpaper=true; savePrefs(); toast('Wallpaper updated') }
 }
 
 // FONT SIZE
@@ -1150,6 +1153,7 @@ function setFontSize(size){
   })
   // Store for future messages
   window._fontSize=sizes[size]
+  savePrefs()
   toast('Font size set to '+size)
 }
 function showStorageSettings(){document.getElementById('storage-panel').style.display='flex'}
@@ -1564,6 +1568,43 @@ if('serviceWorker' in navigator){
   })
 }
 
+
+// ===== PREFERENCES: persist theme, wallpaper and font size =====
+function savePrefs(){
+  try{
+    localStorage.setItem('chatx_prefs', JSON.stringify({
+      theme: currentTheme,
+      wallpaper: currentWallpaper,
+      wallpaperPicked: userPickedWallpaper,
+      fontSize: currentFontSize
+    }))
+  }catch(e){}
+}
+
+function loadPrefs(){
+  let p=null
+  try{ p=JSON.parse(localStorage.getItem('chatx_prefs')||'null') }catch(e){}
+  if(!p) p={theme:'dark',wallpaper:'black',wallpaperPicked:false,fontSize:'medium'}
+  userPickedWallpaper = !!p.wallpaperPicked
+  currentWallpaper = p.wallpaper || 'black'
+  setTheme(p.theme || 'dark', true)
+  setWallpaper(currentWallpaper, true)
+  setFontSizeSilent(p.fontSize || 'medium')
+}
+
+function setFontSizeSilent(size){
+  const sizes={small:'13px',medium:'14px',large:'16px'}
+  currentFontSize=size
+  window._fontSize=sizes[size]
+  document.querySelectorAll('.msg-mine,.msg-theirs,.msg-ai').forEach(el=>el.style.fontSize=sizes[size])
+  ;['small','medium','large'].forEach(s=>{
+    const el=document.getElementById('fs-'+s), ck=document.getElementById('fs-'+s+'-check')
+    if(!el||!ck)return
+    if(s===size){el.style.border='2px solid var(--accent)';el.style.background='rgba(0,137,123,0.08)';ck.style.display='block'}
+    else{el.style.border='1px solid var(--border)';el.style.background='var(--bg3)';ck.style.display='none'}
+  })
+}
+
 // Splash to app transition
 setTimeout(function(){
   document.getElementById('splash').classList.add('hide')
@@ -1572,6 +1613,7 @@ setTimeout(function(){
     document.getElementById('app').classList.add('show')
     const bn=document.getElementById('bottom-nav')
     document.body.classList.add('app-ready')
+    loadPrefs()
     renderList()
     updateNavBadge()
   },600)
