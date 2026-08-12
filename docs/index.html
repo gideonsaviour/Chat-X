@@ -42,18 +42,18 @@
 }
 body.light-theme{
   --bg:#F8FAFC; --card:#FFFFFF; --surface:#F1F5F9; --surface-2:#E8EDF5;
-  --text-1:#111827; --text-2:#64748B; --text-3:#94A3B8;
-  --border:#E2E8F0; --border-strong:#CBD5E1;
+  --text-1:#111827; --text-2:#475569; --text-3:#64748B;
+  --border:#CBD5E1; --border-strong:#94A3B8;
   --primary:#2563EB; --primary-deep:#1D4ED8; --primary-soft:#60A5FA;
-  --accent:#10B981; --accent-deep:#059669;
+  --accent:#10B981; --accent-deep:#047857;
   --tint-blue:#DBEAFE; --tint-lavender:#E9D5FF; --tint-purple:#DDD6FE; --tint-cyan:#CFFAFE;
-  --glass:rgba(255,255,255,.72); --glass-line:rgba(226,232,240,.9);
+  --glass:rgba(255,255,255,.78); --glass-line:#CBD5E1;
   --grad:linear-gradient(135deg,#2563EB 0%,#4F46E5 55%,#7C3AED 100%);
   --grad-ring:linear-gradient(135deg,#2563EB,#7C3AED 45%,#06B6D4);
-  --shadow-sm:0 1px 3px rgba(17,24,39,.06);
-  --shadow:0 4px 18px rgba(17,24,39,.08);
-  --shadow-lg:0 14px 40px rgba(17,24,39,.12);
-  --hover:rgba(37,99,235,.06);
+  --shadow-sm:0 1px 3px rgba(17,24,39,.07);
+  --shadow:0 4px 18px rgba(17,24,39,.09);
+  --shadow-lg:0 14px 40px rgba(17,24,39,.13);
+  --hover:rgba(37,99,235,.08);
 }
 *,*::before,*::after{transition:background-color .22s var(--ease),border-color .22s var(--ease),color .22s var(--ease)}
 *{box-sizing:border-box;margin:0;padding:0}
@@ -447,7 +447,7 @@ h1,h2,.scr-title,.auth-h1{letter-spacing:-.02em}
 .react{background:var(--card);border:1px solid var(--border);border-radius:var(--r-full);
   padding:2px 8px;font-size:12px;cursor:pointer;display:inline-flex;align-items:center;gap:3px}
 .react.mine{border-color:var(--primary);background:rgba(var(--accent-rgb),.13)}
-.edited{font-size:10px;opacity:.65;margin-left:5px}
+.edited{font-size:10px;opacity:1;margin-left:5px;font-weight:600}
 
 .vn{display:flex;align-items:center;gap:10px;min-width:170px}
 .vn-play{width:34px;height:34px;border-radius:50%;border:none;cursor:pointer;flex-shrink:0;
@@ -495,7 +495,7 @@ h1,h2,.scr-title,.auth-h1{letter-spacing:-.02em}
 .msg-mine{box-shadow:var(--shadow-sm)}
 .msg-theirs span,.msg-ai span{color:var(--text-2)}
 #messages{background-color:var(--bg)}
-body.light-theme #messages{background-color:#EEF2F7}
+
 /* every control readable in BOTH themes */
 .auth-ghost{background:var(--surface);border:1px solid var(--border-strong);color:var(--text-1)}
 .auth-ghost:hover{background:var(--surface-2);border-color:var(--primary)}
@@ -564,7 +564,7 @@ body.light-theme{ --grad:linear-gradient(135deg,#3B82F6 0%,#2563EB 60%,#1D4ED8 1
 .prof-stat{flex:1;text-align:center;padding:14px 4px}
 .prof-stat b{display:block;font-size:19px;font-weight:700;color:var(--text-1) !important;
   letter-spacing:-.02em;line-height:1.2}
-.prof-stat span{font-size:12px;color:var(--text-2) !important;font-weight:500}
+.prof-stat span{font-size:12px;color:var(--text-2);font-weight:500 !important;font-weight:500}
 .prof-stats-row{display:flex;margin:18px 20px;background:var(--card);border:1px solid var(--border);
   border-radius:var(--r);box-shadow:var(--shadow-sm);overflow:hidden}
 .prof-stats-row>div+div{border-left:1px solid var(--border)}
@@ -820,6 +820,84 @@ body.light-theme .accent-text,
 body.light-theme [data-accent-text]{color:#047857 !important}
 body.light-theme .sdot[data-online]{box-shadow:0 0 0 2px #FFFFFF}
 body.light-theme #badge-chats{background:#059669;color:#FFFFFF}
+/* ===== LIGHT MODE READABILITY (do not weaken these) ===== */
+body.light-theme{color:#111827}
+
+/* names, headings, primary copy */
+body.light-theme .post-head div[style*="font-weight:600"],
+body.light-theme .chat-item span[style*="font-weight:600"],
+body.light-theme .scr-title,
+body.light-theme .prof-stat b,
+body.light-theme h1,body.light-theme h2{color:#111827 !important}
+
+/* body copy */
+body.light-theme .post-text,
+body.light-theme .msg-theirs,
+body.light-theme .msg-ai,
+body.light-theme .cmt-bubble{color:#111827 !important}
+
+/* secondary: timestamps, previews, counts, labels — readable, not faint */
+body.light-theme .post-stats,
+body.light-theme .post-stats span,
+body.light-theme .story-name,
+body.light-theme .prof-stat span,
+body.light-theme .auth-label,
+body.light-theme .filt,
+body.light-theme .nrow div[style*="font-size:12px"],
+body.light-theme .hub-tile div[style*="font-size:12px"]{color:#475569 !important;font-weight:500}
+
+/* anything still on the muted token gets the readable muted value */
+body.light-theme [style*="var(--text-3)"]{color:#64748B !important}
+body.light-theme [style*="var(--text-2)"]{color:#475569 !important}
+
+/* post actions */
+body.light-theme .post-act{color:#475569 !important;font-weight:600}
+body.light-theme .post-act svg{stroke:#475569 !important}
+body.light-theme .post-act:hover{background:rgba(37,99,235,.09)}
+body.light-theme .post-act.on{color:#2563EB !important}
+body.light-theme .post-act.on svg{stroke:#2563EB !important;fill:#2563EB}
+
+/* dividers: visible, still elegant */
+body.light-theme .post{border-bottom:1px solid #CBD5E1}
+body.light-theme .post-acts{border-top:1px solid #CBD5E1}
+body.light-theme .chat-item{border-bottom:1px solid #CBD5E1}
+body.light-theme .nrow,
+body.light-theme .hub-tile,
+body.light-theme .member-item,
+body.light-theme .prof-stats-row>div+div{border-color:#CBD5E1 !important}
+body.light-theme .card,body.light-theme .listing,body.light-theme .sugg,
+body.light-theme .prof-stats-row,body.light-theme #chat-list,
+body.light-theme #sheet>div,body.light-theme #modal-box{border-color:#CBD5E1 !important}
+body.light-theme .ptabs{border-bottom:1px solid #CBD5E1}
+body.light-theme .scr-body>div{--divider:#CBD5E1}
+
+/* icons and controls */
+body.light-theme .icon-btn{color:#475569}
+body.light-theme .icon-btn svg{stroke:currentColor}
+body.light-theme .icon-btn:hover{background:rgba(37,99,235,.09);color:#111827}
+body.light-theme .scr-head .icon-btn{color:#FFFFFF}
+body.light-theme .scr-head .icon-btn svg{stroke:#FFFFFF !important}
+body.light-theme .tab-btn{color:#475569}
+body.light-theme .tab-btn.active{color:#2563EB}
+body.light-theme .ptab{color:#475569}
+body.light-theme .ptab.on{color:#2563EB}
+body.light-theme .auth-input::placeholder,
+body.light-theme #msg-input::placeholder{color:#64748B}
+
+/* nav items */
+body.light-theme #bottom-nav span{color:#475569;font-weight:600}
+body.light-theme #bottom-nav svg{stroke:#475569}
+
+/* message meta stays legible */
+body.light-theme .msg-theirs span,body.light-theme .msg-ai span{color:#475569 !important}
+body.light-theme .msg-mine span{color:rgba(255,255,255,.92) !important}
+
+/* nothing important may be faded by opacity */
+body.light-theme .post-text,body.light-theme .post-stats,
+body.light-theme .chat-item,body.light-theme .nrow{opacity:1 !important}
+/* small markers must not be faded */
+body.light-theme .edited{color:#475569 !important}
+body.light-theme .vn span{color:inherit !important}
 </style>
 </head>
 <body>
@@ -1563,10 +1641,10 @@ function renderList(){
             ${isPinned(c.id)?'<svg width="12" height="12" fill="var(--primary)" viewBox="0 0 24 24" style="vertical-align:-1px;margin-right:4px"><path d="M16 3v6l3 3v2h-6v7l-1 1-1-1v-7H5v-2l3-3V3z"/></svg>':''}
             ${c.name}${c.type==='ai'?' <span style="background:var(--primary);color:#fff;font-size:9px;padding:1px 5px;border-radius:4px;font-weight:700">AI</span>':''}
           </span>
-          <span style="font-size:12px;color:var(--text-3);flex-shrink:0">${c.seen||''}</span>
+          <span style="font-size:12px;color:var(--text-2);font-weight:500;flex-shrink:0">${c.seen||''}</span>
         </div>
         <div style="display:flex;justify-content:space-between;align-items:center;gap:8px">
-          <span style="font-size:13px;color:var(--text-2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">
+          <span style="font-size:13px;color:var(--text-2);font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">
             ${isMuted(c.id)?'<svg width="12" height="12" fill="none" stroke="var(--text-3)" stroke-width="2" viewBox="0 0 24 24" style="vertical-align:-1px;margin-right:3px"><path d="M13.73 21a2 2 0 0 1-3.46 0"/><path d="M18.63 13A17.9 17.9 0 0 1 18 8"/><path d="M6.26 6.26A5.86 5.86 0 0 0 6 8c0 7-3 9-3 9h14"/><line x1="2" y1="2" x2="22" y2="22"/></svg>':''}${c.last}
           </span>
           ${c.unread>0?`<span class="unread">${c.unread}</span>`:''}
@@ -1619,7 +1697,7 @@ function renderMessages(){
       inner='<div class="vn"><button class="vn-play" onclick="event.stopPropagation();playVoice(\''+m.id+'\')">'
        +'<svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21"/></svg></button>'
        +'<div class="vn-wave">'+waveBars()+'</div>'
-       +'<span style="font-size:11px;opacity:.75">'+Math.floor(m.dur/60)+':'+String(m.dur%60).padStart(2,'0')+'</span></div>'
+       +'<span style="font-size:11px;opacity:.95;font-weight:600">'+Math.floor(m.dur/60)+':'+String(m.dur%60).padStart(2,'0')+'</span></div>'
     } else {
       inner=(m.img?'<img src="'+m.img+'" style="max-width:100%;border-radius:var(--r);display:block"/>':'')
        +(m.text||'').replace(/\n/g,'<br>')
@@ -1627,7 +1705,7 @@ function renderMessages(){
     const quote = m.reply ? '<div style="border-left:3px solid '+(mine?'rgba(255,255,255,.6)':'var(--primary)')
       +';padding:5px 9px;margin-bottom:6px;border-radius:6px;background:'+(mine?'rgba(255,255,255,.14)':'var(--surface)')+'">'
       +'<div style="font-size:11px;font-weight:700;opacity:.9">'+esc(m.reply.who)+'</div>'
-      +'<div style="font-size:12px;opacity:.85;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+esc(m.reply.text)+'</div></div>' : ''
+      +'<div style="font-size:12px;opacity:.95;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+esc(m.reply.text)+'</div></div>' : ''
     return '<div class="msg-row'+(mine?' mine':'')+' fade">'
      +(!mine&&active?mkAv(active.av,28,isAI?'ai':null):'')
      +'<div><div class="'+(mine?'msg-mine':isAI?'msg-ai':'msg-theirs')+'" onclick="msgActions(\''+m.id+'\')" style="cursor:pointer">'
@@ -2965,7 +3043,7 @@ function renderPosts(){
      +'</div>'
      +(p.text?'<div class="post-text">'+esc(p.text)+'</div>':'')
      +(p.img?'<img class="post-img" src="'+p.img+'"/>':'')
-     +'<div class="post-stats"><span>'+(p.likes.length?p.likes.length+' like'+(p.likes.length>1?'s':''):'')+'</span>'
+     +'<div class="post-stats" style="font-weight:500"><span>'+(p.likes.length?p.likes.length+' like'+(p.likes.length>1?'s':''):'')+'</span>'
      +'<span>'+(p.comments.length?p.comments.length+' comment'+(p.comments.length>1?'s':''):'')+'</span></div>'
      +'<div class="post-acts">'
      +'<button class="post-act'+(liked?' on':'')+'" onclick="toggleLike(\''+p.id+'\')">'
@@ -3141,10 +3219,10 @@ function paintProfile(uid){
   if(profTab==='posts'){
     body = mine.length?mine.slice().sort((a,b)=>b.ts-a.ts).map(p=>
       '<div style="padding:12px 20px;border-bottom:1px solid var(--border)">'
-      +'<div style="font-size:12px;color:var(--text-2);margin-bottom:5px">'+ago(p.ts)+'</div>'
+      +'<div style="font-size:12px;color:var(--text-2);font-weight:500;margin-bottom:5px">'+ago(p.ts)+'</div>'
       +(p.text?'<div style="font-size:14px;color:var(--text-1);line-height:1.55">'+esc(p.text)+'</div>':'')
       +(p.img?'<img src="'+p.img+'" style="width:100%;border-radius:var(--r);margin-top:8px;display:block"/>':'')
-      +'<div style="font-size:12px;color:var(--text-2);margin-top:7px">'+p.likes.length+' likes \u00b7 '+p.comments.length+' comments</div></div>').join('')
+      +'<div style="font-size:12px;color:var(--text-2);font-weight:500;margin-top:7px">'+p.likes.length+' likes \u00b7 '+p.comments.length+' comments</div></div>').join('')
       : empty('No posts yet.')
   } else if(profTab==='photos'){
     body = photos.length
@@ -3573,7 +3651,7 @@ function renderNotifs(){
     +'<svg width="10" height="10" fill="none" stroke="#fff" stroke-width="2.5" viewBox="0 0 24 24">'+(ICON[n.type]||ICON.like)+'</svg></div></div>'
     +'<div style="flex:1"><div style="font-size:14px;color:var(--text-1);line-height:1.45">'
     +'<b style="font-weight:600">'+esc(n.name)+'</b> '+esc(n.text)+'</div>'
-    +'<div style="font-size:12px;color:var(--text-2);margin-top:3px">'+ago(n.ts)+'</div></div></div>'
+    +'<div style="font-size:12px;color:var(--text-2);font-weight:500;margin-top:3px">'+ago(n.ts)+'</div></div></div>'
   ).join('') : empty('Nothing new right now.')
 }
 function openNotif(id){
@@ -3751,7 +3829,7 @@ function onCoverFile(e){
 function editBio(){
   openSheet('Edit bio',
    '<textarea id="bio-text" class="auth-input" rows="4" maxlength="160" placeholder="Say something about yourself" style="resize:none;line-height:1.5">'+esc((currentUser&&currentUser.bio)||'')+'</textarea>'
-   +'<div style="font-size:12px;color:var(--text-2);margin-bottom:14px">Up to 160 characters.</div>'
+   +'<div style="font-size:12px;color:var(--text-2);font-weight:500;margin-bottom:14px">Up to 160 characters.</div>'
    +'<button class="auth-btn" onclick="saveBio()">Save bio</button>')
 }
 function saveBio(){
@@ -3764,7 +3842,7 @@ function openFriends(){
    list.map(c=>'<div onclick="closeSheet();openUserProfile(\''+c.id+'\')" style="display:flex;align-items:center;gap:12px;padding:12px 20px;cursor:pointer;border-bottom:1px solid var(--border)">'
     +'<div class="avatar" style="width:42px;height:42px;font-size:14px">'+c.av+'</div>'
     +'<div style="flex:1"><div style="font-size:14px;font-weight:600;color:var(--text-1)">'+esc(c.name)+'</div>'
-    +'<div style="font-size:12px;color:var(--text-2)">'+(c.status==='online'?'Online':'Last seen '+c.seen)+'</div></div></div>').join(''),
+    +'<div style="font-size:12px;color:var(--text-2);font-weight:500">'+(c.status==='online'?'Online':'Last seen '+c.seen)+'</div></div></div>').join(''),
    {flush:true})
 }
 
@@ -4058,7 +4136,7 @@ function paintReplyBar(){
   bar.style.cssText='display:flex;align-items:center;gap:10px;padding:9px 14px;background:var(--surface);border-left:3px solid var(--primary)'
   bar.innerHTML='<div style="flex:1;min-width:0">'
     +'<div style="font-size:12px;font-weight:700;color:var(--primary)">Replying to '+esc(replyTo.who)+'</div>'
-    +'<div style="font-size:13px;color:var(--text-2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+esc(replyTo.text)+'</div></div>'
+    +'<div style="font-size:13px;color:var(--text-2);font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+esc(replyTo.text)+'</div></div>'
     +'<button class="icon-btn" onclick="clearReply()"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>'
 }
 function forwardMsg(id){
