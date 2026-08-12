@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 560" width="480" height="560" fill="none">
+<defs>
+  <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#FFFFFF"/><stop offset=".55" stop-color="#F2F7FF"/><stop offset="1" stop-color="#E7EFFE"/>
+  </linearGradient>
+  <linearGradient id="hoodie" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#22365E"/><stop offset="1" stop-color="#16233F"/>
+  </linearGradient>
+  <linearGradient id="brand" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#2563EB"/><stop offset=".55" stop-color="#4F46E5"/><stop offset="1" stop-color="#7C3AED"/>
+  </linearGradient>
+  <radialGradient id="halo" cx=".5" cy=".5" r=".5">
+    <stop offset="0" stop-color="#DBEAFE" stop-opacity=".95"/><stop offset="1" stop-color="#DBEAFE" stop-opacity="0"/>
+  </radialGradient>
+  <linearGradient id="screen" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#93C5FD"/><stop offset="1" stop-color="#3B82F6"/>
+  </linearGradient>
+</defs>
+
+<rect width="480" height="560" fill="url(#sky)"/>
+<ellipse cx="240" cy="330" rx="215" ry="215" fill="url(#halo)"/>
+<circle cx="240" cy="316" r="132" fill="#FFFFFF" opacity=".62"/>
+
+<!-- floating communication elements -->
+<g opacity=".92">
+  <g transform="translate(58,132)">
+    <rect width="74" height="46" rx="16" fill="#FFFFFF" stroke="#DBEAFE" stroke-width="2"/>
+    <path d="M18 46 L28 46 L20 58 Z" fill="#FFFFFF"/>
+    <rect x="15" y="16" width="44" height="5" rx="2.5" fill="#BFDBFE"/>
+    <rect x="15" y="27" width="28" height="5" rx="2.5" fill="#DBEAFE"/>
+  </g>
+  <g transform="translate(348,168)">
+    <rect width="70" height="44" rx="15" fill="url(#brand)"/>
+    <path d="M52 44 L42 44 L50 56 Z" fill="#7C3AED"/>
+    <rect x="14" y="15" width="42" height="5" rx="2.5" fill="#FFFFFF" opacity=".92"/>
+    <rect x="14" y="26" width="24" height="5" rx="2.5" fill="#FFFFFF" opacity=".62"/>
+  </g>
+  <g transform="translate(372,300)">
+    <circle cx="26" cy="26" r="26" fill="#FFFFFF" stroke="#E9D5FF" stroke-width="2"/>
+    <circle cx="20" cy="21" r="6.5" fill="#7C3AED"/><circle cx="33" cy="23" r="5" fill="#A78BFA"/>
+    <path d="M9 38c2-6 7-9 11-9s9 3 11 9z" fill="#7C3AED"/>
+    <path d="M28 38c1.5-4.5 5-7 8-7s6 2.5 7 7z" fill="#A78BFA"/>
+  </g>
+  <g transform="translate(52,300)">
+    <circle cx="24" cy="24" r="24" fill="#FFFFFF" stroke="#CFFAFE" stroke-width="2"/>
+    <path d="M34 20a2 2 0 0 1-2 2H18l-4 4V14a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2z" fill="#06B6D4"/>
+  </g>
+  <circle cx="150" cy="96" r="6" fill="#BFDBFE"/>
+  <circle cx="330" cy="112" r="5" fill="#DDD6FE"/>
+  <circle cx="408" cy="252" r="7" fill="#CFFAFE"/>
+  <circle cx="76" cy="252" r="5" fill="#DBEAFE"/>
+</g>
+
+<!-- figure -->
+<g transform="translate(240,300)">
+  <!-- shoulders / hoodie -->
+  <path d="M-104 250 C-104 168 -58 128 0 128 C58 128 104 168 104 250 Z" fill="url(#hoodie)"/>
+  <path d="M-58 140 C-40 176 40 176 58 140 C40 130 -40 130 -58 140 Z" fill="#2E4675"/>
+  <!-- hood -->
+  <path d="M-70 132 C-70 96 -44 74 0 74 C44 74 70 96 70 132 C48 118 -48 118 -70 132 Z" fill="#1B2C4E"/>
+  <!-- neck -->
+  <path d="M-19 96 h38 v34 h-38 Z" fill="#C68A63"/>
+  <!-- head -->
+  <ellipse cx="0" cy="52" rx="46" ry="54" fill="#D89A72"/>
+  <path d="M-46 44 C-46 4 -26 -14 0 -14 C26 -14 46 4 46 44 C34 22 -34 22 -46 44 Z" fill="#2A1F1A"/>
+  <!-- ears -->
+  <ellipse cx="-46" cy="56" rx="7" ry="11" fill="#C68A63"/>
+  <ellipse cx="46" cy="56" rx="7" ry="11" fill="#C68A63"/>
+  <!-- brows -->
+  <path d="M-30 40 q11 -7 22 -1" stroke="#2A1F1A" stroke-width="4" stroke-linecap="round"/>
+  <path d="M8 39 q11 -6 22 1" stroke="#2A1F1A" stroke-width="4" stroke-linecap="round"/>
+  <!-- eyes, looking down at the phone -->
+  <path d="M-30 55 q11 9 22 0" stroke="#2A1F1A" stroke-width="4" stroke-linecap="round" fill="none"/>
+  <path d="M8 55 q11 9 22 0" stroke="#2A1F1A" stroke-width="4" stroke-linecap="round" fill="none"/>
+  <!-- nose + smile -->
+  <path d="M0 60 q5 12 -4 15" stroke="#B4784F" stroke-width="3" stroke-linecap="round" fill="none"/>
+  <path d="M-16 84 q16 14 32 0" stroke="#8A4B3A" stroke-width="4" stroke-linecap="round" fill="none"/>
+  <!-- arms -->
+  <path d="M-92 236 C-88 196 -66 178 -38 186 L-30 214 C-52 210 -66 222 -70 250 Z" fill="#22365E"/>
+  <path d="M92 236 C88 196 66 178 38 186 L30 214 C52 210 66 222 70 250 Z" fill="#22365E"/>
+  <!-- hands -->
+  <ellipse cx="-34" cy="212" rx="15" ry="12" fill="#D89A72" transform="rotate(-16 -34 212)"/>
+  <ellipse cx="34" cy="212" rx="15" ry="12" fill="#D89A72" transform="rotate(16 34 212)"/>
+  <!-- phone -->
+  <rect x="-27" y="164" width="54" height="86" rx="10" fill="#0F172A"/>
+  <rect x="-22" y="170" width="44" height="74" rx="7" fill="url(#screen)"/>
+  <rect x="-16" y="180" width="26" height="5" rx="2.5" fill="#FFFFFF" opacity=".9"/>
+  <rect x="-16" y="192" width="32" height="5" rx="2.5" fill="#FFFFFF" opacity=".62"/>
+  <rect x="-4" y="206" width="20" height="5" rx="2.5" fill="#FFFFFF" opacity=".85"/>
+  <rect x="-16" y="218" width="28" height="5" rx="2.5" fill="#FFFFFF" opacity=".5"/>
+</g>
+</svg>
