@@ -596,13 +596,17 @@ img{-webkit-user-drag:none}
   --grad:linear-gradient(135deg,#3B82F6 0%,#2563EB 100%);
 }
 body.light-theme{
-  --bg:#F8FAFC; --card:#FFFFFF; --surface:#F1F5F9; --surface-2:#E2E8F0;
-  --text-1:#111827; --text-2:#6B7280; --text-3:#9CA3AF;
-  --border:#E5E7EB; --border-strong:#D1D5DB;
+  --bg:#FFFFFF; --card:#FFFFFF; --surface:#F4F6FA; --surface-2:#E8ECF3;
+  --text-1:#0B1220; --text-2:#48546B; --text-3:#6B7688;
+  --border:#C9D2E0; --border-strong:#9AA6BA;
   --primary:#2563EB; --primary-deep:#1D4ED8; --primary-soft:#60A5FA;
   --accent:#10B981; --accent-deep:#059669;
-  --glass:rgba(255,255,255,.78); --glass-line:rgba(15,23,42,.07);
+  --glass:rgba(255,255,255,.92); --glass-line:#C9D2E0;
   --grad:linear-gradient(135deg,#2563EB 0%,#1D4ED8 100%);
+  --shadow-sm:0 1px 2px rgba(11,18,32,.08);
+  --shadow:0 2px 10px rgba(11,18,32,.10);
+  --shadow-lg:0 10px 30px rgba(11,18,32,.15);
+  --hover:rgba(11,18,32,.055);
 }
 
 /* typography */
@@ -699,6 +703,31 @@ body.in-chat #bottom-nav{display:none}
 #nav-create{justify-content:center !important}
 #pill-chats,#pill-notifs,#pill-profile,#pill-home{position:relative}
 #bottom-nav .nav-avatar{width:26px;height:26px;font-size:10px}
+/* light theme: white surfaces, clearly defined edges */
+body.light-theme #main,body.light-theme #sidebar,
+body.light-theme #feed,body.light-theme #profile,body.light-theme #notifs,
+body.light-theme #hub,body.light-theme #groups,body.light-theme #pages,
+body.light-theme #events,body.light-theme #market{background:#FFFFFF}
+body.light-theme #messages{background-color:#FFFFFF}
+body.light-theme #sidebar{border-right:1px solid var(--border)}
+body.light-theme .card,body.light-theme .listing,body.light-theme #sheet>div,
+body.light-theme #modal-box{background:#FFFFFF;border:1px solid var(--border)}
+body.light-theme .chat-item{border-bottom:1px solid var(--border)}
+body.light-theme .msg-theirs{background:#FFFFFF !important;border:1px solid var(--border-strong) !important;color:#0B1220 !important}
+body.light-theme .msg-ai{background:#FFFFFF !important;border:1px solid var(--primary) !important;color:#0B1220 !important}
+body.light-theme .auth-input,body.light-theme #msg-input{background:#FFFFFF;border:1px solid var(--border-strong);color:#0B1220}
+body.light-theme .filt{border:1px solid var(--border-strong);color:#48546B}
+body.light-theme .auth-ghost,body.light-theme .pill-btn.ghost{background:#FFFFFF;border:1px solid var(--border-strong);color:#0B1220}
+body.light-theme .prof-stats-row{background:#FFFFFF;border:1px solid var(--border)}
+body.light-theme .prof-stats-row>div+div{border-left:1px solid var(--border)}
+body.light-theme .post{border-bottom:1px solid var(--border)}
+body.light-theme #composer{background:#FFFFFF !important;border-top:1px solid var(--border) !important}
+body.light-theme #bottom-nav{background:rgba(255,255,255,.94);border-top:1px solid var(--border)}
+body.light-theme .toggle-slider{background:#B4BFCF}
+body.light-theme .react{background:#FFFFFF;border:1px solid var(--border-strong)}
+body.light-theme .sugg{background:#FFFFFF;border:1px solid var(--border)}
+body.light-theme .story-inner{background:#FFFFFF !important}
+body.light-theme .nrow{border-bottom:1px solid var(--border)}
 </style>
 </head>
 <body>
