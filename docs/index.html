@@ -20,7 +20,7 @@
   --bg1:#000;--bg2:#111;--bg3:#1a1a1a;--border:#222;
   --text:#f1f1f5;--text2:#8b8b9e;--text3:#666;
   --accent:#00897B;--accent2:#00695C;--accent-light:#4DB6AC;
-  --accent-rgb:0,137,123;--msg-bg:#1a1a1a;
+  --accent-rgb:0,137,123;--msg-bg:#1a1a1a;--hover:rgba(255,255,255,.08);
 }
 body.light-theme .icon-btn{color:#444}
 body.light-theme .icon-btn:hover{background:rgba(0,0,0,0.06);color:#111}
@@ -43,7 +43,7 @@ body.light-theme{
   --bg1:#f5f5f5;--bg2:#ffffff;--bg3:#eeeeee;--border:#ddd;
   --text:#111;--text2:#444;--text3:#888;
   --accent:#111;--accent2:#333;--accent-light:#555;
-  --accent-rgb:17,17,17;--msg-bg:#e8e8e8;
+  --accent-rgb:17,17,17;--msg-bg:#e8e8e8;--hover:rgba(0,0,0,.07);
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html{height:100%;overflow:hidden;overscroll-behavior:none}
@@ -87,9 +87,9 @@ overscroll-behavior:none;-webkit-overflow-scrolling:touch}
 .chat-item.active{background:rgba(var(--accent-rgb),0.12);border-color:rgba(var(--accent-rgb),0.3)}
 .tab-btn{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:8px 2px;border:none;border-radius:8px;font-size:11px;font-weight:600;cursor:pointer;transition:all .15s;background:transparent;color:var(--text3);font-family:'Inter',sans-serif}
 .tab-btn.active{background:rgba(0,137,123,0.2);color:#00897B}
-.tab-btn:hover:not(.active){background:rgba(255,255,255,0.05);color:#f1f1f5}
+.tab-btn:hover:not(.active){background:var(--hover);color:#f1f1f5}
 .icon-btn{background:none;border:none;color:var(--text3);cursor:pointer;padding:8px;border-radius:8px;display:flex;align-items:center;justify-content:center;transition:all .15s;flex-shrink:0}
-.icon-btn:hover{background:rgba(255,255,255,0.08);color:#f1f1f5}
+.icon-btn:hover{background:var(--hover);color:#f1f1f5}
 .icon-btn:active{transform:scale(.9)}
 .send-btn{background:linear-gradient(135deg,#00897B,#00695C);border:none;color:#fff;width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .15s;flex-shrink:0}
 .send-btn:hover{opacity:.85}
@@ -118,7 +118,7 @@ overscroll-behavior:none;-webkit-overflow-scrolling:touch}
 .toggle input:checked+.toggle-slider{background:#00897B}
 .toggle input:checked+.toggle-slider:before{transform:translateX(20px)}
 .member-item{display:flex;align-items:center;gap:10px;padding:10px 16px;border-radius:10px;transition:background .15s;cursor:pointer}
-.member-item:hover{background:rgba(255,255,255,0.05)}
+.member-item:hover{background:var(--hover)}
 .typing-dot{width:7px;height:7px;border-radius:50%;background:#00897B;display:inline-block;animation:typingBounce 1.2s infinite}
 .typing-dot:nth-child(2){animation-delay:.2s}
 .typing-dot:nth-child(3){animation-delay:.4s}
@@ -1403,7 +1403,7 @@ function showSoundPicker(title, key){
   selectedSound=currentLabel
   const list=document.getElementById('sound-list')
   list.innerHTML=SOUNDS.map(([name,icon])=>`
-    <div onclick="selectSound('${name}')" id="sound-${name.replace(/ /g,'-')}" style="display:flex;align-items:center;gap:14px;padding:14px 20px;cursor:pointer;transition:background .15s;background:${name===currentLabel?'rgba(0,137,123,0.1)':'transparent'}" onmouseover="this.style.background='rgba(255,255,255,0.05)'" onmouseout="this.style.background='${name===currentLabel?'rgba(0,137,123,0.1)':'transparent'}'">
+    <div onclick="selectSound('${name}')" id="sound-${name.replace(/ /g,'-')}" style="display:flex;align-items:center;gap:14px;padding:14px 20px;cursor:pointer;transition:background .15s;background:${name===currentLabel?'rgba(0,137,123,0.1)':'transparent'}" onmouseover="this.style.background='var(--hover)'" onmouseout="this.style.background='${name===currentLabel?'rgba(0,137,123,0.1)':'transparent'}'">
       <div style="width:40px;height:40px;border-radius:12px;background:#1a1a1a;display:flex;align-items:center;justify-content:center;font-size:20px">${icon}</div>
       <div style="flex:1;font-size:14px;font-weight:${name===currentLabel?'600':'400'}">${name}</div>
       ${name===currentLabel?'<svg width="18" height="18" fill="none" stroke="#00897B" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>':''}
@@ -1415,7 +1415,7 @@ function selectSound(name){
   selectedSound=name
   const list=document.getElementById('sound-list')
   list.innerHTML=SOUNDS.map(([n,icon])=>`
-    <div onclick="selectSound('${n}')" style="display:flex;align-items:center;gap:14px;padding:14px 20px;cursor:pointer;transition:background .15s;background:${n===name?'rgba(0,137,123,0.1)':'transparent'}" onmouseover="this.style.background='rgba(255,255,255,0.05)'" onmouseout="this.style.background='${n===name?'rgba(0,137,123,0.1)':'transparent'}'">
+    <div onclick="selectSound('${n}')" style="display:flex;align-items:center;gap:14px;padding:14px 20px;cursor:pointer;transition:background .15s;background:${n===name?'rgba(0,137,123,0.1)':'transparent'}" onmouseover="this.style.background='var(--hover)'" onmouseout="this.style.background='${n===name?'rgba(0,137,123,0.1)':'transparent'}'">
       <div style="width:40px;height:40px;border-radius:12px;background:#1a1a1a;display:flex;align-items:center;justify-content:center;font-size:20px">${icon}</div>
       <div style="flex:1;font-size:14px;font-weight:${n===name?'600':'400'}">${n}</div>
       ${n===name?'<svg width="18" height="18" fill="none" stroke="#00897B" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>':''}
@@ -1620,7 +1620,7 @@ function showRingtonePicker(){
 
 function renderRingtoneList(){
   document.getElementById('ringtone-list').innerHTML=RINGTONES.map(r=>`
-    <div onclick="selectRingtone('${r.name}')" style="display:flex;align-items:center;gap:14px;padding:14px 20px;cursor:pointer;transition:background .15s;background:${'${r.name}'===_rtSelected?'rgba(0,137,123,0.1)':'transparent'}" onmouseover="this.style.background='rgba(255,255,255,0.05)'" onmouseout="this.style.background='${'${r.name}'===_rtSelected?'rgba(0,137,123,0.1)':'transparent'}'">
+    <div onclick="selectRingtone('${r.name}')" style="display:flex;align-items:center;gap:14px;padding:14px 20px;cursor:pointer;transition:background .15s;background:${'${r.name}'===_rtSelected?'rgba(0,137,123,0.1)':'transparent'}" onmouseover="this.style.background='var(--hover)'" onmouseout="this.style.background='${'${r.name}'===_rtSelected?'rgba(0,137,123,0.1)':'transparent'}'">
       <div style="width:44px;height:44px;border-radius:12px;background:#1a1a1a;display:flex;align-items:center;justify-content:center;font-size:22px">${r.icon}</div>
       <div style="flex:1"><div style="font-size:14px;font-weight:${r.name===_rtSelected?'600':'400'}">${r.name}</div><div style="font-size:12px;color:var(--text3);margin-top:1px">${r.desc}</div></div>
       ${r.name===_rtSelected?'<svg width="18" height="18" fill="none" stroke="#00897B" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>':'<svg width="20" height="20" fill="none" stroke="#333" stroke-width="2" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>'}
