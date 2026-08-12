@@ -291,6 +291,11 @@ html,body{
 .av-edit{position:relative;width:88px;height:88px;margin:0 auto 8px;cursor:pointer}
 .av-edit .cam{position:absolute;bottom:0;right:0;width:28px;height:28px;border-radius:50%;
   background:#00897B;border:2px solid #000;display:flex;align-items:center;justify-content:center}
+/* call buttons stay dark in both themes */
+.call-pill{background:#2a2a2a !important;border-radius:999px !important}
+.call-pill .icon-btn{color:#fff !important}
+.call-pill .icon-btn svg{stroke:#fff !important}
+.call-pill .icon-btn:hover{background:rgba(255,255,255,.14) !important}
 </style>
 </head>
 <body>
@@ -968,7 +973,7 @@ function openChat(id){
       </div>
     </div>
     <div style="display:flex;gap:2px;flex-shrink:0">
-      ${!isAI&&!isCom?`<div style="display:flex;align-items:center;background:rgba(255,255,255,0.08);border-radius:999px;padding:4px 6px;gap:2px"><button class="icon-btn" onclick="startCall('video')" style="padding:6px 10px"><svg width="22" height="22" fill="none" stroke="#fff" stroke-width="2" viewBox="0 0 24 24"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg></button><button class="icon-btn" onclick="startCall('voice')" style="padding:6px 10px"><svg width="22" height="22" fill="none" stroke="#fff" stroke-width="2" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></button></div>`:''}
+      ${!isAI&&!isCom?`<div class="call-pill" style="display:flex;align-items:center;border-radius:999px;padding:4px 6px;gap:2px"><button class="icon-btn" onclick="startCall('video')" style="padding:6px 10px"><svg width="22" height="22" fill="none" stroke="#fff" stroke-width="2" viewBox="0 0 24 24"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg></button><button class="icon-btn" onclick="startCall('voice')" style="padding:6px 10px"><svg width="22" height="22" fill="none" stroke="#fff" stroke-width="2" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></button></div>`:''}
       ${isGroup?`<button class="icon-btn" onclick="showGroupPanel()"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></button>`:''}
       <button class="icon-btn" onclick="chatMenu()"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg></button>
     </div>`
