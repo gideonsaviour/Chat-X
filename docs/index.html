@@ -18,11 +18,11 @@
 <style>
 :root{
   /* surfaces */
-  --bg:#0F172A; --card:#1E293B; --surface:#273449; --surface-2:#2F3E55;
+  --bg:#0B1220; --card:#131C2E; --surface:#1B2740; --surface-2:#243352;
   /* text */
   --text-1:#F8FAFC; --text-2:#CBD5E1; --text-3:#94A3B8;
   /* lines */
-  --border:#334155; --border-strong:#475569;
+  --border:#25324B; --border-strong:#374766;
   /* brand */
   --primary:#3B82F6; --primary-deep:#2563EB; --primary-soft:#93C5FD;
   --accent:#34D399; --accent-deep:#10B981;
@@ -41,9 +41,9 @@
   --msg-bg:var(--surface); --accent-rgb:59,130,246;
 }
 body.light-theme{
-  --bg:#F8FAFC; --card:#FFFFFF; --surface:#F1F5F9; --surface-2:#E2E8F0;
+  --bg:#F6F7FA; --card:#FFFFFF; --surface:#EDF0F5; --surface-2:#E1E6EF;
   --text-1:#111827; --text-2:#6B7280; --text-3:#9CA3AF;
-  --border:#E5E7EB; --border-strong:#CBD5E1;
+  --border:#E4E8EF; --border-strong:#CFD6E2;
   --primary:#2563EB; --primary-deep:#1D4ED8; --primary-soft:#60A5FA;
   --accent:#10B981; --accent-deep:#059669;
   --danger:#DC2626; --warning:#D97706; --success:#10B981;
@@ -527,6 +527,67 @@ body.light-theme #messages{background-color:#EEF2F7}
 .story-name{color:var(--text-2)}
 .cover-btn{background:rgba(15,23,42,.6);color:#fff}
 .fab svg{stroke:#fff}
+
+/* ================= PREMIUM FINISH ================= */
+:root{ --grad:linear-gradient(135deg,#3B82F6 0%,#2563EB 55%,#1E40AF 100%);
+       --grad-soft:linear-gradient(135deg,#3B82F6,#34D399); }
+body.light-theme{ --grad:linear-gradient(135deg,#3B82F6 0%,#2563EB 60%,#1D4ED8 100%);
+       --grad-soft:linear-gradient(135deg,#2563EB,#10B981); }
+
+/* gradients ONLY on headers, primary buttons, create, nav highlight */
+.scr-head{background:var(--grad) !important;border-bottom:none !important;
+  padding:16px !important;box-shadow:var(--shadow-sm)}
+.scr-head .scr-title{color:#fff !important}
+.scr-head .icon-btn{color:rgba(255,255,255,.92) !important}
+.scr-head .icon-btn svg{stroke:#fff !important}
+.scr-head .icon-btn:hover{background:rgba(255,255,255,.16) !important}
+.auth-btn,.pill-btn:not(.ghost),.fab{background:var(--grad) !important;color:#fff !important}
+#bottom-nav [id^="pill-"]{transition:background .2s var(--ease)}
+
+/* everything else: solid, no gradient */
+.avatar,.story-av,.prof-av,.auth-logo,#splash-logo,.send-btn{
+  background:var(--primary) !important}
+.hub-ico{background:rgba(var(--accent-rgb),.13) !important}
+.msg-mine{background:var(--primary) !important}
+.prof-cover{background:var(--grad) !important}
+
+/* ---- perfect circles on every device ---- */
+.avatar,.prof-av,.story-av,.story-ring,.story-inner,.nav-avatar{
+  aspect-ratio:1/1;flex:0 0 auto;box-sizing:border-box}
+.prof-av{width:104px !important;height:104px !important;min-width:104px;min-height:104px;
+  border-radius:50% !important;border:4px solid var(--bg) !important;
+  margin:-54px auto 0 !important;overflow:hidden;box-shadow:var(--shadow)}
+.story{width:72px !important;display:flex;flex-direction:column;align-items:center}
+.story-ring{width:64px !important;height:64px !important;min-width:64px;min-height:64px;
+  border-radius:50% !important;padding:2.5px !important;margin:0 auto 6px !important;display:block}
+.story-inner{border-radius:50% !important;padding:2.5px !important;background:var(--bg) !important}
+.story-av{border-radius:50% !important;overflow:hidden}
+.story-strip{padding:16px 16px 14px !important;overflow-x:auto;overflow-y:visible}
+.story-name{max-width:72px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+/* ---- profile stats legible in both modes ---- */
+.prof-stat{flex:1;text-align:center;padding:14px 4px}
+.prof-stat b{display:block;font-size:19px;font-weight:700;color:var(--text-1) !important;
+  letter-spacing:-.02em;line-height:1.2}
+.prof-stat span{font-size:12px;color:var(--text-2) !important;font-weight:500}
+.prof-stats-row{display:flex;margin:18px 20px;background:var(--card);border:1px solid var(--border);
+  border-radius:var(--r);box-shadow:var(--shadow-sm);overflow:hidden}
+.prof-stats-row>div+div{border-left:1px solid var(--border)}
+
+/* ---- spacing + polish ---- */
+.card{margin:14px 16px}
+.post{padding:16px 0}
+.post-head{padding:0 16px 12px}
+.post-text{padding:0 16px 12px;font-size:15px}
+.scr-body{padding-bottom:100px}
+.hub-tile{padding:17px 20px}
+#sheet-body{padding:20px}
+.msg-row{margin-bottom:8px}
+.chat-item{margin:3px 8px;padding:12px 14px}
+@media(prefers-reduced-motion:no-preference){
+  .post,.card,.nrow,.chat-item{animation:riseIn .3s var(--ease) both}
+}
+img{-webkit-user-drag:none}
 </style>
 </head>
 <body>
@@ -2846,7 +2907,7 @@ function paintProfile(uid){
    +(bio?'<div style="font-size:14px;color:var(--text-1);line-height:1.55;margin-top:9px">'+esc(bio)+'</div>':'')
    +(isMe?'<button class="pill-btn ghost" style="margin-top:10px" onclick="editBio()">'+(bio?'Edit bio':'Add bio')+'</button>':'')
    +'</div>'
-   +'<div style="display:flex;margin:16px 20px;background:var(--surface);border-radius:var(--r)">'
+   +'<div class="prof-stats-row">'
    +'<div class="prof-stat"><b>'+mine.length+'</b><span>Posts</span></div>'
    +'<div class="prof-stat" onclick="openFriends()" style="cursor:pointer"><b>'+contacts.filter(x=>x.type==="dm").length+'</b><span>Friends</span></div>'
    +'<div class="prof-stat"><b>'+mine.reduce((n,p)=>n+p.likes.length,0)+'</b><span>Likes</span></div></div>'
@@ -3414,7 +3475,7 @@ function reactBar(m){
 
 /* ---------- profile: cover, bio, tabs ---------- */
 let profTab='posts'
-function setProfTab(t){ profTab=t; openUserProfile(profViewing) }
+function setProfTab(t){ profTab=t; paintProfile(profViewing||meId()) }
 let profViewing=null
 
 function pickCover(){ document.getElementById('cv-file').click() }
