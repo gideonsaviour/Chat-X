@@ -154,8 +154,9 @@ overscroll-behavior:none;-webkit-overflow-scrolling:touch}
 /* Bottom Nav */
 #bottom-nav{position:relative;flex-shrink:0;width:100%;display:none}
 body.app-ready #bottom-nav{display:flex !important}
-body.chat-open #bottom-nav{display:none !important}
-@media(min-width:641px){#bottom-nav{display:none !important}}
+#bottom-nav{position:relative;z-index:60}
+
+
 
 #sidebar{padding-bottom:0}
 .nav-btn{display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;padding:4px 6px;border:none;background:transparent;color:var(--text-2);font-family:'Inter',sans-serif;font-size:11px;font-weight:500;transition:all .2s;position:relative;min-width:64px}
@@ -474,6 +475,19 @@ h1,h2,.scr-title,.auth-h1{letter-spacing:-.02em}
 .ptab.on{color:var(--primary);border-bottom-color:var(--primary)}
 .media-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;padding:3px}
 .media-grid img,.media-grid video{width:100%;aspect-ratio:1;object-fit:cover;display:block;background:var(--surface)}
+/* nav always on top; screens never cover it */
+#feed,#profile,#notifs,#hub,#groups,#pages,#events,#market{z-index:40;bottom:0}
+#feed .scr-body,#profile .scr-body,#notifs .scr-body,#hub .scr-body,
+#groups .scr-body,#pages .scr-body,#events .scr-body,#market .scr-body{padding-bottom:96px}
+#bottom-nav{position:fixed;left:0;right:0;bottom:0;z-index:60}
+#app.show{padding-bottom:76px}
+.fab{bottom:110px}
+[data-back]{display:none}
+@media(prefers-reduced-motion:no-preference){
+  #feed.show,#profile.show,#notifs.show,#hub.show,#groups.show,#pages.show,#events.show,#market.show{
+    animation:slideIn .22s var(--ease) both}
+  @keyframes slideIn{from{opacity:0;transform:translateX(14px)}to{opacity:1;transform:translateX(0)}}
+}
 </style>
 </head>
 <body>
@@ -589,7 +603,7 @@ h1,h2,.scr-title,.auth-h1{letter-spacing:-.02em}
 
 <div id="profile">
   <div class="scr-head">
-    <button class="icon-btn" onclick="closeProfile()">
+    <button class="icon-btn" data-back onclick="navBack()">
       <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
     </button>
     <div class="scr-title" id="prof-title">Profile</div>
@@ -615,13 +629,13 @@ h1,h2,.scr-title,.auth-h1{letter-spacing:-.02em}
 </div>
 
 <div id="hub">
-  <div class="scr-head"><div class="scr-title">Discover</div></div>
+  <div class="scr-head"><button class="icon-btn" data-back onclick="navBack()"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button><div class="scr-title">Discover</div></div>
   <div class="scr-body" id="hub-body"></div>
 </div>
 
 <div id="groups">
   <div class="scr-head">
-    <button class="icon-btn" onclick="closeScr('groups')"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
+    <button class="icon-btn" data-back onclick="navBack()"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
     <div class="scr-title">Groups</div>
   </div>
   <div class="scr-body" id="groups-body"></div>
@@ -630,7 +644,7 @@ h1,h2,.scr-title,.auth-h1{letter-spacing:-.02em}
 
 <div id="pages">
   <div class="scr-head">
-    <button class="icon-btn" onclick="closeScr('pages')"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
+    <button class="icon-btn" data-back onclick="navBack()"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
     <div class="scr-title">Pages</div>
   </div>
   <div class="scr-body" id="pages-body"></div>
@@ -639,7 +653,7 @@ h1,h2,.scr-title,.auth-h1{letter-spacing:-.02em}
 
 <div id="events">
   <div class="scr-head">
-    <button class="icon-btn" onclick="closeScr('events')"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
+    <button class="icon-btn" data-back onclick="navBack()"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
     <div class="scr-title">Events</div>
   </div>
   <div class="scr-body" id="events-body"></div>
@@ -648,7 +662,7 @@ h1,h2,.scr-title,.auth-h1{letter-spacing:-.02em}
 
 <div id="market">
   <div class="scr-head">
-    <button class="icon-btn" onclick="closeScr('market')"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
+    <button class="icon-btn" data-back onclick="navBack()"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
     <div class="scr-title">Marketplace</div>
   </div>
   <div style="padding:12px 16px;flex-shrink:0">
@@ -660,7 +674,7 @@ h1,h2,.scr-title,.auth-h1{letter-spacing:-.02em}
 
 <div id="notifs">
   <div class="scr-head">
-    <div class="scr-title">Notifications</div>
+    <button class="icon-btn" data-back onclick="navBack()"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button><div class="scr-title">Notifications</div>
     <button class="icon-btn" onclick="markAllRead()" title="Mark all read">
       <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
     </button>
@@ -1199,26 +1213,12 @@ function renderList(){
     </div>`).join('')
 }
 
-function openChat(id){
-  active=contacts.find(c=>c.id===id)
-  if(!active)return
-  msgs=seedMsgs(active)
-  if(active.type==='ai')aiHistory=[]
-  if(window.innerWidth<=640){
-    document.getElementById('sidebar').classList.add('hidden')
-  }
-  document.body.classList.add('chat-open')
-  document.getElementById('empty-state').style.display='none'
-  document.getElementById('chat-area').style.display='flex'
-  closeGroupPanel()
-  const isGroup=active.type==='group',isAI=active.type==='ai',isCom=active.type==='community'
-  document.getElementById('event-btn').style.display=isGroup?'flex':'none'
-  document.getElementById('enc-notice').textContent=isAI?'Powered by Groq AI — conversations are private':isCom?active.members?.toLocaleString()+' members':'End-to-end encrypted'
-  // Apply wallpaper to message area
-  setTimeout(()=>{
-    applyWallpaper()
-  },50)
+function paintChatHeader(){
   const totalUnread=contacts.reduce((s,c)=>s+(c.unread||0),0)
+  const isGroup=active.type==='group',isAI=active.type==='ai',isCom=active.type==='community'
+  const evb=document.getElementById('event-btn'); if(evb) evb.style.display=isGroup?'flex':'none'
+  const enc=document.getElementById('enc-notice')
+  if(enc) enc.textContent=isAI?'Powered by Groq AI \u2014 conversations are private':isCom?(active.members||'')+' members':'End-to-end encrypted'
   document.getElementById('chat-header').innerHTML=`
     <div style="display:flex;align-items:center;gap:8px;flex:1;min-width:0">
       <button class="icon-btn back-btn" style="display:none;flex-shrink:0;background:rgba(255,255,255,0.08);border-radius:999px;padding:6px 12px;gap:4px;align-items:center" onclick="goBack()">
@@ -1239,19 +1239,12 @@ function openChat(id){
       <button class="icon-btn" onclick="chatMenu()"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg></button>
     </div>`
   const bb=document.querySelector('.back-btn');if(bb)bb.style.display='flex'
-  renderMessages()
-  renderList()
-  updateNavBadge()
-  document.getElementById('msg-input')?.focus()
 }
 
-function goBack(){
-  document.getElementById('sidebar').classList.remove('hidden')
-  document.getElementById('chat-area').style.display='none'
-  document.getElementById('empty-state').style.display='flex'
-  closeGroupPanel();active=null;renderList()
-  document.body.classList.remove('chat-open')
-}
+function openChat(id){ navTo('chat', id) }
+
+
+function goBack(){ navBack() }
 
 function renderMessages(){
   const box=document.getElementById('messages')
@@ -1468,29 +1461,7 @@ function setNavActive(section){
   })
 }
 
-function switchNav(section){
-  ['home','chats','notifs','profile'].forEach(k=>{
-    const p=document.getElementById('pill-'+k), l=document.getElementById('lbl-'+k),
-          sv=document.querySelector('#nav-'+k+' svg')
-    if(p) p.style.background = k===section ? 'rgba(var(--accent-rgb),.14)' : 'transparent'
-    if(sv) sv.setAttribute('stroke', k===section?'var(--primary)':'var(--text-2)')
-    if(l){ l.style.color = k===section?'var(--primary)':'var(--text-2)'; l.style.fontWeight = k===section?'700':'500' }
-  })
-  ;['feed','notifs','profile','hub','groups','pages','events','market'].forEach(id=>{
-    const el=document.getElementById(id); if(el) el.classList.remove('show')
-  })
-  if(section==='home') openFeed()
-  else if(section==='notifs') openNotifs()
-  else if(section==='profile') openUserProfile(meId())
-  else {
-    tab='chats'
-    document.getElementById('sidebar').classList.remove('hidden')
-    document.getElementById('chat-area').style.display='none'
-    document.getElementById('empty-state').style.display='flex'
-    document.body.classList.remove('chat-open')
-    active=null; renderList()
-  }
-}
+
 
 document.getElementById('privacy-panel').addEventListener('click',function(e){if(e.target===this)hidePrivacy()})
 document.getElementById('settings-panel').addEventListener('click',function(e){if(e.target===this)hideSettings()})
@@ -2263,7 +2234,9 @@ function enterApp(){
   document.getElementById('app').classList.add('show')
   document.body.classList.add('app-ready')
   applyUserToUI()
-  loadMuted(); loadSocial(); loadP3(); loadNotifs(); loadBlocked(); loadPrefs(); renderList(); updateNavBadge()
+  loadMuted(); loadSocial(); loadP3(); loadNotifs(); loadBlocked(); loadPrefs()
+  navStack=[{v:'chats'}]; renderView(); updateNavBadge()
+  try{ history.replaceState({d:1},'') }catch(e){}
 }
 
 function applyUserToUI(){
@@ -2481,20 +2454,7 @@ let statuses=[
   {id:'u3',name:'Sarah Chen',av:'SC',time:'12 min ago',text:'Shipping the new designs today'},
   {id:'u6',name:'James Okafor',av:'JO',time:'1 hour ago',text:'Block 850,000 just mined'}
 ]
-function openFeed(){
-  openSheet('Updates',
-    '<div onclick="postStatus()" style="display:flex;align-items:center;gap:12px;padding:14px 20px;cursor:pointer;border-bottom:1px solid var(--border)">'
-    +'<div style="position:relative"><div class="avatar" data-user-initials style="width:44px;height:44px;font-size:15px">'+(currentUser?initialsOf(currentUser):'?')+'</div>'
-    +'<div style="position:absolute;bottom:-2px;right:-2px;width:20px;height:20px;border-radius:50%;background:var(--primary);border:2px solid var(--bg2);display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;font-weight:700;line-height:1">+</div></div>'
-    +'<div><div style="font-size:14px;font-weight:600;color:var(--text)">My status</div>'
-    +'<div style="font-size:12px;color:var(--text3)">Tap to add a status update</div></div></div>'
-    +'<div style="padding:14px 20px 8px;font-size:11px;color:var(--text3);font-weight:700;letter-spacing:.5px">RECENT</div>'
-    +statuses.map(s=>'<div onclick="viewStatus(\''+s.id+'\')" style="display:flex;align-items:center;gap:12px;padding:12px 20px;cursor:pointer">'
-      +'<div class="avatar" style="width:44px;height:44px;font-size:15px;box-shadow:0 0 0 2px var(--primary),0 0 0 4px var(--bg2)">'+s.av+'</div>'
-      +'<div><div style="font-size:14px;font-weight:600;color:var(--text)">'+s.name+'</div>'
-      +'<div style="font-size:12px;color:var(--text3)">'+s.time+'</div></div></div>').join(''),
-    {flush:true})
-}
+function openFeed(){ navTo('home') }
 function postStatus(){
   openSheet('New status',
     '<textarea id="st-text" class="auth-input" rows="4" placeholder="What\u2019s on your mind?" style="resize:none;line-height:1.5"></textarea>'
@@ -2800,7 +2760,7 @@ function closeStory(){
 
 /* ---------- profiles ---------- */
 function openMyProfile(){ openUserProfile(meId()) }
-function openUserProfile(uid){
+function paintProfile(uid){
   profViewing=uid
   const isMe = uid===meId()
   const c2 = isMe?null:contacts.find(x=>x.id===uid)
@@ -2860,7 +2820,9 @@ function openUserProfile(uid){
 
   document.getElementById('profile').classList.add('show')
 }
-function closeProfile(){ document.getElementById('profile').classList.remove('show') }
+function openUserProfile(uid){ navTo('profile', uid) }
+
+function closeProfile(){ navBack() }
 
 function editProfile(){
   const u=currentUser||{}
@@ -2945,18 +2907,18 @@ function saveP3(){
   }catch(e){}
 }
 function openScr(id){ document.getElementById(id).classList.add('show') }
-function closeScr(id){ document.getElementById(id).classList.remove('show') }
+function closeScr(id){ navBack() }
 
 /* ---------- hub ---------- */
-function openHub(){
+function paintHub(){
   const I=(p)=>'<svg width="22" height="22" fill="none" stroke="var(--primary)" stroke-width="2" viewBox="0 0 24 24">'+p+'</svg>'
   document.getElementById('hub-body').innerHTML=
-   tile(I('<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/>'),'Groups',sGroups.filter(g=>g.joined).length+' joined \u00b7 '+sGroups.length+' total','openGroups()')
-  +tile(I('<path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/>'),'Pages',sPages.filter(p=>p.following).length+' following \u00b7 '+sPages.length+' total','openPages()')
+   tile(I('<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>'),'Groups',sGroups.filter(g=>g.joined).length+' joined \u00b7 '+sGroups.length+' total','openGroups()')
+  +tile(I('<path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/>'),'Pages',sPages.filter(p=>p.following).length+' following \u00b7 '+sPages.length+' total','openPages()')
   +tile(I('<rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>'),'Events',sEvents.length+' upcoming','openEvents()')
-  +tile(I('<path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/>'),'Marketplace',sListings.length+' listings','openMarket()')
-  openScr('hub')
+  +tile(I('<path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><path d="M16 10a4 4 0 0 1-8 0"/>'),'Marketplace',sListings.length+' listings','openMarket()')
 }
+function openHub(){ navTo('hub') }
 function tile(ico,label,sub,fn){
   return '<div class="hub-tile" onclick="'+fn+'"><div class="hub-ico">'+ico+'</div>'
    +'<div style="flex:1"><div style="font-size:15px;font-weight:600;color:var(--text)">'+label+'</div>'
@@ -2965,7 +2927,7 @@ function tile(ico,label,sub,fn){
 }
 
 /* ---------- groups ---------- */
-function openGroups(){ renderGroups(); openScr('groups') }
+function openGroups(){ navTo('groups') }
 function renderGroups(){
   document.getElementById('groups-body').innerHTML = sGroups.length ? sGroups.map(g=>
    '<div class="card"><div class="card-pad">'
@@ -3018,7 +2980,7 @@ function submitGroupPost(id){
 }
 
 /* ---------- pages ---------- */
-function openPages(){ renderPages(); openScr('pages') }
+function openPages(){ navTo('pages') }
 function renderPages(){
   document.getElementById('pages-body').innerHTML = sPages.length ? sPages.map(p=>
    '<div class="card"><div class="card-pad">'
@@ -3075,7 +3037,7 @@ function submitPagePost(id){
 }
 
 /* ---------- events ---------- */
-function openEvents(){ renderEvents(); openScr('events') }
+function openEvents(){ navTo('events') }
 function renderEvents(){
   const fmt=d=>{ try{ return new Date(d).toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'}) }catch(e){ return d } }
   document.getElementById('events-body').innerHTML = sEvents.length ? sEvents.slice().sort((a,b)=>a.date.localeCompare(b.date)).map(e=>{
@@ -3127,7 +3089,7 @@ function submitEvent(){
 }
 
 /* ---------- marketplace ---------- */
-function openMarket(){ renderMarket(); openScr('market') }
+function openMarket(){ navTo('market') }
 function renderMarket(){
   const q=((document.getElementById('mk-search')||{}).value||'').trim().toLowerCase()
   const list=sListings.filter(l=>!q||l.title.toLowerCase().includes(q)||l.cat.toLowerCase().includes(q)||l.desc.toLowerCase().includes(q))
@@ -3232,7 +3194,7 @@ function pushNotif(type,name,av,text){
   notifs.unshift({id:'n'+Date.now(),type,uid:'me',name,av,text,ts:Date.now(),read:false})
   saveNotifs(); updateNavBadge()
 }
-function openNotifs(){ renderNotifs(); document.getElementById('notifs').classList.add('show') }
+function openNotifs(){ navTo('notifs') }
 function renderNotifs(){
   const ICON={like:'<path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z"/>',
    comment:'<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>',
@@ -3551,6 +3513,104 @@ function doDelete(){
     .forEach(k=>localStorage.removeItem(k)) }catch(e){}
   location.reload()
 }
+
+
+/* ============ UNIVERSAL NAVIGATION ============ */
+const ROOTS=['home','chats','notifs','profile']
+const SCREENS={home:'feed',notifs:'notifs',profile:'profile',hub:'hub',
+  groups:'groups',pages:'pages',events:'events',market:'market'}
+let navStack=[{v:'chats'}]
+
+function hideAllScreens(){
+  Object.values(SCREENS).forEach(id=>{
+    const el=document.getElementById(id); if(el) el.classList.remove('show')
+  })
+}
+
+function navTo(v,p,fromTab){
+  const top=navStack[navStack.length-1]
+  if(top && top.v===v && JSON.stringify(top.p||null)===JSON.stringify(p||null)) return
+  if(fromTab) navStack=[{v,p}]                // only a tab press resets the stack
+  else navStack.push({v,p})
+  renderView()
+  try{ history.pushState({d:navStack.length},'') }catch(e){}
+}
+
+function navBack(){
+  if(navStack.length>1){ navStack.pop(); renderView(); return true }
+  return false
+}
+
+function renderView(){
+  const s=navStack[navStack.length-1]
+  hideAllScreens()
+
+  if(s.v==='chat'){
+    // chat list stays mounted underneath so returning is instant
+    document.getElementById('sidebar').classList.add('hidden')
+    document.getElementById('empty-state').style.display='none'
+    document.getElementById('chat-area').style.display='flex'
+    if(!active || active.id!==s.p) mountChat(s.p)
+  } else if(s.v==='chats'){
+    document.getElementById('sidebar').classList.remove('hidden')
+    document.getElementById('chat-area').style.display='none'
+    document.getElementById('empty-state').style.display='flex'
+    active=null; renderList()
+  } else {
+    const id=SCREENS[s.v]
+    const el=id&&document.getElementById(id)
+    if(el) el.classList.add('show')
+    if(s.v==='home'){ renderStories(); renderSuggested(); renderPosts() }
+    if(s.v==='notifs') renderNotifs()
+    if(s.v==='profile') paintProfile(s.p||meId())
+    if(s.v==='hub') paintHub()
+    if(s.v==='groups') renderGroups()
+    if(s.v==='pages') renderPages()
+    if(s.v==='events') renderEvents()
+    if(s.v==='market') renderMarket()
+  }
+
+  paintNav()
+  paintBackArrows()
+}
+
+function paintNav(){
+  const s=navStack[navStack.length-1]
+  const root = s.v==='chat' ? 'chats' : (ROOTS.includes(s.v)?s.v:navStack[0].v)
+  ROOTS.forEach(k=>{
+    const p=document.getElementById('pill-'+k), l=document.getElementById('lbl-'+k),
+          sv=document.querySelector('#nav-'+k+' svg')
+    const on = k===root
+    if(p) p.style.background = on ? 'rgba(var(--accent-rgb),.14)' : 'transparent'
+    if(sv) sv.setAttribute('stroke', on?'var(--primary)':'var(--text-2)')
+    if(l){ l.style.color = on?'var(--primary)':'var(--text-2)'; l.style.fontWeight = on?'700':'500' }
+  })
+}
+
+// a back arrow appears on every screen that has somewhere to go back to
+function paintBackArrows(){
+  const show = navStack.length>1
+  document.querySelectorAll('[data-back]').forEach(b=>{ b.style.display = show?'flex':'none' })
+  const cb=document.querySelector('.back-btn')
+  if(cb) cb.style.display='flex'
+}
+
+function switchNav(section){ navTo(section,null,true) }
+
+function mountChat(id){
+  active=contacts.find(c=>c.id===id)
+  if(!active) return
+  msgs=seedMsgs(active)
+  if(active.type==='ai') aiHistory=[]
+  paintChatHeader()
+  renderMessages(); renderList(); applyWallpaper()
+  const i=document.getElementById('msg-input'); if(i) i.focus()
+}
+
+// browser / hardware back
+window.addEventListener('popstate',function(){
+  if(!navBack()){ try{ history.pushState({d:1},'') }catch(e){} }
+})
 
 // Splash to app transition
 setTimeout(function(){
