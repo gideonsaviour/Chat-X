@@ -144,6 +144,57 @@ body{font-family:'Inter',sans-serif;background:var(--bg1);color:var(--text);heig
 #toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);background:#1a1a1a;border:1px solid #222;color:#f1f1f5;padding:10px 20px;border-radius:10px;font-size:13px;opacity:0;transition:all .3s;z-index:99999;pointer-events:none;white-space:nowrap}
 input,textarea,select{outline:none;font-family:'Inter',sans-serif;color:#f1f1f5}
 input::placeholder,textarea::placeholder{color:#444}
+
+/* ===== DESKTOP LAYOUT ===== */
+@media(min-width:641px){
+  #bottom-nav{display:none !important}
+  #app.show{padding-bottom:0 !important}
+  #sidebar{
+    width:320px !important;
+    height:100vh !important;
+    flex-shrink:0;
+  }
+  #main{height:100vh !important}
+  #chat-list{padding-bottom:8px !important}
+  #group-panel{display:none;width:300px !important}
+  #group-panel.show{display:flex !important}
+}
+
+/* ===== MOBILE LAYOUT ===== */
+@media(max-width:640px){
+  #bottom-nav{display:flex !important}
+  #app.show{padding-bottom:0}
+  #sidebar{
+    position:fixed !important;
+    inset:0 !important;
+    width:100% !important;
+    height:calc(100vh - 78px) !important;
+    z-index:100;
+    transition:transform .25s ease;
+  }
+  #sidebar.hidden{transform:translateX(-100%) !important}
+  #main{height:calc(100vh - 78px) !important}
+  #chat-list{padding-bottom:8px !important}
+  .back-btn{display:flex !important}
+  #group-panel{width:100% !important}
+}
+
+/* ===== SCROLLING ===== */
+#chat-list{overflow-y:auto;scroll-behavior:smooth}
+#messages{overflow-y:auto;scroll-behavior:smooth}
+#chat-list::-webkit-scrollbar{width:4px}
+#chat-list::-webkit-scrollbar-thumb{background:#222;border-radius:2px}
+#messages::-webkit-scrollbar{width:4px}
+#messages::-webkit-scrollbar-thumb{background:#222;border-radius:2px}
+
+/* ===== DESKTOP SIDEBAR WIDTH BALANCE ===== */
+@media(min-width:1024px){
+  #sidebar{width:360px !important}
+}
+@media(min-width:1440px){
+  #sidebar{width:400px !important}
+  #group-panel{width:340px !important}
+}
 </style>
 </head>
 <body>
