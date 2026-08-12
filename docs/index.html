@@ -936,11 +936,12 @@ body.light-theme #messages{background:transparent}
 #splash-stage picture,#splash-stage img{display:block;width:100%;height:100%}
 #splash-stage img{object-fit:contain}
 /* measured from the artwork: bar top 89.53%, h 1.30%, left 21.81%, w 55.80% */
-#splash-track{position:absolute;left:21.81%;top:89.53%;width:55.80%;height:1.30%;
-  min-height:4px;border-radius:999px;background:rgba(37,99,235,.18);overflow:hidden}
+/* opaque, sized to the printed track so it fully covers it */
+#splash-track{position:absolute;left:21.805%;top:89.371%;width:55.920%;height:1.627%;
+  min-height:5px;border-radius:999px;background:rgb(183,196,254);overflow:hidden}
 #splash-fill{display:block;height:100%;width:0;border-radius:999px;
-  background:linear-gradient(90deg,#2563EB,#7C3AED);
-  transition:width .45s cubic-bezier(.4,0,.2,1)}
+  background:linear-gradient(90deg,#2964FE 0%,#5D6EFE 55%,#706DFE 100%);
+  transition:width .6s cubic-bezier(.33,0,.25,1)}
 #splash-status{position:absolute;left:0;right:0;top:92.4%;text-align:center;
   font-size:clamp(11px,1.45vh,15px);font-weight:500;color:#5B6B85}
 @media(prefers-reduced-motion:reduce){#splash-fill{transition:none}}
@@ -4231,49 +4232,65 @@ function skeletonList(n){
 }
 
 // Splash to app transition
-/* ===== SPLASH BOOT SEQUENCE ===== */
+/* ===== SPLASH BOOT SEQUENCE (6s minimum) ===== */
 ;(function(){
-  const bar=()=>document.getElementById('splash-fill')
-  const msg=()=>document.getElementById('splash-status')
-  let pct=0
-  function step(to,text){
-    pct=to
-    const b=bar(); if(b) b.style.width=to+'%'
-    const m=msg(); if(m && text) m.textContent=text
+  const HOLD = 6000               // splash stays up this long
+  const t0   = Date.now()
+  let heroReady = false
+
+  const fill = ()=>document.getElementById('splash-fill')
+  const stat = ()=>document.getElementById('splash-status')
+
+  const STAGES = [
+    {at:   0, pct:  6, text:'Loading your conversations\u2026'},
+    {at: 900, pct: 24, text:'Loading your conversations\u2026'},
+    {at:2100, pct: 46, text:'Syncing your messages\u2026'},
+    {at:3400, pct: 68, text:'Preparing your feed\u2026'},
+    {at:4700, pct: 86, text:'Almost ready\u2026'},
+    {at:5600, pct: 96, text:'Almost ready\u2026'}
+  ]
+
+  function set(pct,text){
+    const f=fill(); if(f) f.style.width=pct+'%'
+    const s=stat(); if(s && text) s.textContent=text
   }
 
-  // real progress: wait for the hero image, then hand over
-  function whenHeroReady(cb){
+  // preload the artwork so the bar never outruns the picture
+  ;(function(){
     const img=document.getElementById('splash-img')
-    if(!img) return cb()
-    if(img.complete) return cb()
-    let done=false
-    const fin=()=>{ if(!done){ done=true; cb() } }
-    img.addEventListener('load',fin,{once:true})
-    img.addEventListener('error',fin,{once:true})
-    setTimeout(fin,2500)   // never hang on a slow asset
-  }
+    if(!img){ heroReady=true; return }
+    if(img.complete){ heroReady=true; return }
+    const done=()=>{ heroReady=true }
+    img.addEventListener('load',done,{once:true})
+    img.addEventListener('error',done,{once:true})
+    setTimeout(done,4000)
+  })()
 
   function finish(){
-    step(100,'Ready')
+    set(100,'Ready')
     setTimeout(function(){
       const sp=document.getElementById('splash')
       sp.classList.add('hide')
       setTimeout(function(){
         sp.style.display='none'
-        bootAuth()                       // -> auth, or straight into the app
-      },560)                             // matches the CSS fade
-    },320)
+        bootAuth()
+      },560)
+    },380)
   }
 
-  window.addEventListener('load',function(){
-    step(18,'Starting Chat-X\u2026')
-    setTimeout(()=>step(46,'Loading your profile\u2026'),380)
-    whenHeroReady(function(){
-      setTimeout(()=>step(78,'Preparing your feed\u2026'),260)
-      setTimeout(finish,900)
-    })
-  })
+  function run(){
+    STAGES.forEach(s=>setTimeout(()=>set(s.pct,s.text), s.at))
+    // hold the full 6s, and never cut away before the artwork has painted
+    const tick=()=>{
+      const waited = Date.now()-t0
+      if(waited>=HOLD && heroReady) finish()
+      else setTimeout(tick, 120)
+    }
+    setTimeout(tick, HOLD)
+  }
+
+  if(document.readyState==='complete') run()
+  else window.addEventListener('load', run)
 })()
 
 </script>
