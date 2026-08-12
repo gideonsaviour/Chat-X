@@ -771,7 +771,15 @@ function openChat(id){
   if(!active)return
   msgs=seedMsgs(active)
   if(active.type==='ai')aiHistory=[]
-  if(window.innerWidth<=640)document.getElementById('sidebar').classList.add('hidden')
+  if(window.innerWidth<=640){
+    document.getElementById('sidebar').classList.add('hidden')
+    // Hide bottom nav when chat is open on mobile
+    const nav=document.getElementById('bottom-nav')
+    if(nav)nav.style.display='none'
+    // Make main fullscreen
+    const main=document.getElementById('main')
+    if(main)main.style.height='100dvh'
+  }
   document.getElementById('empty-state').style.display='none'
   document.getElementById('chat-area').style.display='flex'
   closeGroupPanel()
@@ -810,6 +818,12 @@ function goBack(){
   document.getElementById('chat-area').style.display='none'
   document.getElementById('empty-state').style.display='flex'
   closeGroupPanel();active=null;renderList()
+  if(window.innerWidth<=640){
+    const nav=document.getElementById('bottom-nav')
+    if(nav)nav.style.display='flex'
+    const main=document.getElementById('main')
+    if(main)main.style.height='calc(100dvh - 78px)'
+  }
 }
 
 function renderMessages(){
