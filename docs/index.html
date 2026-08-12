@@ -501,6 +501,32 @@ h1,h2,.scr-title,.auth-h1{letter-spacing:-.02em}
 .msg-theirs span,.msg-ai span{color:var(--text-2)}
 #messages{background-color:var(--bg)}
 body.light-theme #messages{background-color:#EEF2F7}
+/* every control readable in BOTH themes */
+.auth-ghost{background:var(--surface);border:1px solid var(--border-strong);color:var(--text-1)}
+.auth-ghost:hover{background:var(--surface-2);border-color:var(--primary)}
+.pill-btn.ghost{background:var(--surface);border:1px solid var(--border-strong);color:var(--text-1)}
+.pill-btn.ghost:hover{background:var(--surface-2)}
+.auth-btn{color:#fff}
+.auth-link{color:var(--primary)}
+.tab-btn{color:var(--text-2)}
+.icon-btn{color:var(--text-2)}
+.icon-btn svg{stroke:currentColor}
+.icon-btn:hover{color:var(--text-1)}
+.ptab{color:var(--text-2)}
+.post-act{color:var(--text-2)}
+.post-act svg{stroke:currentColor}
+.scr-title{color:var(--text-1)}
+.auth-label{color:var(--text-2)}
+.auth-input{background:var(--surface);border:1px solid var(--border-strong);color:var(--text-1)}
+.auth-input::placeholder{color:var(--text-3)}
+.toggle-slider{background:var(--border-strong)}
+.modal-btn svg{stroke:#fff}
+#sheet .icon-btn{color:var(--text-2)}
+.react{background:var(--card);border-color:var(--border-strong);color:var(--text-1)}
+.hub-tile{color:var(--text-1)}
+.story-name{color:var(--text-2)}
+.cover-btn{background:rgba(15,23,42,.6);color:#fff}
+.fab svg{stroke:#fff}
 </style>
 </head>
 <body>
@@ -899,22 +925,33 @@ body.light-theme #messages{background-color:#EEF2F7}
     <div style="padding:8px 0">
 
       <!-- THEME -->
-      <div style="padding:12px 20px;font-size:11px;color:var(--text3);font-weight:700;letter-spacing:.5px">THEME</div>
+      <div style="padding:12px 20px;font-size:11px;color:var(--text-2);font-weight:700;letter-spacing:.5px">THEME</div>
       <div style="padding:0 20px 16px;display:flex;gap:12px">
-        <div onclick="setTheme('dark')" id="theme-dark" style="flex:1;border-radius:14px;border:2px solid var(--accent);background:var(--bg);padding:16px;cursor:pointer;text-align:center;transition:all .2s">
-          <div style="width:100%;height:50px;border-radius:8px;background:var(--card);margin-bottom:8px;display:flex;align-items:center;justify-content:center">
-            <div style="width:60%;height:8px;border-radius:4px;background:var(--primary)"></div>
+
+        <div onclick="setTheme('dark')" id="theme-dark" style="flex:1;border-radius:14px;padding:5px;cursor:pointer;transition:all .2s;background:var(--card)">
+          <div style="background:#0F172A;border-radius:11px;padding:14px 12px;text-align:center">
+            <div style="background:#1E293B;border-radius:8px;padding:9px;margin-bottom:9px;display:flex;flex-direction:column;gap:5px">
+              <div style="height:7px;width:62%;border-radius:4px;background:#3B82F6"></div>
+              <div style="height:6px;width:88%;border-radius:4px;background:#334155"></div>
+              <div style="height:6px;width:44%;border-radius:4px;background:#334155"></div>
+            </div>
+            <div style="font-size:13px;font-weight:600;color:#F8FAFC">Dark</div>
+            <div id="theme-dark-check" style="font-size:11px;color:#3B82F6;margin-top:2px">Active</div>
           </div>
-          <div style="font-size:13px;font-weight:600;color:#fff">Dark</div>
-          <div id="theme-dark-check" style="font-size:11px;color:var(--primary);margin-top:2px">✓ Active</div>
         </div>
-        <div onclick="setTheme('light')" id="theme-light" style="flex:1;border-radius:14px;border:2px solid var(--border);background:#fff;padding:16px;cursor:pointer;text-align:center;transition:all .2s">
-          <div style="width:100%;height:50px;border-radius:8px;background:var(--surface);margin-bottom:8px;display:flex;align-items:center;justify-content:center">
-            <div style="width:60%;height:8px;border-radius:4px;background:var(--border)"></div>
+
+        <div onclick="setTheme('light')" id="theme-light" style="flex:1;border-radius:14px;padding:5px;cursor:pointer;transition:all .2s;background:var(--card)">
+          <div style="background:#F8FAFC;border-radius:11px;padding:14px 12px;text-align:center">
+            <div style="background:#FFFFFF;border-radius:8px;padding:9px;margin-bottom:9px;display:flex;flex-direction:column;gap:5px;border:1px solid #E5E7EB">
+              <div style="height:7px;width:62%;border-radius:4px;background:#2563EB"></div>
+              <div style="height:6px;width:88%;border-radius:4px;background:#E5E7EB"></div>
+              <div style="height:6px;width:44%;border-radius:4px;background:#E5E7EB"></div>
+            </div>
+            <div style="font-size:13px;font-weight:600;color:#111827">Light</div>
+            <div id="theme-light-check" style="font-size:11px;color:#6B7280;margin-top:2px">Tap to switch</div>
           </div>
-          <div style="font-size:13px;font-weight:600;color:#111827">Light</div>
-          <div id="theme-light-check" style="font-size:11px;color:var(--text-3);margin-top:2px">Tap to switch</div>
         </div>
+
       </div>
 
       <!-- WALLPAPER -->
@@ -1531,23 +1568,18 @@ function saveChatsSettings(){
 let currentTheme='dark'
 function setTheme(theme,silent){
   currentTheme=theme
-  if(theme==='light'){
-    document.body.classList.add('light-theme')
-    document.getElementById('theme-dark').style.borderColor='var(--border)'
-    document.getElementById('theme-dark-check').textContent=''
-    document.getElementById('theme-dark-check').style.color='var(--text-3)'
-    document.getElementById('theme-light').style.borderColor='var(--card)'
-    document.getElementById('theme-light-check').textContent='✓ Active'
-    document.getElementById('theme-light-check').style.color='var(--card)'
-  } else {
-    document.body.classList.remove('light-theme')
-    document.getElementById('theme-dark').style.borderColor='var(--primary)'
-    document.getElementById('theme-dark-check').textContent='✓ Active'
-    document.getElementById('theme-dark-check').style.color='var(--primary)'
-    document.getElementById('theme-light').style.borderColor='var(--border)'
-    document.getElementById('theme-light-check').textContent='Tap to switch'
-    document.getElementById('theme-light-check').style.color='var(--text-3)'
-  }
+  document.body.classList.toggle('light-theme', theme==='light')
+
+  const d=document.getElementById('theme-dark'), l=document.getElementById('theme-light')
+  const dc=document.getElementById('theme-dark-check'), lc=document.getElementById('theme-light-check')
+  const onRing='0 0 0 2px var(--primary)', offRing='0 0 0 1px var(--border)'
+  if(d){ d.style.boxShadow = theme==='dark'?onRing:offRing }
+  if(l){ l.style.boxShadow = theme==='light'?onRing:offRing }
+  if(dc) dc.textContent = theme==='dark'?'Active':'Tap to switch'
+  if(lc) lc.textContent = theme==='light'?'Active':'Tap to switch'
+  if(dc) dc.style.color = theme==='dark'?'#3B82F6':'#64748B'
+  if(lc) lc.style.color = theme==='light'?'#2563EB':'#6B7280'
+
   applyWallpaper()
   markDirty()
   if(!silent) toast(theme==='light'?'Light theme applied':'Dark theme applied')
