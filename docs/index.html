@@ -345,6 +345,30 @@ html,body{
 .prof-stat{flex:1;text-align:center;padding:12px 0}
 .prof-stat b{display:block;font-size:17px;font-weight:700;color:var(--text)}
 .prof-stat span{font-size:12px;color:var(--text3)}
+/* ===== PHASE 3 ===== */
+#hub,#groups,#pages,#events,#market{position:fixed;inset:0;z-index:9993;background:var(--bg1);
+  display:none;flex-direction:column}
+#hub.show,#groups.show,#pages.show,#events.show,#market.show{display:flex}
+.hub-tile{display:flex;align-items:center;gap:14px;padding:16px 20px;cursor:pointer;
+  border-bottom:1px solid var(--border)}
+.hub-tile:hover{background:var(--hover)}
+.hub-ico{width:46px;height:46px;border-radius:14px;background:rgba(0,137,123,.14);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:14px;
+  margin:12px 16px;overflow:hidden}
+.card-pad{padding:14px 16px}
+.pill-btn{padding:8px 16px;border-radius:999px;border:none;cursor:pointer;font-size:13px;
+  font-weight:600;font-family:Inter,sans-serif;background:linear-gradient(135deg,#00897B,#00695C);color:#fff}
+.pill-btn.ghost{background:var(--bg3);color:var(--text);border:1px solid var(--border)}
+.chip{display:inline-block;padding:4px 11px;border-radius:999px;background:rgba(0,137,123,.14);
+  color:#00897B;font-size:11px;font-weight:700;margin-right:6px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:12px 16px}
+.listing{background:var(--bg2);border:1px solid var(--border);border-radius:14px;overflow:hidden;cursor:pointer}
+.listing-img{width:100%;aspect-ratio:1;object-fit:cover;display:block;background:var(--bg3)}
+.listing-ph{width:100%;aspect-ratio:1;background:var(--bg3);display:flex;align-items:center;justify-content:center}
+.fab{position:absolute;right:18px;bottom:96px;width:54px;height:54px;border-radius:50%;
+  border:none;background:linear-gradient(135deg,#00897B,#00695C);color:#fff;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;box-shadow:0 4px 18px rgba(0,0,0,.4);z-index:5}
 </style>
 </head>
 <body>
@@ -482,6 +506,50 @@ html,body{
   <div id="sv-body" style="width:100%;max-width:440px;padding:30px;text-align:center;font-size:21px;color:#fff;line-height:1.55"></div>
   <div onclick="prevStory()" style="position:absolute;left:0;top:70px;bottom:0;width:32%"></div>
   <div onclick="nextStory()" style="position:absolute;right:0;top:70px;bottom:0;width:68%"></div>
+</div>
+
+<div id="hub">
+  <div class="scr-head"><div class="scr-title">Discover</div></div>
+  <div class="scr-body" id="hub-body"></div>
+</div>
+
+<div id="groups">
+  <div class="scr-head">
+    <button class="icon-btn" onclick="closeScr('groups')"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
+    <div class="scr-title">Groups</div>
+  </div>
+  <div class="scr-body" id="groups-body"></div>
+  <button class="fab" onclick="createGroup()"><svg width="24" height="24" fill="none" stroke="#fff" stroke-width="2.5" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+</div>
+
+<div id="pages">
+  <div class="scr-head">
+    <button class="icon-btn" onclick="closeScr('pages')"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
+    <div class="scr-title">Pages</div>
+  </div>
+  <div class="scr-body" id="pages-body"></div>
+  <button class="fab" onclick="createPage()"><svg width="24" height="24" fill="none" stroke="#fff" stroke-width="2.5" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+</div>
+
+<div id="events">
+  <div class="scr-head">
+    <button class="icon-btn" onclick="closeScr('events')"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
+    <div class="scr-title">Events</div>
+  </div>
+  <div class="scr-body" id="events-body"></div>
+  <button class="fab" onclick="createEvent()"><svg width="24" height="24" fill="none" stroke="#fff" stroke-width="2.5" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+</div>
+
+<div id="market">
+  <div class="scr-head">
+    <button class="icon-btn" onclick="closeScr('market')"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
+    <div class="scr-title">Marketplace</div>
+  </div>
+  <div style="padding:12px 16px;flex-shrink:0">
+    <input id="mk-search" class="auth-input" placeholder="Search listings" oninput="renderMarket()" style="margin:0"/>
+  </div>
+  <div class="scr-body" id="market-body"></div>
+  <button class="fab" onclick="createListing()"><svg width="24" height="24" fill="none" stroke="#fff" stroke-width="2.5" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
 </div>
 
 <div id="splash">
@@ -1317,6 +1385,11 @@ function switchNav(section){
     document.getElementById('empty-state').style.display='flex'
     active=null
   } else if(section==='communities'){
+    openHub()
+    document.getElementById('nav-chats').classList.add('active')
+    document.getElementById('nav-communities').classList.remove('active')
+    return
+  } else if(section==='__unused'){
     tab='community'
     document.querySelectorAll('.tab-btn').forEach((b,i)=>{b.classList.remove('active');if(i===3)b.classList.add('active')})
     renderList()
@@ -2106,7 +2179,7 @@ function enterApp(){
   document.getElementById('app').classList.add('show')
   document.body.classList.add('app-ready')
   applyUserToUI()
-  loadMuted(); loadSocial(); loadPrefs(); renderList(); updateNavBadge()
+  loadMuted(); loadSocial(); loadP3(); loadPrefs(); renderList(); updateNavBadge()
 }
 
 function applyUserToUI(){
@@ -2721,6 +2794,313 @@ function saveProfile(){
   saveSocial()
   closeSheet(); openUserProfile(meId()); renderPosts(); renderStories()
   toast('Profile updated')
+}
+
+
+/* ================= PHASE 3: GROUPS, PAGES, EVENTS, MARKETPLACE ================= */
+
+let sGroups=[], sPages=[], sEvents=[], sListings=[]
+
+const SEED_G=[
+ {id:'g101',name:'Bitcoin Builders',desc:'People shipping on Bitcoin. Protocol talk, Lightning, mining.',members:['u6','u4'],joined:false,posts:[]},
+ {id:'g102',name:'Design Review',desc:'Post work in progress, get honest critique.',members:['u3'],joined:true,posts:[{uid:'u3',name:'Sarah Chen',text:'New type scale up for review.',ts:Date.now()-7200000}]}
+]
+const SEED_PG=[
+ {id:'pg1',name:'Chat-X Updates',cat:'Product',desc:'Release notes and roadmap for Chat-X.',followers:1240,following:true,posts:[{text:'Stories and the feed are live.',ts:Date.now()-3600000}]},
+ {id:'pg2',name:'Lagos Tech Weekly',cat:'Media',desc:'What shipped in Lagos this week.',followers:8900,following:false,posts:[]}
+]
+const SEED_EV=[
+ {id:'ev1',title:'Chat-X launch meetup',date:'2026-09-04',time:'18:00',place:'Yaba, Lagos',
+  desc:'Demos, drinks and a look at what we are building next.',going:[],interested:['u3']}
+]
+const SEED_MK=[
+ {id:'mk1',title:'MacBook Pro 14 M3',price:'1,450,000',cur:'\u20a6',cat:'Electronics',
+  desc:'18GB RAM, 512GB. Barely used, boxed with charger.',img:null,seller:'u4',sellerName:'Marcus Webb',ts:Date.now()-86400000},
+ {id:'mk2',title:'Standing desk',price:'220,000',cur:'\u20a6',cat:'Furniture',
+  desc:'Electric height adjust, oak top, 140cm wide.',img:null,seller:'u6',sellerName:'James Okafor',ts:Date.now()-172800000}
+]
+
+function loadP3(){
+  const g=k=>{ try{ return JSON.parse(localStorage.getItem(k)||'null') }catch(e){ return null } }
+  sGroups   = g('chatx_groups')   || SEED_G.slice()
+  sPages    = g('chatx_pages')    || SEED_PG.slice()
+  sEvents   = g('chatx_events')   || SEED_EV.slice()
+  sListings = g('chatx_listings') || SEED_MK.slice()
+  saveP3()
+}
+function saveP3(){
+  try{
+    localStorage.setItem('chatx_groups',JSON.stringify(sGroups))
+    localStorage.setItem('chatx_pages',JSON.stringify(sPages))
+    localStorage.setItem('chatx_events',JSON.stringify(sEvents))
+    localStorage.setItem('chatx_listings',JSON.stringify(sListings))
+  }catch(e){}
+}
+function openScr(id){ document.getElementById(id).classList.add('show') }
+function closeScr(id){ document.getElementById(id).classList.remove('show') }
+
+/* ---------- hub ---------- */
+function openHub(){
+  const I=(p)=>'<svg width="22" height="22" fill="none" stroke="#00897B" stroke-width="2" viewBox="0 0 24 24">'+p+'</svg>'
+  document.getElementById('hub-body').innerHTML=
+   tile(I('<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/>'),'Groups',sGroups.filter(g=>g.joined).length+' joined \u00b7 '+sGroups.length+' total','openGroups()')
+  +tile(I('<path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/>'),'Pages',sPages.filter(p=>p.following).length+' following \u00b7 '+sPages.length+' total','openPages()')
+  +tile(I('<rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>'),'Events',sEvents.length+' upcoming','openEvents()')
+  +tile(I('<path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/>'),'Marketplace',sListings.length+' listings','openMarket()')
+  openScr('hub')
+}
+function tile(ico,label,sub,fn){
+  return '<div class="hub-tile" onclick="'+fn+'"><div class="hub-ico">'+ico+'</div>'
+   +'<div style="flex:1"><div style="font-size:15px;font-weight:600;color:var(--text)">'+label+'</div>'
+   +'<div style="font-size:12px;color:var(--text3);margin-top:2px">'+sub+'</div></div>'
+   +'<svg width="16" height="16" fill="none" stroke="var(--text3)" stroke-width="2" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>'
+}
+
+/* ---------- groups ---------- */
+function openGroups(){ renderGroups(); openScr('groups') }
+function renderGroups(){
+  document.getElementById('groups-body').innerHTML = sGroups.length ? sGroups.map(g=>
+   '<div class="card"><div class="card-pad">'
+   +'<div style="display:flex;align-items:center;gap:12px;margin-bottom:10px">'
+   +'<div class="avatar" style="width:46px;height:46px;font-size:16px">'+g.name.split(' ').map(w=>w[0]).join('').slice(0,2)+'</div>'
+   +'<div style="flex:1"><div style="font-size:15px;font-weight:700;color:var(--text)">'+esc(g.name)+'</div>'
+   +'<div style="font-size:12px;color:var(--text3)">'+(g.members.length+(g.joined?1:0))+' members</div></div></div>'
+   +'<div style="font-size:13px;color:var(--text3);line-height:1.55;margin-bottom:12px">'+esc(g.desc)+'</div>'
+   +'<div style="display:flex;gap:8px">'
+   +'<button class="pill-btn'+(g.joined?' ghost':'')+'" onclick="toggleJoin(\''+g.id+'\')">'+(g.joined?'Leave':'Join')+'</button>'
+   +(g.joined?'<button class="pill-btn ghost" onclick="openGroupFeed(\''+g.id+'\')">Open</button>':'')
+   +'</div></div></div>'
+  ).join('') : empty('No groups yet.')
+}
+function toggleJoin(id){
+  const g=sGroups.find(x=>x.id===id); if(!g) return
+  g.joined=!g.joined; saveP3(); renderGroups()
+  toast(g.joined?'Joined '+g.name:'Left '+g.name)
+}
+function createGroup(){
+  openSheet('Create group',
+   '<label class="auth-label">GROUP NAME</label><input id="ng-name" class="auth-input" placeholder="Design Review"/>'
+   +'<label class="auth-label">DESCRIPTION</label><textarea id="ng-desc" class="auth-input" rows="3" placeholder="What is this group for?" style="resize:none;line-height:1.5"></textarea>'
+   +'<button class="auth-btn" onclick="submitGroup()">Create group</button>')
+}
+function submitGroup(){
+  const n=(document.getElementById('ng-name').value||'').trim()
+  const d=(document.getElementById('ng-desc').value||'').trim()
+  if(!n) return toast('Give the group a name')
+  sGroups.unshift({id:'g'+Date.now(),name:n,desc:d||'No description yet.',members:[],joined:true,posts:[]})
+  saveP3(); closeSheet(); renderGroups(); toast('Group created')
+}
+function openGroupFeed(id){
+  const g=sGroups.find(x=>x.id===id); if(!g) return
+  openSheet(g.name,
+   '<textarea id="gp-text" class="auth-input" rows="3" placeholder="Post to '+esc(g.name)+'" style="resize:none;line-height:1.5"></textarea>'
+   +'<button class="auth-btn" onclick="submitGroupPost(\''+id+'\')" style="margin-bottom:16px">Post</button>'
+   +(g.posts.length?g.posts.slice().sort((a,b)=>b.ts-a.ts).map(p=>
+     '<div style="padding:12px 0;border-top:1px solid var(--border)">'
+     +'<div style="font-size:13px;font-weight:600;color:var(--text)">'+esc(p.name)+' <span style="font-weight:400;color:var(--text3)">\u00b7 '+ago(p.ts)+'</span></div>'
+     +'<div style="font-size:14px;color:var(--text);line-height:1.55;margin-top:4px">'+esc(p.text)+'</div></div>').join('')
+    :'<div style="padding:20px 0;text-align:center;color:var(--text3);font-size:13px;border-top:1px solid var(--border)">No posts yet.</div>'))
+}
+function submitGroupPost(id){
+  const g=sGroups.find(x=>x.id===id); if(!g) return
+  const v=(document.getElementById('gp-text').value||'').trim()
+  if(!v) return toast('Write something first')
+  g.posts.push({uid:meId(),name:myName(),text:v,ts:Date.now()})
+  saveP3(); openGroupFeed(id); toast('Posted to '+g.name)
+}
+
+/* ---------- pages ---------- */
+function openPages(){ renderPages(); openScr('pages') }
+function renderPages(){
+  document.getElementById('pages-body').innerHTML = sPages.length ? sPages.map(p=>
+   '<div class="card"><div class="card-pad">'
+   +'<div style="display:flex;align-items:center;gap:12px;margin-bottom:10px">'
+   +'<div class="avatar" style="width:46px;height:46px;font-size:16px;border-radius:12px">'+p.name.split(' ').map(w=>w[0]).join('').slice(0,2)+'</div>'
+   +'<div style="flex:1"><div style="font-size:15px;font-weight:700;color:var(--text)">'+esc(p.name)+'</div>'
+   +'<div style="font-size:12px;color:var(--text3)"><span class="chip">'+esc(p.cat)+'</span>'+p.followers.toLocaleString()+' followers</div></div></div>'
+   +'<div style="font-size:13px;color:var(--text3);line-height:1.55;margin-bottom:12px">'+esc(p.desc)+'</div>'
+   +'<div style="display:flex;gap:8px">'
+   +'<button class="pill-btn'+(p.following?' ghost':'')+'" onclick="toggleFollow(\''+p.id+'\')">'+(p.following?'Following':'Follow')+'</button>'
+   +'<button class="pill-btn ghost" onclick="openPageFeed(\''+p.id+'\')">View</button></div>'
+   +'</div></div>'
+  ).join('') : empty('No pages yet.')
+}
+function toggleFollow(id){
+  const p=sPages.find(x=>x.id===id); if(!p) return
+  p.following=!p.following
+  p.followers += p.following?1:-1
+  saveP3(); renderPages(); toast(p.following?'Following '+p.name:'Unfollowed '+p.name)
+}
+function createPage(){
+  openSheet('Create page',
+   '<label class="auth-label">PAGE NAME</label><input id="pg-name" class="auth-input" placeholder="Lagos Tech Weekly"/>'
+   +'<label class="auth-label">CATEGORY</label><input id="pg-cat" class="auth-input" placeholder="Media"/>'
+   +'<label class="auth-label">DESCRIPTION</label><textarea id="pg-desc" class="auth-input" rows="3" placeholder="What is this page about?" style="resize:none;line-height:1.5"></textarea>'
+   +'<button class="auth-btn" onclick="submitPage()">Create page</button>')
+}
+function submitPage(){
+  const n=(document.getElementById('pg-name').value||'').trim()
+  const cat=(document.getElementById('pg-cat').value||'').trim()
+  const d=(document.getElementById('pg-desc').value||'').trim()
+  if(!n) return toast('Give the page a name')
+  sPages.unshift({id:'pg'+Date.now(),name:n,cat:cat||'General',desc:d||'No description yet.',
+    followers:0,following:true,posts:[]})
+  saveP3(); closeSheet(); renderPages(); toast('Page created')
+}
+function openPageFeed(id){
+  const p=sPages.find(x=>x.id===id); if(!p) return
+  openSheet(p.name,
+   '<textarea id="pgp-text" class="auth-input" rows="3" placeholder="Post as '+esc(p.name)+'" style="resize:none;line-height:1.5"></textarea>'
+   +'<button class="auth-btn" onclick="submitPagePost(\''+id+'\')" style="margin-bottom:16px">Publish</button>'
+   +(p.posts.length?p.posts.slice().sort((a,b)=>b.ts-a.ts).map(x=>
+     '<div style="padding:12px 0;border-top:1px solid var(--border)">'
+     +'<div style="font-size:12px;color:var(--text3)">'+ago(x.ts)+'</div>'
+     +'<div style="font-size:14px;color:var(--text);line-height:1.55;margin-top:4px">'+esc(x.text)+'</div></div>').join('')
+    :'<div style="padding:20px 0;text-align:center;color:var(--text3);font-size:13px;border-top:1px solid var(--border)">Nothing published yet.</div>'))
+}
+function submitPagePost(id){
+  const p=sPages.find(x=>x.id===id); if(!p) return
+  const v=(document.getElementById('pgp-text').value||'').trim()
+  if(!v) return toast('Write something first')
+  p.posts.push({text:v,ts:Date.now()})
+  saveP3(); openPageFeed(id); toast('Published')
+}
+
+/* ---------- events ---------- */
+function openEvents(){ renderEvents(); openScr('events') }
+function renderEvents(){
+  const fmt=d=>{ try{ return new Date(d).toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'}) }catch(e){ return d } }
+  document.getElementById('events-body').innerHTML = sEvents.length ? sEvents.slice().sort((a,b)=>a.date.localeCompare(b.date)).map(e=>{
+    const going=e.going.includes(meId()), inter=e.interested.includes(meId())
+    return '<div class="card">'
+     +'<div style="background:linear-gradient(135deg,#00897B,#00695C);padding:16px;color:#fff">'
+     +'<div style="font-size:12px;opacity:.85">'+fmt(e.date)+' \u00b7 '+e.time+'</div>'
+     +'<div style="font-size:17px;font-weight:700;margin-top:3px">'+esc(e.title)+'</div></div>'
+     +'<div class="card-pad">'
+     +'<div style="font-size:13px;color:var(--text3);margin-bottom:8px">\ud83d\udccd '+esc(e.place)+'</div>'
+     +'<div style="font-size:13px;color:var(--text);line-height:1.55;margin-bottom:10px">'+esc(e.desc)+'</div>'
+     +'<div style="font-size:12px;color:var(--text3);margin-bottom:12px">'+e.going.length+' going \u00b7 '+e.interested.length+' interested</div>'
+     +'<div style="display:flex;gap:8px">'
+     +'<button class="pill-btn'+(going?'':' ghost')+'" onclick="rsvp(\''+e.id+'\',\'going\')">Going</button>'
+     +'<button class="pill-btn'+(inter?'':' ghost')+'" onclick="rsvp(\''+e.id+'\',\'interested\')">Interested</button>'
+     +'</div></div></div>'
+  }).join('') : empty('No events yet.')
+}
+function rsvp(id,kind){
+  const e=sEvents.find(x=>x.id===id); if(!e) return
+  const other = kind==='going'?'interested':'going'
+  const arr=e[kind], oarr=e[other]
+  const i=arr.indexOf(meId()), j=oarr.indexOf(meId())
+  if(j>-1) oarr.splice(j,1)
+  if(i>-1) arr.splice(i,1); else arr.push(meId())
+  saveP3(); renderEvents()
+  toast(i>-1?'RSVP removed':(kind==='going'?'You are going':'Marked interested'))
+}
+function createEvent(){
+  openSheet('Create event',
+   '<label class="auth-label">TITLE</label><input id="ne-title" class="auth-input" placeholder="Chat-X launch meetup"/>'
+   +'<div class="auth-row"><div style="flex:1"><label class="auth-label">DATE</label><input id="ne-date" type="date" class="auth-input"/></div>'
+   +'<div style="flex:1"><label class="auth-label">TIME</label><input id="ne-time" type="time" class="auth-input"/></div></div>'
+   +'<label class="auth-label">LOCATION</label><input id="ne-place" class="auth-input" placeholder="Yaba, Lagos"/>'
+   +'<label class="auth-label">DESCRIPTION</label><textarea id="ne-desc" class="auth-input" rows="3" placeholder="What is happening?" style="resize:none;line-height:1.5"></textarea>'
+   +'<button class="auth-btn" onclick="submitEvent()">Create event</button>')
+}
+function submitEvent(){
+  const t=(document.getElementById('ne-title').value||'').trim()
+  const d=document.getElementById('ne-date').value
+  const tm=document.getElementById('ne-time').value
+  const pl=(document.getElementById('ne-place').value||'').trim()
+  const ds=(document.getElementById('ne-desc').value||'').trim()
+  if(!t) return toast('Give the event a title')
+  if(!d) return toast('Pick a date')
+  sEvents.unshift({id:'ev'+Date.now(),title:t,date:d,time:tm||'00:00',
+    place:pl||'To be announced',desc:ds||'No description yet.',going:[meId()],interested:[]})
+  saveP3(); closeSheet(); renderEvents(); toast('Event created')
+}
+
+/* ---------- marketplace ---------- */
+function openMarket(){ renderMarket(); openScr('market') }
+function renderMarket(){
+  const q=((document.getElementById('mk-search')||{}).value||'').trim().toLowerCase()
+  const list=sListings.filter(l=>!q||l.title.toLowerCase().includes(q)||l.cat.toLowerCase().includes(q)||l.desc.toLowerCase().includes(q))
+  const box=document.getElementById('market-body'); if(!box) return
+  if(!list.length){ box.innerHTML=empty(q?'Nothing matches \u201c'+esc(q)+'\u201d.':'No listings yet.'); return }
+  box.innerHTML='<div class="grid2">'+list.slice().sort((a,b)=>b.ts-a.ts).map(l=>
+   '<div class="listing" onclick="viewListing(\''+l.id+'\')">'
+   +(l.img?'<img class="listing-img" src="'+l.img+'"/>'
+      :'<div class="listing-ph"><svg width="30" height="30" fill="none" stroke="var(--text3)" stroke-width="1.6" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>')
+   +'<div style="padding:10px 11px">'
+   +'<div style="font-size:14px;font-weight:700;color:var(--text)">'+l.cur+esc(l.price)+'</div>'
+   +'<div style="font-size:12px;color:var(--text);margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+esc(l.title)+'</div>'
+   +'<div style="font-size:11px;color:var(--text3);margin-top:3px">'+esc(l.cat)+'</div></div></div>'
+  ).join('')+'</div>'
+}
+function viewListing(id){
+  const l=sListings.find(x=>x.id===id); if(!l) return
+  const isMine=l.seller===meId()
+  openSheet(l.title,
+   (l.img?'<img src="'+l.img+'" style="width:100%;border-radius:12px;margin-bottom:14px;display:block"/>':'')
+   +'<div style="font-size:24px;font-weight:800;color:var(--text)">'+l.cur+esc(l.price)+'</div>'
+   +'<div style="margin:8px 0 12px"><span class="chip">'+esc(l.cat)+'</span>'
+   +'<span style="font-size:12px;color:var(--text3)">'+ago(l.ts)+'</span></div>'
+   +'<div style="font-size:14px;color:var(--text);line-height:1.6;margin-bottom:16px">'+esc(l.desc)+'</div>'
+   +'<div style="font-size:12px;color:var(--text3);margin-bottom:14px">Listed by '+esc(l.sellerName)+'</div>'
+   +(isMine
+     ? '<button class="auth-ghost" onclick="deleteListing(\''+id+'\')" style="margin:0;color:#ef4444;border-color:rgba(239,68,68,.3)">Delete listing</button>'
+     : '<button class="auth-btn" onclick="messageSeller(\''+id+'\')">Message seller</button>'))
+}
+function messageSeller(id){
+  const l=sListings.find(x=>x.id===id); if(!l) return
+  closeSheet(); closeScr('market'); closeScr('hub')
+  const c=contacts.find(x=>x.id===l.seller)
+  if(c){
+    openChat(l.seller)
+    const inp=document.getElementById('msg-input')
+    if(inp){ inp.value='Hi, is the '+l.title+' still available?'; handleInput(inp) }
+  } else toast('Seller is not in your contacts')
+}
+function deleteListing(id){
+  sListings=sListings.filter(l=>l.id!==id)
+  saveP3(); closeSheet(); renderMarket(); toast('Listing deleted')
+}
+let pendingListingImg=null
+function createListing(){
+  openSheet('New listing',
+   '<label class="auth-label">TITLE</label><input id="nl-title" class="auth-input" placeholder="MacBook Pro 14"/>'
+   +'<div class="auth-row"><div style="flex:2"><label class="auth-label">PRICE</label><input id="nl-price" class="auth-input" placeholder="450,000"/></div>'
+   +'<div style="flex:1"><label class="auth-label">CATEGORY</label><input id="nl-cat" class="auth-input" placeholder="Electronics"/></div></div>'
+   +'<label class="auth-label">DESCRIPTION</label><textarea id="nl-desc" class="auth-input" rows="3" placeholder="Condition, what is included" style="resize:none;line-height:1.5"></textarea>'
+   +'<div id="nl-preview" style="display:none;margin-bottom:12px"><img id="nl-img" style="width:100%;border-radius:12px;display:block"/></div>'
+   +'<button class="auth-ghost" onclick="pickListingImg()" style="margin-bottom:12px">Add photo</button>'
+   +'<button class="auth-btn" onclick="submitListing()">Post listing</button>'
+   +'<input type="file" id="nl-file" accept="image/*" style="display:none" onchange="onListingImg(event)"/>')
+}
+function pickListingImg(){ document.getElementById('nl-file').click() }
+function onListingImg(e){
+  const f=e.target.files&&e.target.files[0]; if(!f) return
+  const rd=new FileReader()
+  rd.onload=ev=>downscale(ev.target.result,900,.8,url=>{
+    pendingListingImg=url
+    document.getElementById('nl-img').src=url
+    document.getElementById('nl-preview').style.display='block'
+  })
+  rd.readAsDataURL(f); e.target.value=''
+}
+function submitListing(){
+  const t=(document.getElementById('nl-title').value||'').trim()
+  const p=(document.getElementById('nl-price').value||'').trim()
+  const c=(document.getElementById('nl-cat').value||'').trim()
+  const d=(document.getElementById('nl-desc').value||'').trim()
+  if(!t) return toast('Give the listing a title')
+  if(!p) return toast('Add a price')
+  sListings.unshift({id:'mk'+Date.now(),title:t,price:p,cur:'\u20a6',cat:c||'General',
+    desc:d||'No description.',img:pendingListingImg,seller:meId(),sellerName:myName(),ts:Date.now()})
+  pendingListingImg=null
+  saveP3(); closeSheet(); renderMarket(); toast('Listing posted')
+}
+
+function empty(msg){
+  return '<div style="padding:44px 20px;text-align:center;color:var(--text3);font-size:14px">'+msg+'</div>'
 }
 
 // Splash to app transition
