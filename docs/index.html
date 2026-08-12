@@ -457,38 +457,41 @@ html,body{
       </div>
 
       <!-- WALLPAPER -->
-      <div style="padding:12px 20px;font-size:11px;color:#888;font-weight:700;letter-spacing:.5px;border-top:1px solid var(--border)">WALLPAPER</div>
-      <div style="padding:0 20px 16px;display:grid;grid-template-columns:1fr 1fr;gap:10px">
-        <!-- WHITE with subtle gradient -->
-        <div onclick="setWallpaper('white')" id="wp-white" style="border-radius:12px;border:2px solid var(--border);overflow:hidden;cursor:pointer;aspect-ratio:1;position:relative">
-          <div style="width:100%;height:100%;background:linear-gradient(135deg,#ffffff 0%,#f0f0f0 30%,#e8f5e9 60%,#f5f5f5 100%)">
-            <div style="position:absolute;top:0;left:0;right:0;bottom:0;background:radial-gradient(circle at 30% 30%,rgba(255,255,255,0.9),transparent 60%),radial-gradient(circle at 70% 70%,rgba(220,240,235,0.8),transparent 60%)"></div>
-            <div style="position:absolute;bottom:8px;left:0;right:0;text-align:center;font-size:11px;font-weight:700;color:#aaa;letter-spacing:1px">WHITE</div>
-          </div>
+      <div style="padding:12px 20px;font-size:11px;color:var(--text3);font-weight:700;letter-spacing:.5px;border-top:1px solid var(--border)">WALLPAPER</div>
+      <div style="padding:0 20px 16px;display:flex;gap:12px;align-items:stretch">
+
+        <!-- Add your own photo -->
+        <div onclick="pickWallpaper()" id="wp-add"
+             style="flex:1;border-radius:12px;border:2px dashed var(--border);cursor:pointer;
+                    aspect-ratio:1;display:flex;flex-direction:column;align-items:center;
+                    justify-content:center;gap:6px;background:var(--bg3);transition:border-color .15s"
+             onmouseover="this.style.borderColor='var(--accent)'"
+             onmouseout="this.style.borderColor='var(--border)'">
+          <svg width="28" height="28" fill="none" stroke="var(--text3)" stroke-width="2" viewBox="0 0 24 24">
+            <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+          </svg>
+          <div style="font-size:12px;color:var(--text3);font-weight:600">Add photo</div>
         </div>
-        <!-- BLACK with gradient -->
-        <div onclick="setWallpaper('black')" id="wp-black" style="border-radius:12px;border:2px solid #00897B;overflow:hidden;cursor:pointer;aspect-ratio:1;position:relative">
-          <div style="width:100%;height:100%;background:linear-gradient(135deg,#000000 0%,#0a0a0a 30%,#001a14 60%,#000000 100%)">
-            <div style="position:absolute;top:0;left:0;right:0;bottom:0;background:radial-gradient(circle at 70% 30%,rgba(0,137,123,0.15),transparent 60%),radial-gradient(circle at 30% 70%,rgba(0,80,60,0.1),transparent 60%)"></div>
-            <div style="position:absolute;bottom:8px;left:0;right:0;text-align:center;font-size:11px;font-weight:700;color:#444;letter-spacing:1px">BLACK</div>
-          </div>
-          <div style="position:absolute;top:6px;right:6px"><svg width="14" height="14" fill="none" stroke="#00897B" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+
+        <!-- Current photo preview + remove -->
+        <div id="wp-current"
+             style="flex:1;border-radius:12px;border:2px solid var(--accent);aspect-ratio:1;
+                    display:none;position:relative;overflow:hidden;background-size:cover;background-position:center">
+          <button onclick="clearWallpaper()"
+                  style="position:absolute;top:6px;right:6px;width:26px;height:26px;border-radius:50%;
+                         border:none;background:rgba(0,0,0,0.65);color:#fff;cursor:pointer;
+                         display:flex;align-items:center;justify-content:center;padding:0">
+            <svg width="14" height="14" fill="none" stroke="#fff" stroke-width="2.5" viewBox="0 0 24 24">
+              <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+          </button>
+          <div style="position:absolute;bottom:0;left:0;right:0;padding:6px;text-align:center;
+                      font-size:11px;font-weight:600;color:#fff;background:rgba(0,0,0,0.55)">Your photo</div>
         </div>
-        <!-- GREEN with rich gradient -->
-        <div onclick="setWallpaper('green')" id="wp-green" style="border-radius:12px;border:2px solid var(--border);overflow:hidden;cursor:pointer;aspect-ratio:1;position:relative">
-          <div style="width:100%;height:100%;background:linear-gradient(135deg,#004d40 0%,#00695C 25%,#00897B 50%,#00695C 75%,#004d40 100%)">
-            <div style="position:absolute;top:0;left:0;right:0;bottom:0;background:radial-gradient(circle at 50% 30%,rgba(77,182,172,0.4),transparent 55%),radial-gradient(circle at 20% 80%,rgba(0,77,64,0.5),transparent 50%)"></div>
-            <div style="position:absolute;bottom:8px;left:0;right:0;text-align:center;font-size:11px;font-weight:700;color:rgba(255,255,255,0.6);letter-spacing:1px">GREEN</div>
-          </div>
-        </div>
-        <!-- MIX gradient -->
-        <div onclick="setWallpaper('mix')" id="wp-mix" style="border-radius:12px;border:2px solid var(--border);overflow:hidden;cursor:pointer;aspect-ratio:1;position:relative">
-          <div style="width:100%;height:100%;background:linear-gradient(135deg,#000000 0%,#001a14 20%,#00897B 45%,#4DB6AC 55%,#e0f2f1 75%,#ffffff 100%)">
-            <div style="position:absolute;top:0;left:0;right:0;bottom:0;background:radial-gradient(circle at 50% 50%,rgba(77,182,172,0.3),transparent 60%)"></div>
-            <div style="position:absolute;bottom:8px;left:0;right:0;text-align:center;font-size:11px;font-weight:700;color:#fff;text-shadow:0 1px 4px rgba(0,0,0,0.8);letter-spacing:1px">MIX</div>
-          </div>
-        </div>
+
       </div>
+      <input type="file" id="wp-file" accept="image/*" style="display:none" onchange="onWallpaperFile(event)"/>
+
       <!-- FONT SIZE -->
       <div style="padding:12px 20px;font-size:11px;color:var(--text3);font-weight:700;letter-spacing:.5px;border-top:1px solid var(--border)">FONT SIZE</div>
       <div style="padding:0 20px 20px;display:flex;flex-direction:column;gap:8px">
@@ -825,7 +828,7 @@ function openChat(id){
   document.getElementById('enc-notice').textContent=isAI?'Powered by Groq AI — conversations are private':isCom?active.members?.toLocaleString()+' members':'End-to-end encrypted'
   // Apply wallpaper to message area
   setTimeout(()=>{
-    if(currentWallpaper) setWallpaper(currentWallpaper,true)
+    applyWallpaper()
   },50)
   const totalUnread=contacts.reduce((s,c)=>s+(c.unread||0),0)
   document.getElementById('chat-header').innerHTML=`
@@ -1083,51 +1086,82 @@ function setTheme(theme,silent){
     document.getElementById('theme-light-check').textContent='Tap to switch'
     document.getElementById('theme-light-check').style.color='#999'
   }
-  const auto = (theme==='light') ? 'white' : 'black'
-  setWallpaper(userPickedWallpaper ? currentWallpaper : auto, true)
+  applyWallpaper()
   savePrefs()
   if(!silent) toast(theme==='light'?'Light theme applied':'Dark theme applied')
 }
 
-// WALLPAPER
-let currentWallpaper='black'
-let userPickedWallpaper=false
-function setWallpaper(wp,silent){
-  currentWallpaper=wp
-  const msgArea=document.getElementById('messages')
-  const ids=['white','black','green','mix']
-  ids.forEach(id=>{
-    const el=document.getElementById('wp-'+id)
-    if(!el)return
-    el.style.borderColor=id===wp?'var(--accent)':'var(--border)'
-    // Update checkmark
-    const existing=el.querySelector('.wp-check')
-    if(existing)existing.remove()
-    if(id===wp){
-      const check=document.createElement('div')
-      check.className='wp-check'
-      check.style.cssText='position:absolute;top:6px;right:6px'
-      check.innerHTML='<svg width="14" height="14" fill="none" stroke="#00897B" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>'
-      el.appendChild(check)
-    }
-  })
-  if(!msgArea)return
-  // Apply wallpaper to message area
-  const styles={
-    white:'linear-gradient(135deg,#ffffff 0%,#f0f0f0 30%,#e8f5e9 60%,#f5f5f5 100%)',
-    black:'linear-gradient(135deg,#000000 0%,#0a0a0a 30%,#001a14 60%,#000000 100%)',
-    green:'linear-gradient(135deg,#004d40 0%,#00695C 25%,#00897B 50%,#00695C 75%,#004d40 100%)',
-    mix:'linear-gradient(135deg,#000000 0%,#001a14 20%,#00897B 45%,#4DB6AC 55%,#e0f2f1 75%,#ffffff 100%)'
+// WALLPAPER — user photo only; theme supplies the default background
+let currentWallpaper=null   // dataURL or null
+
+function pickWallpaper(){ document.getElementById('wp-file').click() }
+
+function onWallpaperFile(e){
+  const file=e.target.files && e.target.files[0]
+  if(!file) return
+  if(!file.type.startsWith('image/')){ toast('Please choose an image'); return }
+  const reader=new FileReader()
+  reader.onload=function(ev){
+    downscale(ev.target.result, 1080, 0.82, function(dataUrl){
+      currentWallpaper=dataUrl
+      applyWallpaper()
+      savePrefs()
+      toast('Wallpaper set')
+    })
   }
-  msgArea.style.backgroundImage=styles[wp]||'none'
-  msgArea.style.backgroundSize='cover'
-  msgArea.style.backgroundAttachment='local'
-  msgArea.style.backgroundRepeat='no-repeat'
-  // bubbles follow the wallpaper's brightness, not the theme
-  const lightWall = (wp==='white')
-  msgArea.classList.toggle('wp-light', lightWall)
-  msgArea.classList.toggle('wp-dark', !lightWall)
-  if(!silent){ userPickedWallpaper=true; savePrefs(); toast('Wallpaper updated') }
+  reader.onerror=function(){ toast("Couldn't read that image") }
+  reader.readAsDataURL(file)
+  e.target.value=''
+}
+
+// shrink before storing so it fits in localStorage
+function downscale(src, maxW, quality, cb){
+  const img=new Image()
+  img.onload=function(){
+    let w=img.width, h=img.height
+    if(w>maxW){ h=Math.round(h*maxW/w); w=maxW }
+    const cv=document.createElement('canvas')
+    cv.width=w; cv.height=h
+    cv.getContext('2d').drawImage(img,0,0,w,h)
+    try{ cb(cv.toDataURL('image/jpeg',quality)) }catch(err){ cb(src) }
+  }
+  img.onerror=function(){ cb(src) }
+  img.src=src
+}
+
+function applyWallpaper(){
+  const box=document.getElementById('messages')
+  const prev=document.getElementById('wp-current')
+  const add=document.getElementById('wp-add')
+
+  if(currentWallpaper){
+    if(box){
+      box.style.backgroundImage='url('+currentWallpaper+')'
+      box.style.backgroundSize='cover'
+      box.style.backgroundPosition='center'
+      box.style.backgroundRepeat='no-repeat'
+      box.style.backgroundAttachment='local'
+      // photos vary, so give bubbles a solid backing
+      box.classList.remove('wp-light')
+      box.classList.add('wp-dark')
+    }
+    if(prev){ prev.style.display='block'; prev.style.backgroundImage='url('+currentWallpaper+')' }
+    if(add){ add.style.flex='0 0 40%' }
+  } else {
+    if(box){
+      box.style.backgroundImage='none'
+      box.classList.remove('wp-light','wp-dark')
+    }
+    if(prev){ prev.style.display='none' }
+    if(add){ add.style.flex='1' }
+  }
+}
+
+function clearWallpaper(){
+  currentWallpaper=null
+  applyWallpaper()
+  savePrefs()
+  toast('Wallpaper removed')
 }
 
 // FONT SIZE
@@ -1575,7 +1609,6 @@ function savePrefs(){
     localStorage.setItem('chatx_prefs', JSON.stringify({
       theme: currentTheme,
       wallpaper: currentWallpaper,
-      wallpaperPicked: userPickedWallpaper,
       fontSize: currentFontSize
     }))
   }catch(e){}
@@ -1584,11 +1617,10 @@ function savePrefs(){
 function loadPrefs(){
   let p=null
   try{ p=JSON.parse(localStorage.getItem('chatx_prefs')||'null') }catch(e){}
-  if(!p) p={theme:'dark',wallpaper:'black',wallpaperPicked:false,fontSize:'medium'}
-  userPickedWallpaper = !!p.wallpaperPicked
-  currentWallpaper = p.wallpaper || 'black'
+  if(!p) p={theme:'dark',wallpaper:null,fontSize:'medium'}
+  currentWallpaper = p.wallpaper || null
   setTheme(p.theme || 'dark', true)
-  setWallpaper(currentWallpaper, true)
+  applyWallpaper()
   setFontSizeSilent(p.fontSize || 'medium')
 }
 
