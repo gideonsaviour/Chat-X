@@ -593,6 +593,79 @@ img{-webkit-user-drag:none}
 .prof-cover{position:relative;z-index:0}
 .prof-av{position:relative;z-index:2}
 .cover-btn{z-index:1}
+/* ============ FINAL PREMIUM SYSTEM ============ */
+:root{
+  --bg:#0F172A; --card:#1E293B; --surface:#243044; --surface-2:#2C3A52;
+  --text-1:#F8FAFC; --text-2:#CBD5E1; --text-3:#94A3B8;
+  --border:#334155; --border-strong:#475569;
+  --primary:#3B82F6; --primary-deep:#2563EB; --primary-soft:#93C5FD;
+  --accent:#34D399; --accent-deep:#10B981;
+  --glass:rgba(30,41,59,.72); --glass-line:rgba(255,255,255,.09);
+  --grad:linear-gradient(135deg,#3B82F6 0%,#2563EB 100%);
+}
+body.light-theme{
+  --bg:#F8FAFC; --card:#FFFFFF; --surface:#F1F5F9; --surface-2:#E2E8F0;
+  --text-1:#111827; --text-2:#6B7280; --text-3:#9CA3AF;
+  --border:#E5E7EB; --border-strong:#D1D5DB;
+  --primary:#2563EB; --primary-deep:#1D4ED8; --primary-soft:#60A5FA;
+  --accent:#10B981; --accent-deep:#059669;
+  --glass:rgba(255,255,255,.78); --glass-line:rgba(15,23,42,.07);
+  --grad:linear-gradient(135deg,#2563EB 0%,#1D4ED8 100%);
+}
+
+/* typography */
+body,button,input,textarea,select{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif}
+body{line-height:1.55;letter-spacing:-.011em}
+.scr-title,.auth-h1,h1,h2{letter-spacing:-.021em;line-height:1.25}
+.post-text,.msg-mine,.msg-theirs,.msg-ai{line-height:1.6}
+
+/* glass */
+.glass{background:var(--glass);backdrop-filter:blur(20px) saturate(180%);
+  -webkit-backdrop-filter:blur(20px) saturate(180%);border:1px solid var(--glass-line)}
+#bottom-nav{background:var(--glass) !important;
+  backdrop-filter:blur(22px) saturate(180%);-webkit-backdrop-filter:blur(22px) saturate(180%);
+  border-top:1px solid var(--glass-line) !important}
+.fab{background:var(--grad) !important;box-shadow:0 8px 26px rgba(37,99,235,.42)}
+.chat-item.active,.card.selected{background:var(--glass);backdrop-filter:blur(14px);
+  -webkit-backdrop-filter:blur(14px);border:1px solid var(--glass-line)}
+
+/* touch targets + focus */
+button,.icon-btn,.tab-btn,.post-act,.ptab,.nav-btn,.chat-item,.hub-tile{min-height:44px}
+.icon-btn{min-width:44px;min-height:44px}
+:focus-visible{outline:2px solid var(--primary);outline-offset:2px;border-radius:6px}
+.auth-input:focus-visible,#msg-input:focus-visible{outline:none;
+  box-shadow:0 0 0 3px rgba(59,130,246,.28);border-color:var(--primary)}
+
+/* chat list */
+.chat-item{border-bottom:1px solid var(--border);border-radius:0;margin:0;padding:13px 16px}
+.chat-item:last-child{border-bottom:none}
+.chat-item.pinned{background:rgba(59,130,246,.06)}
+.filter-row{display:flex;gap:8px;padding:10px 16px;overflow-x:auto;flex-shrink:0}
+.filter-row::-webkit-scrollbar{display:none}
+.filt{flex-shrink:0;padding:7px 15px;border-radius:999px;border:1px solid var(--border);
+  background:transparent;color:var(--text-2);font-size:13px;font-weight:600;cursor:pointer;
+  font-family:inherit;min-height:36px}
+.filt.on{background:var(--primary);border-color:var(--primary);color:#fff}
+
+/* skeletons */
+@keyframes shimmer{0%{background-position:-420px 0}100%{background-position:420px 0}}
+.skel{background:linear-gradient(90deg,var(--surface) 25%,var(--surface-2) 50%,var(--surface) 75%);
+  background-size:840px 100%;animation:shimmer 1.25s linear infinite;border-radius:8px}
+.skel-row{display:flex;gap:12px;padding:14px 16px;align-items:center}
+
+/* responsive */
+@media(min-width:768px){
+  .grid2{grid-template-columns:repeat(3,1fr)}
+  .scr-body>.card,.post{max-width:640px;margin-left:auto;margin-right:auto}
+}
+@media(min-width:1100px){
+  #feed .scr-body,#notifs .scr-body,#hub .scr-body{max-width:760px;margin:0 auto}
+  .grid2{grid-template-columns:repeat(4,1fr)}
+}
+@media(min-width:641px){
+  #bottom-nav{max-width:560px;left:50%;transform:translateX(-50%);
+    border-radius:var(--r-lg) var(--r-lg) 0 0;border:1px solid var(--glass-line);border-bottom:none}
+}
 </style>
 </head>
 <body>
@@ -836,6 +909,13 @@ img{-webkit-user-drag:none}
     <button class="tab-btn" onclick="switchTab(this,'groups')">Groups</button>
     <button class="tab-btn" onclick="switchTab(this,'calls')">Calls</button>
     <button class="tab-btn" onclick="switchTab(this,'community')">Discover</button>
+  </div>
+  <div class="filter-row">
+    <button class="filt on" data-f="all" onclick="setChatFilter('all')">All</button>
+    <button class="filt" data-f="unread" onclick="setChatFilter('unread')">Unread</button>
+    <button class="filt" data-f="groups" onclick="setChatFilter('groups')">Groups</button>
+    <button class="filt" data-f="pinned" onclick="setChatFilter('pinned')">Pinned</button>
+    <button class="filt" data-f="archived" onclick="setChatFilter('archived')">Archived</button>
   </div>
   <div id="chat-list" style="flex:1;overflow-y:auto;padding-bottom:90px"></div>
 
@@ -1303,27 +1383,39 @@ function tick(st){
 }
 
 function renderList(){
-  const q=(document.getElementById('search')||{}).value||''
-  const list=document.getElementById('chat-list')
-  if(!list)return
-  const filtered=contacts.filter(c=>{
-    if(tab==='chats')return(c.type==='dm'||c.type==='ai')&&c.name.toLowerCase().includes(q.toLowerCase())
-    if(tab==='groups')return c.type==='group'&&c.name.toLowerCase().includes(q.toLowerCase())
-    if(tab==='community')return c.type==='community'&&c.name.toLowerCase().includes(q.toLowerCase())
-    return c.name.toLowerCase().includes(q.toLowerCase())
+  const q=((document.getElementById('search')||{}).value||'').toLowerCase()
+  const list=document.getElementById('chat-list'); if(!list) return
+  let pool=contacts.filter(c=>{
+    if(!c.name.toLowerCase().includes(q)) return false
+    if(chatFilter==='archived') return isArchived(c.id)
+    if(isArchived(c.id)) return false
+    if(chatFilter==='unread') return (c.unread||0)>0
+    if(chatFilter==='groups') return c.type==='group'
+    if(chatFilter==='pinned') return isPinned(c.id)
+    return c.type==='dm'||c.type==='ai'||c.type==='group'
   })
-  list.innerHTML=filtered.map(c=>`
-    <div class="chat-item${active?.id===c.id?' active':''}" style="max-width:100%;overflow:hidden" onclick="openChat('${c.id}')">
-      ${mkAv(c.av,44,c.type==='ai'?'ai':c.status)}
+  pool.sort((a,b)=>(isPinned(b.id)?1:0)-(isPinned(a.id)?1:0))
+  if(!pool.length){
+    list.innerHTML='<div style="padding:40px 20px;text-align:center;color:var(--text-2);font-size:14px">'
+      +(chatFilter==='archived'?'No archived chats.':'No conversations here.')+'</div>'
+    return
+  }
+  list.innerHTML=pool.map(c=>`
+    <div class="chat-item${active?.id===c.id?' active':''}${isPinned(c.id)?' pinned':''}" style="max-width:100%;overflow:hidden" onclick="openChat('${c.id}')" oncontextmenu="event.preventDefault();chatRowMenu('${c.id}')">
+      ${mkAv(c.av,48,c.type==='ai'?'ai':c.status)}
       <div style="flex:1;min-width:0">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px">
-          <span style="font-weight:600;font-size:14px">${c.name}${c.type==='ai'?' <span style="background:var(--primary);color:#fff;font-size:9px;padding:1px 5px;border-radius:4px;font-weight:700">AI</span>':''}</span>
-          <span style="font-size:11px;color:var(--text3)">${isMuted(c.id)?'<svg width="12" height="12" fill="none" stroke="var(--text-2)" stroke-width="2" viewBox="0 0 24 24" style="vertical-align:-1px;margin-right:3px"><path d="M13.73 21a2 2 0 0 1-3.46 0"/><path d="M18.63 13A17.9 17.9 0 0 1 18 8"/><path d="M6.26 6.26A5.86 5.86 0 0 0 6 8c0 7-3 9-3 9h14"/><line x1="2" y1="2" x2="22" y2="22"/></svg>':''}${c.seen||''}</span>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px;gap:8px">
+          <span style="font-weight:600;font-size:15px;color:var(--text-1);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">
+            ${isPinned(c.id)?'<svg width="12" height="12" fill="var(--primary)" viewBox="0 0 24 24" style="vertical-align:-1px;margin-right:4px"><path d="M16 3v6l3 3v2h-6v7l-1 1-1-1v-7H5v-2l3-3V3z"/></svg>':''}
+            ${c.name}${c.type==='ai'?' <span style="background:var(--primary);color:#fff;font-size:9px;padding:1px 5px;border-radius:4px;font-weight:700">AI</span>':''}
+          </span>
+          <span style="font-size:12px;color:var(--text-3);flex-shrink:0">${c.seen||''}</span>
         </div>
         <div style="display:flex;justify-content:space-between;align-items:center;gap:8px">
-          <span style="font-size:12px;color:var(--text3);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${c.last}</span>
+          <span style="font-size:13px;color:var(--text-2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">
+            ${isMuted(c.id)?'<svg width="12" height="12" fill="none" stroke="var(--text-3)" stroke-width="2" viewBox="0 0 24 24" style="vertical-align:-1px;margin-right:3px"><path d="M13.73 21a2 2 0 0 1-3.46 0"/><path d="M18.63 13A17.9 17.9 0 0 1 18 8"/><path d="M6.26 6.26A5.86 5.86 0 0 0 6 8c0 7-3 9-3 9h14"/><line x1="2" y1="2" x2="22" y2="22"/></svg>':''}${c.last}
+          </span>
           ${c.unread>0?`<span class="unread">${c.unread}</span>`:''}
-          ${typeof c.members==='number'?`<span style="font-size:11px;color:var(--text3)">${c.members.toLocaleString()}</span>`:''}
         </div>
       </div>
     </div>`).join('')
@@ -1378,11 +1470,15 @@ function renderMessages(){
       inner=(m.img?'<img src="'+m.img+'" style="max-width:100%;border-radius:var(--r);display:block"/>':'')
        +(m.text||'').replace(/\n/g,'<br>')
     }
+    const quote = m.reply ? '<div style="border-left:3px solid '+(mine?'rgba(255,255,255,.6)':'var(--primary)')
+      +';padding:5px 9px;margin-bottom:6px;border-radius:6px;background:'+(mine?'rgba(255,255,255,.14)':'var(--surface)')+'">'
+      +'<div style="font-size:11px;font-weight:700;opacity:.9">'+esc(m.reply.who)+'</div>'
+      +'<div style="font-size:12px;opacity:.85;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+esc(m.reply.text)+'</div></div>' : ''
     return '<div class="msg-row'+(mine?' mine':'')+' fade">'
      +(!mine&&active?mkAv(active.av,28,isAI?'ai':null):'')
      +'<div><div class="'+(mine?'msg-mine':isAI?'msg-ai':'msg-theirs')+'" onclick="msgActions(\''+m.id+'\')" style="cursor:pointer">'
      +(isAI?'<div style="font-size:10px;color:var(--primary);font-weight:700;margin-bottom:4px;letter-spacing:.5px">CHAT-X AI</div>':'')
-     +inner
+     +quote+inner
      +'<div style="display:flex;align-items:center;justify-content:flex-end;gap:2px;margin-top:4px">'
      +'<span style="font-size:11px;color:'+(mine?'rgba(255,255,255,.55)':'var(--text-2)')+'">'+(m.time||'')
      +(m.edited?'<span class="edited">edited</span>':'')+'</span>'
@@ -1396,7 +1492,7 @@ async function sendMessage(){
   const text=inp?.value.trim()
   if(!text||!active||aiTyping)return
   const time=new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'})
-  msgs.push({id:'m'+Date.now(),from:'me',text,time,st:'sent',reacts:{}})
+  msgs.push({id:'m'+Date.now(),from:'me',text,time,st:'sent',reacts:{},reply:replyTo}); replyTo=null; paintReplyBar()
   inp.value='';inp.style.height='auto'
   updateBtn(false);renderMessages()
   if(active.type==='ai'){
@@ -2345,7 +2441,7 @@ function enterApp(){
   document.getElementById('app').classList.add('show')
   document.body.classList.add('app-ready')
   applyUserToUI()
-  loadMuted(); loadSocial(); loadP3(); loadNotifs(); loadBlocked(); loadPrefs()
+  loadMuted(); loadSocial(); loadP3(); loadNotifs(); loadBlocked(); loadSaved(); loadChatMeta(); loadPrefs()
   navStack=[{v:'chats'}]; renderView(); updateNavBadge()
   try{ history.replaceState({d:1},'') }catch(e){}
 }
@@ -2722,6 +2818,8 @@ function renderPosts(){
      +'<svg width="17" height="17" fill="'+(liked?'var(--primary)':'none')+'" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>Like</button>'
      +'<button class="post-act" onclick="openComments(\''+p.id+'\')">'
      +'<svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Comment</button>'
+     +'<button class="post-act'+(isSaved(p.id)?' on':'')+'" onclick="toggleSave(\''+p.id+'\')">'
+     +'<svg width="17" height="17" fill="'+(isSaved(p.id)?'currentColor':'none')+'" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>Save</button>'
      +'<button class="post-act" onclick="sharePost(\''+p.id+'\')">'
      +'<svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>Share</button>'
      +'</div></div>'
@@ -2907,6 +3005,8 @@ function paintProfile(uid){
    +'<div class="prof-av" style="'+avStyle+'">'+(avStyle?'':av)+'</div>'
    +'<div style="text-align:center;padding:12px 20px 0">'
    +'<div style="font-size:20px;font-weight:700;color:var(--text-1)">'+esc(name)+'</div>'
+   +'<div style="font-size:13px;color:var(--primary);font-weight:600;margin-top:2px">@'
+   +esc((isMe?myName():name).toLowerCase().replace(/[^a-z0-9]/g,''))+'</div>'
    +'<div style="font-size:13px;color:var(--text-2);margin-top:3px">'
    +(isMe?(currentUser?(currentUser.email||currentUser.phone||''):''):(c2?(c2.status==='online'?'Online':'Last seen '+c2.seen):''))+'</div>'
    +(bio?'<div style="font-size:14px;color:var(--text-1);line-height:1.55;margin-top:9px">'+esc(bio)+'</div>':'')
@@ -3431,6 +3531,8 @@ function msgActions(id){
     '<div style="display:flex;gap:8px;justify-content:center;padding:4px 0 16px">'
     +REACTS.map(r=>'<button onclick="react(\''+id+'\',\''+r+'\')" style="font-size:26px;background:none;border:none;cursor:pointer;padding:6px;border-radius:var(--r-sm)" onmouseover="this.style.background=\'var(--hover)\'" onmouseout="this.style.background=\'none\'">'+r+'</button>').join('')
     +'</div>'
+    +sheetRow(ICO('<polyline points="9 17 4 12 9 7"/><path d="M20 18v-2a4 4 0 0 0-4-4H4"/>'),'Reply','Quote this message','replyMsg(\''+id+'\')')
+    +sheetRow(ICO('<polyline points="15 17 20 12 15 7"/><path d="M4 18v-2a4 4 0 0 1 4-4h12"/>'),'Forward','Send to someone else','forwardMsg(\''+id+'\')')
     +sheetRow(ICO('<rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>'),'Copy text','Copy to clipboard','copyMsg(\''+id+'\')')
     +(mine&&!m.audio&&!m.img?sheetRow(ICO('<path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/>'),'Edit message','Change what you sent','editMsg(\''+id+'\')'):'')
     +(mine?sheetRow(ICO('<polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>','var(--danger)'),'Delete message','Remove for you','deleteMsg(\''+id+'\')',true):''),
@@ -3724,6 +3826,119 @@ function mountChat(id){
 window.addEventListener('popstate',function(){
   if(!navBack()){ try{ history.pushState({d:1},'') }catch(e){} }
 })
+
+
+/* ============ FINAL FEATURES ============ */
+
+/* ---- saved posts ---- */
+let savedPosts=[]
+function loadSaved(){ try{ savedPosts=JSON.parse(localStorage.getItem('chatx_saved')||'[]') }catch(e){ savedPosts=[] } }
+function saveSaved(){ try{ localStorage.setItem('chatx_saved',JSON.stringify(savedPosts)) }catch(e){} }
+function isSaved(id){ return savedPosts.includes(id) }
+function toggleSave(id){
+  const i=savedPosts.indexOf(id)
+  if(i>-1) savedPosts.splice(i,1); else savedPosts.push(id)
+  saveSaved(); renderPosts(); toast(i>-1?'Removed from saved':'Saved')
+}
+function openSaved(){
+  const list=posts.filter(p=>isSaved(p.id))
+  openSheet('Saved posts',
+    list.length?list.map(p=>'<div style="padding:14px 20px;border-bottom:1px solid var(--border)">'
+      +'<div style="font-size:13px;font-weight:600;color:var(--text-1)">'+esc(p.name)+'</div>'
+      +(p.text?'<div style="font-size:13px;color:var(--text-2);line-height:1.55;margin-top:4px">'+esc(p.text)+'</div>':'')
+      +'<button class="pill-btn ghost" style="margin-top:9px" onclick="toggleSave(\''+p.id+'\');closeSheet()">Remove</button></div>').join('')
+     :'<div style="padding:36px 20px;text-align:center;color:var(--text-2);font-size:14px">Nothing saved yet.</div>',
+    {flush:true})
+}
+
+/* ---- pinned + archived chats + filters ---- */
+let pinned=[], archived=[], chatFilter='all'
+function loadChatMeta(){
+  try{ pinned=JSON.parse(localStorage.getItem('chatx_pinned')||'[]') }catch(e){ pinned=[] }
+  try{ archived=JSON.parse(localStorage.getItem('chatx_archived')||'[]') }catch(e){ archived=[] }
+}
+function saveChatMeta(){
+  try{
+    localStorage.setItem('chatx_pinned',JSON.stringify(pinned))
+    localStorage.setItem('chatx_archived',JSON.stringify(archived))
+  }catch(e){}
+}
+function isPinned(id){ return pinned.includes(id) }
+function isArchived(id){ return archived.includes(id) }
+function togglePin(id){
+  const i=pinned.indexOf(id)
+  if(i>-1) pinned.splice(i,1); else pinned.unshift(id)
+  saveChatMeta(); renderList(); closeSheet(); toast(i>-1?'Unpinned':'Pinned to top')
+}
+function toggleArchive(id){
+  const i=archived.indexOf(id)
+  if(i>-1) archived.splice(i,1); else archived.push(id)
+  saveChatMeta(); renderList(); closeSheet()
+  toast(i>-1?'Moved to inbox':'Archived')
+}
+function setChatFilter(f){
+  chatFilter=f
+  document.querySelectorAll('.filt').forEach(b=>b.classList.toggle('on', b.dataset.f===f))
+  renderList()
+}
+
+/* ---- reply + forward ---- */
+let replyTo=null
+function replyMsg(id){
+  const m=msgs.find(x=>x.id===id); if(!m) return
+  replyTo={id:m.id,text:(m.text||(m.audio?'Voice note':'Photo')).slice(0,90),
+    who:m.from==='me'?'You':(active?active.name:'')}
+  closeSheet(); paintReplyBar()
+  const i=document.getElementById('msg-input'); if(i) i.focus()
+}
+function clearReply(){ replyTo=null; paintReplyBar() }
+function paintReplyBar(){
+  let bar=document.getElementById('reply-bar')
+  if(!bar){
+    bar=document.createElement('div'); bar.id='reply-bar'
+    const comp=document.getElementById('composer')
+    if(comp&&comp.parentNode) comp.parentNode.insertBefore(bar,comp)
+  }
+  if(!replyTo){ bar.style.display='none'; return }
+  bar.style.cssText='display:flex;align-items:center;gap:10px;padding:9px 14px;background:var(--surface);border-left:3px solid var(--primary)'
+  bar.innerHTML='<div style="flex:1;min-width:0">'
+    +'<div style="font-size:12px;font-weight:700;color:var(--primary)">Replying to '+esc(replyTo.who)+'</div>'
+    +'<div style="font-size:13px;color:var(--text-2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+esc(replyTo.text)+'</div></div>'
+    +'<button class="icon-btn" onclick="clearReply()"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>'
+}
+function forwardMsg(id){
+  const m=msgs.find(x=>x.id===id); if(!m) return
+  const list=contacts.filter(c=>c.id!==(active&&active.id))
+  openSheet('Forward to',
+    list.map(c=>'<div onclick="doForward(\''+id+'\',\''+c.id+'\')" style="display:flex;align-items:center;gap:12px;padding:13px 20px;cursor:pointer;border-bottom:1px solid var(--border)">'
+     +'<div class="avatar" style="width:42px;height:42px;font-size:14px">'+c.av+'</div>'
+     +'<div style="font-size:14px;font-weight:600;color:var(--text-1)">'+esc(c.name)+'</div></div>').join(''),
+    {flush:true})
+}
+function doForward(mid,cid){
+  const m=msgs.find(x=>x.id===mid), c=contacts.find(x=>x.id===cid)
+  if(!m||!c) return
+  c.last=(m.text||'Media').slice(0,40); c.seen='now'
+  saveChatMeta(); closeSheet(); renderList(); toast('Forwarded to '+c.name)
+}
+
+/* ---- skeleton ---- */
+function chatRowMenu(id){
+  const c=contacts.find(x=>x.id===id); if(!c) return
+  openSheet(c.name,
+    sheetRow(ICO('<path d="M16 3v6l3 3v2h-6v7l-1 1-1-1v-7H5v-2l3-3V3z"/>'),isPinned(id)?'Unpin':'Pin to top',isPinned(id)?'Remove from top':'Keep at the top',"togglePin('"+id+"')")
+   +sheetRow(ICO('<rect x="2" y="4" width="20" height="5" rx="1"/><path d="M4 9v10a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V9"/>'),isArchived(id)?'Unarchive':'Archive',isArchived(id)?'Move back to inbox':'Hide from the list',"toggleArchive('"+id+"')")
+   +sheetRow(ICO('<path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>'),isMuted(id)?'Unmute':'Mute',isMuted(id)?'Currently muted':'Silence notifications',"toggleMute('"+id+"')"),
+   {flush:true})
+}
+
+function skeletonList(n){
+  let h=''
+  for(let i=0;i<n;i++) h+='<div class="skel-row"><div class="skel" style="width:48px;height:48px;border-radius:50%"></div>'
+    +'<div style="flex:1"><div class="skel" style="height:12px;width:44%;margin-bottom:8px"></div>'
+    +'<div class="skel" style="height:10px;width:72%"></div></div></div>'
+  return h
+}
 
 // Splash to app transition
 setTimeout(function(){
