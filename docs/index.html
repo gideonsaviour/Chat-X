@@ -1459,10 +1459,14 @@ setTimeout(()=>{
   setInterval(runAiBtnAnimation, 20000)
 }, 5000) // start 5s after app loads
 
+// Unregister any old service workers
 if('serviceWorker' in navigator){
-  window.addEventListener('load',()=>{
-    navigator.serviceWorker.register('sw.js').catch(()=>{})
+  navigator.serviceWorker.getRegistrations().then(regs=>{
+    regs.forEach(reg=>reg.unregister())
   })
+  if(window.caches){
+    caches.keys().then(names=>names.forEach(n=>caches.delete(n)))
+  }
 }
 
 // Splash to app transition
