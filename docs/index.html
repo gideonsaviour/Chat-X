@@ -251,9 +251,137 @@ html,body{
 .back-btn:hover{background:#3a3a3a !important}
 .back-btn svg{stroke:#fff !important}
 .back-btn span{color:#fff !important}
+/* ===== AUTH ===== */
+#auth{position:fixed;inset:0;z-index:9998;background:#000;display:none;
+  flex-direction:column;align-items:center;justify-content:center;padding:24px;overflow-y:auto}
+#auth.show{display:flex}
+.auth-card{width:100%;max-width:400px}
+.auth-logo{width:64px;height:64px;border-radius:18px;background:linear-gradient(135deg,#00897B,#00695C);
+  display:flex;align-items:center;justify-content:center;margin:0 auto 20px}
+.auth-h1{font-size:24px;font-weight:700;color:#fff;text-align:center;margin-bottom:6px}
+.auth-sub{font-size:14px;color:#888;text-align:center;margin-bottom:26px;line-height:1.5}
+.auth-label{font-size:11px;color:#888;font-weight:700;letter-spacing:.5px;display:block;margin-bottom:6px}
+.auth-input{width:100%;padding:13px 14px;background:#1a1a1a;border:1px solid #2a2a2a;
+  border-radius:12px;font-size:15px;color:#f1f1f5;font-family:Inter,sans-serif;margin-bottom:14px}
+.auth-input:focus{border-color:#00897B}
+.auth-input.err{border-color:#ef4444}
+.auth-btn{width:100%;padding:14px;border:none;border-radius:12px;font-size:15px;font-weight:600;
+  cursor:pointer;font-family:Inter,sans-serif;background:linear-gradient(135deg,#00897B,#00695C);color:#fff}
+.auth-btn:disabled{opacity:.45;cursor:default}
+.auth-ghost{width:100%;padding:13px;border:1px solid #2a2a2a;border-radius:12px;font-size:14px;
+  cursor:pointer;font-family:Inter,sans-serif;background:transparent;color:#f1f1f5;margin-top:10px}
+.auth-link{background:none;border:none;color:#4DB6AC;font-size:14px;cursor:pointer;
+  font-family:Inter,sans-serif;padding:10px;display:block;margin:14px auto 0}
+.auth-err{background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.35);color:#ff8f8f;
+  padding:10px 12px;border-radius:10px;font-size:13px;margin-bottom:14px;display:none;line-height:1.45}
+.auth-err.show{display:block}
+.auth-row{display:flex;gap:10px}
+.auth-row .auth-input{flex:1}
+.seg{display:flex;background:#1a1a1a;border:1px solid #2a2a2a;border-radius:12px;padding:4px;margin-bottom:18px}
+.seg button{flex:1;padding:10px;border:none;border-radius:9px;background:transparent;color:#888;
+  font-size:14px;font-weight:600;cursor:pointer;font-family:Inter,sans-serif}
+.seg button.on{background:#00897B;color:#fff}
+.otp{display:flex;gap:8px;justify-content:center;margin-bottom:18px}
+.otp input{width:46px;height:54px;text-align:center;font-size:22px;font-weight:700;
+  background:#1a1a1a;border:1px solid #2a2a2a;border-radius:12px;color:#fff;font-family:Inter,sans-serif}
+.otp input:focus{border-color:#00897B}
+.mock-note{background:rgba(0,137,123,.1);border:1px dashed #00897B;border-radius:10px;
+  padding:11px;font-size:12px;color:#4DB6AC;text-align:center;margin-bottom:16px;line-height:1.5}
+.mock-code{font-size:22px;font-weight:800;letter-spacing:5px;color:#fff;display:block;margin-top:5px}
+.av-edit{position:relative;width:88px;height:88px;margin:0 auto 8px;cursor:pointer}
+.av-edit .cam{position:absolute;bottom:0;right:0;width:28px;height:28px;border-radius:50%;
+  background:#00897B;border:2px solid #000;display:flex;align-items:center;justify-content:center}
 </style>
 </head>
 <body>
+
+<div id="auth">
+  <div class="auth-card">
+
+    <!-- WELCOME -->
+    <div id="au-welcome">
+      <div class="auth-logo">
+        <svg width="30" height="30" fill="none" stroke="#fff" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      </div>
+      <div class="auth-h1">Welcome to Chat-X</div>
+      <div class="auth-sub">Private messaging, end to end encrypted.</div>
+      <button class="auth-btn" onclick="authGo('signup')">Create account</button>
+      <button class="auth-ghost" onclick="authGo('login')">I already have an account</button>
+    </div>
+
+    <!-- SIGN UP -->
+    <div id="au-signup" style="display:none">
+      <div class="auth-h1">Create your account</div>
+      <div class="auth-sub">Sign up with your email or phone number.</div>
+      <div class="auth-err" id="su-err"></div>
+
+      <div class="seg">
+        <button id="su-tab-email" class="on" onclick="setMethod('email')">Email</button>
+        <button id="su-tab-phone" onclick="setMethod('phone')">Phone</button>
+      </div>
+
+      <div class="auth-row">
+        <div style="flex:1">
+          <label class="auth-label">FIRST NAME</label>
+          <input class="auth-input" id="su-first" placeholder="Gideon" autocomplete="given-name"/>
+        </div>
+        <div style="flex:1">
+          <label class="auth-label">LAST NAME</label>
+          <input class="auth-input" id="su-last" placeholder="Saviour" autocomplete="family-name"/>
+        </div>
+      </div>
+
+      <div id="su-email-wrap">
+        <label class="auth-label">EMAIL</label>
+        <input class="auth-input" id="su-email" type="email" placeholder="name@example.com" autocomplete="email"/>
+      </div>
+
+      <div id="su-phone-wrap" style="display:none">
+        <label class="auth-label">PHONE NUMBER</label>
+        <input class="auth-input" id="su-phone" type="tel" placeholder="+234 801 234 5678" autocomplete="tel"/>
+      </div>
+
+      <button class="auth-btn" id="su-btn" onclick="submitSignup()">Continue</button>
+      <button class="auth-link" onclick="authGo('welcome')">Back</button>
+    </div>
+
+    <!-- LOG IN -->
+    <div id="au-login" style="display:none">
+      <div class="auth-h1">Welcome back</div>
+      <div class="auth-sub">Log in with your email or phone number.</div>
+      <div class="auth-err" id="li-err"></div>
+
+      <label class="auth-label">EMAIL OR PHONE</label>
+      <input class="auth-input" id="li-id" placeholder="name@example.com"/>
+
+      <button class="auth-btn" onclick="submitLogin()">Continue</button>
+      <button class="auth-link" onclick="authGo('welcome')">Back</button>
+    </div>
+
+    <!-- VERIFY -->
+    <div id="au-verify" style="display:none">
+      <div class="auth-h1">Verify it's you</div>
+      <div class="auth-sub" id="vf-sub">Enter the 6-digit code we sent.</div>
+      <div class="auth-err" id="vf-err"></div>
+
+      <div class="mock-note">
+        Demo mode — no email or SMS is sent yet.<br/>Your code is
+        <span class="mock-code" id="vf-code">000000</span>
+      </div>
+
+      <div class="otp" id="vf-otp">
+        <input maxlength="1" inputmode="numeric"/><input maxlength="1" inputmode="numeric"/>
+        <input maxlength="1" inputmode="numeric"/><input maxlength="1" inputmode="numeric"/>
+        <input maxlength="1" inputmode="numeric"/><input maxlength="1" inputmode="numeric"/>
+      </div>
+
+      <button class="auth-btn" onclick="submitVerify()">Verify</button>
+      <button class="auth-link" onclick="resendCode()">Resend code</button>
+      <button class="auth-link" onclick="authGo('welcome')">Start over</button>
+    </div>
+
+  </div>
+</div>
 
 <div id="splash">
   <div id="splash-logo">
@@ -368,10 +496,10 @@ html,body{
     </div>
     <!-- Profile -->
     <div style="padding:20px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:14px">
-      <div class="avatar" style="width:60px;height:60px;font-size:22px">GS</div>
+      <div class="avatar" data-user-initials style="width:60px;height:60px;font-size:22px">GS</div>
       <div>
-        <div style="font-weight:700;font-size:16px">Gideon Saviour</div>
-        <div style="font-size:13px;color:var(--text3);margin-top:2px">Hey there! I am using Chat-X</div>
+        <div style="font-weight:700;font-size:16px" data-user-name>Gideon Saviour</div>
+        <div style="font-size:13px;color:var(--text3);margin-top:2px" data-user-contact>Hey there! I am using Chat-X</div>
         <div style="font-size:11px;color:#00897B;margin-top:4px">Online</div>
       </div>
     </div>
@@ -414,7 +542,8 @@ html,body{
       </div>
     </div>
     <div style="padding:16px 20px;border-top:1px solid var(--border)">
-      <div style="font-size:12px;color:var(--text3);text-align:center">Chat-X v1.0.0 · from GIDEON SAVIOUR</div>
+      <button onclick="signOut()" style="width:100%;background:var(--bg3);border:1px solid rgba(239,68,68,.3);color:#ef4444;padding:12px;border-radius:12px;cursor:pointer;font-family:Inter,sans-serif;font-size:14px;font-weight:600;margin-bottom:12px">Sign out</button>
+      <div style="font-size:12px;color:var(--text3);text-align:center">Chat-X v1.0.0</div>
     </div>
   </div>
 </div>
@@ -719,7 +848,7 @@ html,body{
 
   <button onclick="switchNav('you')" id="nav-you" style="display:flex;flex-direction:column;align-items:center;gap:4px;background:none;border:none;cursor:pointer;font-family:Inter,sans-serif;flex:1;min-width:0;max-width:20%">
     <div id="pill-you" style="padding:4px 10px;border-radius:14px;position:relative;transition:background .2s">
-      <div style="width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#00897B,#00695C);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;font-family:Inter,sans-serif">GS</div>
+      <div data-user-initials style="width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#00897B,#00695C);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;font-family:Inter,sans-serif">GS</div>
       <div style="position:absolute;bottom:5px;right:8px;width:8px;height:8px;background:#10b981;border-radius:50%;border:2px solid #111"></div>
     </div>
     <span id="lbl-you" style="font-size:12px;color:#777;font-weight:500">You</span>
@@ -1632,17 +1761,235 @@ function loadPrefs(){
 }
 
 
+
+/* ================= AUTH =================
+   Swap MockAuthProvider for FirebaseAuthProvider later.
+   Only sendCode() and verifyCode() need to change.
+========================================== */
+
+const MockAuthProvider = {
+  name: 'mock',
+  async sendCode(identifier, method){
+    const code = String(Math.floor(100000 + Math.random()*900000))
+    sessionStorage.setItem('chatx_pending_code', code)
+    return { ok:true, code }          // real provider returns { ok:true } only
+  },
+  async verifyCode(identifier, code){
+    const expected = sessionStorage.getItem('chatx_pending_code')
+    return { ok: !!expected && code === expected }
+  }
+}
+
+let Auth = MockAuthProvider
+
+let authDraft = { method:'email', first:'', last:'', email:'', phone:'', mode:'signup' }
+let currentUser = null
+
+/* ---------- storage ---------- */
+function saveUser(u){ try{ localStorage.setItem('chatx_user', JSON.stringify(u)) }catch(e){} }
+function loadUser(){
+  try{ return JSON.parse(localStorage.getItem('chatx_user')||'null') }catch(e){ return null }
+}
+function signOut(){
+  try{ localStorage.removeItem('chatx_user') }catch(e){}
+  currentUser=null
+  location.reload()
+}
+
+/* ---------- helpers ---------- */
+function initialsOf(u){
+  if(!u) return '?'
+  const a=(u.first||'').trim()[0]||''
+  const b=(u.last||'').trim()[0]||''
+  return (a+b).toUpperCase() || '?'
+}
+function fullName(u){ return u ? ((u.first||'')+' '+(u.last||'')).trim() : '' }
+function validEmail(v){ return /^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i.test(v.trim()) }
+function validPhone(v){ return /^\+?[0-9\s\-()]{7,20}$/.test(v.trim()) && (v.replace(/\D/g,'').length>=7) }
+function maskId(v, method){
+  if(method==='email'){
+    const [n,d]=v.split('@'); if(!d) return v
+    return n.slice(0,2)+'•••@'+d
+  }
+  return v.slice(0,3)+' ••• '+v.slice(-3)
+}
+
+function authErr(id,msg){
+  const el=document.getElementById(id); if(!el) return
+  if(!msg){ el.classList.remove('show'); el.textContent=''; return }
+  el.textContent=msg; el.classList.add('show')
+}
+
+/* ---------- navigation ---------- */
+function authGo(screen){
+  ['welcome','signup','login','verify'].forEach(s=>{
+    const el=document.getElementById('au-'+s)
+    if(el) el.style.display = (s===screen) ? 'block' : 'none'
+  })
+  authErr('su-err',''); authErr('li-err',''); authErr('vf-err','')
+}
+
+function setMethod(m){
+  authDraft.method=m
+  document.getElementById('su-tab-email').classList.toggle('on', m==='email')
+  document.getElementById('su-tab-phone').classList.toggle('on', m==='phone')
+  document.getElementById('su-email-wrap').style.display = m==='email' ? 'block':'none'
+  document.getElementById('su-phone-wrap').style.display = m==='phone' ? 'block':'none'
+  authErr('su-err','')
+}
+
+/* ---------- sign up ---------- */
+async function submitSignup(){
+  const first=document.getElementById('su-first').value.trim()
+  const last=document.getElementById('su-last').value.trim()
+  const m=authDraft.method
+  const raw=(m==='email'?document.getElementById('su-email'):document.getElementById('su-phone')).value.trim()
+
+  if(!first) return authErr('su-err','Enter your first name.')
+  if(!last)  return authErr('su-err','Enter your last name.')
+  if(!raw)   return authErr('su-err', m==='email'?'Enter your email address.':'Enter your phone number.')
+  if(m==='email' && !validEmail(raw)) return authErr('su-err','That email doesn\u2019t look right.')
+  if(m==='phone' && !validPhone(raw)) return authErr('su-err','That phone number doesn\u2019t look right.')
+
+  authDraft={ method:m, first, last, email:m==='email'?raw:'', phone:m==='phone'?raw:'', mode:'signup' }
+  await startVerification(raw, m)
+}
+
+/* ---------- log in ---------- */
+async function submitLogin(){
+  const raw=document.getElementById('li-id').value.trim()
+  if(!raw) return authErr('li-err','Enter your email or phone number.')
+  const m = raw.includes('@') ? 'email' : 'phone'
+  if(m==='email' && !validEmail(raw)) return authErr('li-err','That email doesn\u2019t look right.')
+  if(m==='phone' && !validPhone(raw)) return authErr('li-err','That phone number doesn\u2019t look right.')
+
+  const existing=loadUser()
+  if(!existing || (m==='email'? existing.email!==raw : existing.phone!==raw)){
+    return authErr('li-err','No account found with that '+(m==='email'?'email':'number')+'.')
+  }
+  authDraft={ method:m, first:existing.first, last:existing.last,
+              email:existing.email, phone:existing.phone, mode:'login' }
+  await startVerification(raw, m)
+}
+
+/* ---------- verification ---------- */
+async function startVerification(identifier, method){
+  const res=await Auth.sendCode(identifier, method)
+  if(!res.ok) return authErr(authDraft.mode==='login'?'li-err':'su-err','Could not send the code. Try again.')
+
+  document.getElementById('vf-sub').textContent =
+    (method==='email' ? 'Enter the 6-digit code sent to ' : 'Enter the 6-digit code texted to ')
+    + maskId(identifier, method)
+
+  const codeEl=document.getElementById('vf-code')
+  if(res.code) codeEl.textContent=res.code            // demo only
+  document.querySelectorAll('#vf-otp input').forEach(i=>i.value='')
+  authGo('verify')
+  const first=document.querySelector('#vf-otp input'); if(first) first.focus()
+}
+
+async function submitVerify(){
+  const code=Array.from(document.querySelectorAll('#vf-otp input')).map(i=>i.value).join('')
+  if(code.length!==6) return authErr('vf-err','Enter all six digits.')
+
+  const id = authDraft.method==='email' ? authDraft.email : authDraft.phone
+  const res=await Auth.verifyCode(id, code)
+  if(!res.ok){
+    authErr('vf-err','That code is incorrect. Check and try again.')
+    document.querySelectorAll('#vf-otp input').forEach(i=>i.classList.add('err'))
+    return
+  }
+
+  const existing=loadUser()
+  currentUser={
+    first:authDraft.first, last:authDraft.last,
+    email:authDraft.email, phone:authDraft.phone,
+    avatar:(existing&&existing.avatar)||null,
+    verified:true,
+    createdAt:(existing&&existing.createdAt)||Date.now()
+  }
+  saveUser(currentUser)
+  sessionStorage.removeItem('chatx_pending_code')
+  enterApp()
+}
+
+async function resendCode(){
+  const id = authDraft.method==='email' ? authDraft.email : authDraft.phone
+  const res=await Auth.sendCode(id, authDraft.method)
+  if(res.code) document.getElementById('vf-code').textContent=res.code
+  authErr('vf-err','')
+  toast('New code sent')
+}
+
+/* ---------- OTP box behaviour ---------- */
+function wireOtp(){
+  const boxes=Array.from(document.querySelectorAll('#vf-otp input'))
+  boxes.forEach((box,i)=>{
+    box.addEventListener('input',()=>{
+      box.classList.remove('err')
+      box.value=box.value.replace(/\D/g,'')
+      if(box.value && i<boxes.length-1) boxes[i+1].focus()
+    })
+    box.addEventListener('keydown',e=>{
+      if(e.key==='Backspace' && !box.value && i>0) boxes[i-1].focus()
+      if(e.key==='Enter') submitVerify()
+    })
+    box.addEventListener('paste',e=>{
+      e.preventDefault()
+      const d=(e.clipboardData.getData('text')||'').replace(/\D/g,'').slice(0,6)
+      d.split('').forEach((ch,k)=>{ if(boxes[k]) boxes[k].value=ch })
+      if(d.length===6) boxes[5].focus()
+    })
+  })
+}
+
+/* ---------- entry ---------- */
+function enterApp(){
+  document.getElementById('auth').classList.remove('show')
+  document.getElementById('app').classList.add('show')
+  document.body.classList.add('app-ready')
+  applyUserToUI()
+  loadPrefs(); renderList(); updateNavBadge()
+}
+
+function applyUserToUI(){
+  if(!currentUser) return
+  const ini=initialsOf(currentUser), nm=fullName(currentUser)
+  document.querySelectorAll('[data-user-initials]').forEach(el=>{
+    if(currentUser.avatar){
+      el.textContent=''
+      el.style.backgroundImage='url('+currentUser.avatar+')'
+      el.style.backgroundSize='cover'
+      el.style.backgroundPosition='center'
+    } else {
+      el.style.backgroundImage='none'
+      el.textContent=ini
+    }
+  })
+  document.querySelectorAll('[data-user-name]').forEach(el=>el.textContent=nm)
+  document.querySelectorAll('[data-user-contact]').forEach(el=>{
+    el.textContent = currentUser.email || currentUser.phone || ''
+  })
+}
+
+function bootAuth(){
+  wireOtp()
+  const u=loadUser()
+  if(u && u.verified){
+    currentUser=u
+    enterApp()
+  } else {
+    document.getElementById('auth').classList.add('show')
+    authGo('welcome')
+  }
+}
+
 // Splash to app transition
 setTimeout(function(){
   document.getElementById('splash').classList.add('hide')
   setTimeout(function(){
     document.getElementById('splash').style.display='none'
-    document.getElementById('app').classList.add('show')
-    const bn=document.getElementById('bottom-nav')
-    document.body.classList.add('app-ready')
-    loadPrefs()
-    renderList()
-    updateNavBadge()
+    bootAuth()
   },600)
 },4000)
 </script>
