@@ -195,6 +195,18 @@ input::placeholder,textarea::placeholder{color:#444}
   #sidebar{width:400px !important}
   #group-panel{width:340px !important}
 }
+
+/* Prevent keyboard from moving fixed nav */
+#bottom-nav{
+  position:fixed !important;
+  bottom:0 !important;
+  will-change:auto;
+}
+/* Lock body from scrolling when keyboard opens */
+html,body{
+  overscroll-behavior:none;
+  position:relative;
+}
 </style>
 </head>
 <body>
@@ -771,15 +783,7 @@ function openChat(id){
   if(!active)return
   msgs=seedMsgs(active)
   if(active.type==='ai')aiHistory=[]
-  if(window.innerWidth<=640){
-    document.getElementById('sidebar').classList.add('hidden')
-    // Hide bottom nav when chat is open on mobile
-    const nav=document.getElementById('bottom-nav')
-    if(nav)nav.style.display='none'
-    // Make main fullscreen
-    const main=document.getElementById('main')
-    if(main)main.style.height='100dvh'
-  }
+  if(window.innerWidth<=640)document.getElementById('sidebar').classList.add('hidden')
   document.getElementById('empty-state').style.display='none'
   document.getElementById('chat-area').style.display='flex'
   closeGroupPanel()
@@ -818,12 +822,6 @@ function goBack(){
   document.getElementById('chat-area').style.display='none'
   document.getElementById('empty-state').style.display='flex'
   closeGroupPanel();active=null;renderList()
-  if(window.innerWidth<=640){
-    const nav=document.getElementById('bottom-nav')
-    if(nav)nav.style.display='flex'
-    const main=document.getElementById('main')
-    if(main)main.style.height='calc(100dvh - 78px)'
-  }
 }
 
 function renderMessages(){
@@ -1443,21 +1441,6 @@ setTimeout(()=>{
   runAiBtnAnimation()
   setInterval(runAiBtnAnimation, 20000)
 }, 5000) // start 5s after app loads
-
-// Hide bottom nav when keyboard opens on mobile
-if(window.visualViewport){
-  let initialHeight = window.visualViewport.height
-  window.visualViewport.addEventListener('resize', ()=>{
-    const nav = document.getElementById('bottom-nav')
-    if(!nav) return
-    // If viewport shrunk significantly, keyboard is open
-    if(window.visualViewport.height < initialHeight * 0.75){
-      nav.style.display = 'none'
-    } else {
-      if(window.innerWidth <= 640) nav.style.display = 'flex'
-    }
-  })
-}
 
 // Splash to app transition
 setTimeout(function(){
