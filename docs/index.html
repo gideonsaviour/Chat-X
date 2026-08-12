@@ -230,6 +230,13 @@ html,body{
   #bottom-nav{padding-bottom:max(10px,env(safe-area-inset-bottom))}
   body{padding-top:env(safe-area-inset-top)}
 }
+/* bubbles read correctly on any wallpaper, in either theme */
+#messages.wp-light .msg-theirs{background:#fff;color:#111;border:1px solid #e0e0e0}
+#messages.wp-light .msg-ai{background:#f2f2f2;color:#111;border:1px solid #e0e0e0}
+#messages.wp-light .msg-theirs span,#messages.wp-light .msg-ai span{color:#666 !important}
+#messages.wp-dark .msg-theirs{background:#1a1a1a;color:#f1f1f5;border:1px solid #2a2a2a}
+#messages.wp-dark .msg-ai{background:#0d1a18;color:#f1f1f5}
+#messages.wp-light .msg-mine,#messages.wp-dark .msg-mine{color:#fff}
 </style>
 </head>
 <body>
@@ -818,7 +825,7 @@ function openChat(id){
   document.getElementById('enc-notice').textContent=isAI?'Powered by Groq AI — conversations are private':isCom?active.members?.toLocaleString()+' members':'End-to-end encrypted'
   // Apply wallpaper to message area
   setTimeout(()=>{
-    if(currentWallpaper&&currentWallpaper!=='none') setWallpaper(currentWallpaper)
+    if(currentWallpaper) setWallpaper(currentWallpaper,true)
   },50)
   const totalUnread=contacts.reduce((s,c)=>s+(c.unread||0),0)
   document.getElementById('chat-header').innerHTML=`
@@ -1076,12 +1083,13 @@ function setTheme(theme){
     document.getElementById('theme-light-check').textContent='Tap to switch'
     document.getElementById('theme-light-check').style.color='#999'
   }
+  setWallpaper(currentWallpaper,true)
   toast(theme==='light'?'Light theme applied':'Dark theme applied')
 }
 
 // WALLPAPER
 let currentWallpaper='black'
-function setWallpaper(wp){
+function setWallpaper(wp,silent){
   currentWallpaper=wp
   const msgArea=document.getElementById('messages')
   const ids=['white','black','green','mix']
@@ -1109,9 +1117,14 @@ function setWallpaper(wp){
     mix:'linear-gradient(135deg,#000000 0%,#001a14 20%,#00897B 45%,#4DB6AC 55%,#e0f2f1 75%,#ffffff 100%)'
   }
   msgArea.style.backgroundImage=styles[wp]||'none'
-  msgArea.style.backgroundSize='100% 100%'
-  msgArea.style.backgroundAttachment='fixed'
-  toast('Wallpaper updated')
+  msgArea.style.backgroundSize='cover'
+  msgArea.style.backgroundAttachment='local'
+  msgArea.style.backgroundRepeat='no-repeat'
+  // bubbles follow the wallpaper's brightness, not the theme
+  const lightWall = (wp==='white')
+  msgArea.classList.toggle('wp-light', lightWall)
+  msgArea.classList.toggle('wp-dark', !lightWall)
+  if(!silent) toast('Wallpaper updated')
 }
 
 // FONT SIZE
