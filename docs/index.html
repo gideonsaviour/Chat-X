@@ -61,7 +61,7 @@ overscroll-behavior:none;-webkit-overflow-scrolling:touch}
 #splash-brand{font-size:15px;font-weight:700;color:#6b6b80;letter-spacing:.5px}
 #app{display:none;flex:1;min-height:0;width:100%;flex-direction:row;overflow:hidden}
 #app.show{display:flex}
-#sidebar{width:100%;max-width:300px;height:100%;min-height:0;background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;flex-shrink:0}
+#sidebar{width:100%;max-width:300px;height:100%;min-height:0;overflow-x:hidden;background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;flex-shrink:0}
 #main{flex:1;display:flex;flex-direction:column;height:100%;min-height:0;min-width:0;max-width:100%;overflow:hidden;background:var(--bg1)}
 @media(max-width:640px){
   #sidebar{width:100% !important;max-width:100vw !important;height:100% !important;flex-shrink:0}
@@ -75,7 +75,7 @@ overscroll-behavior:none;-webkit-overflow-scrolling:touch}
 .chat-item{display:flex;align-items:center;gap:12px;padding:11px 14px;cursor:pointer;border-radius:12px;margin:2px 8px;border:1px solid transparent;transition:background .15s}
 .chat-item:hover{background:rgba(var(--accent-rgb),0.06)}
 .chat-item.active{background:rgba(var(--accent-rgb),0.12);border-color:rgba(var(--accent-rgb),0.3)}
-.tab-btn{flex:1;padding:8px 4px;border:none;border-radius:8px;font-size:11px;font-weight:600;cursor:pointer;transition:all .15s;background:transparent;color:var(--text3);font-family:'Inter',sans-serif}
+.tab-btn{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:8px 2px;border:none;border-radius:8px;font-size:11px;font-weight:600;cursor:pointer;transition:all .15s;background:transparent;color:var(--text3);font-family:'Inter',sans-serif}
 .tab-btn.active{background:rgba(0,137,123,0.2);color:#00897B}
 .tab-btn:hover:not(.active){background:rgba(255,255,255,0.05);color:#f1f1f5}
 .icon-btn{background:none;border:none;color:var(--text3);cursor:pointer;padding:8px;border-radius:8px;display:flex;align-items:center;justify-content:center;transition:all .15s;flex-shrink:0}
@@ -134,7 +134,7 @@ overscroll-behavior:none;-webkit-overflow-scrolling:touch}
 .pill{background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:8px 14px;font-size:13px;color:#8b8b9e}
 /* Bottom Nav */
 #bottom-nav{position:relative;flex-shrink:0;width:100%;display:none}
-body.app-ready #bottom-nav{display:flex}
+body.app-ready #bottom-nav{display:flex !important}
 body.chat-open #bottom-nav{display:none !important}
 @media(min-width:641px){#bottom-nav{display:none !important}}
 
@@ -214,6 +214,8 @@ html,body{
   overscroll-behavior:none;
   position:relative;
 }
+#sidebar *{max-width:100%}
+#chat-list{overflow-x:hidden}
 </style>
 </head>
 <body>
@@ -231,7 +233,7 @@ html,body{
 
 <div id="app">
 <div id="sidebar">
-  <div style="padding:16px 16px 12px;border-bottom:1px solid var(--border);flex-shrink:0">
+  <div style="padding:14px 14px 10px;border-bottom:1px solid var(--border);flex-shrink:0;width:100%;max-width:100%;overflow:hidden">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
       <div style="display:flex;align-items:center;gap:10px">
         <div style="position:relative">
@@ -262,7 +264,7 @@ html,body{
       <input id="search" oninput="renderList()" placeholder="Search conversations..." style="width:100%;padding:10px 12px 10px 33px;background:var(--bg3);border:1px solid var(--border);border-radius:10px;font-size:13px"/>
     </div>
   </div>
-  <div style="display:flex;padding:8px 12px;gap:4px;flex-shrink:0">
+  <div style="display:flex;padding:8px 8px;gap:2px;flex-shrink:0;width:100%;overflow:hidden">
     <button class="tab-btn active" onclick="switchTab(this,'chats')">Chats</button>
     <button class="tab-btn" onclick="switchTab(this,'groups')">Groups</button>
     <button class="tab-btn" onclick="switchTab(this,'calls')">Calls</button>
@@ -666,7 +668,7 @@ html,body{
 <div id="toast"></div>
 
 <!-- Bottom Navigation -->
-<div id="bottom-nav" style="position:relative;width:100%;flex-shrink:0;background:#111;border-top:1px solid #222;display:none;align-items:center;justify-content:space-evenly;padding:8px 0 calc(8px + env(safe-area-inset-bottom));z-index:50">
+<div id="bottom-nav" style="position:relative;width:100%;flex-shrink:0;background:#111;border-top:1px solid #222;align-items:center;justify-content:space-evenly;padding:8px 0 calc(8px + env(safe-area-inset-bottom));z-index:50">
 
   <button onclick="switchNav('updates')" id="nav-updates" style="display:flex;flex-direction:column;align-items:center;gap:4px;background:none;border:none;cursor:pointer;font-family:Inter,sans-serif;flex:1;min-width:0;max-width:20%">
     <div id="pill-updates" style="padding:8px 14px;border-radius:14px;position:relative;transition:background .2s">
@@ -769,7 +771,7 @@ function renderList(){
     return c.name.toLowerCase().includes(q.toLowerCase())
   })
   list.innerHTML=filtered.map(c=>`
-    <div class="chat-item${active?.id===c.id?' active':''}" onclick="openChat('${c.id}')">
+    <div class="chat-item${active?.id===c.id?' active':''}" style="max-width:100%;overflow:hidden" onclick="openChat('${c.id}')">
       ${mkAv(c.av,44,c.type==='ai'?'ai':c.status)}
       <div style="flex:1;min-width:0">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px">
