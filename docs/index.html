@@ -927,6 +927,82 @@ body.light-theme #messages{background:transparent}
 #feed .scr-body,#profile .scr-body,#notifs .scr-body,#hub .scr-body,
 #groups .scr-body,#pages .scr-body,#events .scr-body,#market .scr-body{
   flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;padding-bottom:104px}
+/* ================= SPLASH ================= */
+#splash{
+  position:fixed; inset:0; z-index:10000;
+  display:flex; flex-direction:column; align-items:center;
+  padding:max(28px,env(safe-area-inset-top)) 20px max(28px,env(safe-area-inset-bottom));
+  background:
+    radial-gradient(900px 520px at 50% -10%, #EAF2FF 0%, rgba(234,242,255,0) 60%),
+    radial-gradient(700px 460px at 88% 18%, #EDE9FE 0%, rgba(237,233,254,0) 58%),
+    linear-gradient(180deg,#FFFFFF 0%,#F4F8FF 55%,#E8F0FE 100%);
+  opacity:1; transition:opacity .55s cubic-bezier(.4,0,.2,1);
+}
+#splash.hide{opacity:0; pointer-events:none}
+
+/* --- brand block --- */
+#splash-brand{display:flex;flex-direction:column;align-items:center;flex-shrink:0;
+  animation:sUp .55s cubic-bezier(.4,0,.2,1) both}
+#splash-logo{
+  width:84px;height:84px;border-radius:26px;position:relative;overflow:hidden;
+  background:linear-gradient(135deg,#2563EB 0%,#4F46E5 55%,#7C3AED 100%);
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 14px 34px rgba(37,99,235,.34)}
+#splash-name{margin-top:16px;font-size:34px;font-weight:800;color:#111827;letter-spacing:-.03em}
+#splash-tag{margin-top:6px;font-size:15px;font-weight:500;color:#475569;letter-spacing:.01em}
+
+/* --- C -> X -> bubble animation --- */
+#sc,#sx{position:absolute;font-size:30px;font-weight:900;color:#fff;line-height:1}
+#sc{animation:cIn 3s cubic-bezier(.4,0,.2,1) infinite}
+#sx{animation:xIn 3s cubic-bezier(.4,0,.2,1) infinite}
+#si{position:absolute;opacity:0;animation:bubbleIn 3s cubic-bezier(.4,0,.2,1) infinite;display:flex}
+@keyframes cIn{
+  0%{opacity:0;transform:translateX(-30px)}   14%{opacity:1;transform:translateX(-13px)}
+  46%{opacity:1;transform:translateX(-13px)}  58%{opacity:1;transform:translateX(0) scale(1.12)}
+  66%{opacity:0;transform:translateX(0) scale(2.1);filter:blur(5px)} 100%{opacity:0}}
+@keyframes xIn{
+  0%{opacity:0;transform:translateX(30px)}    14%{opacity:1;transform:translateX(13px)}
+  46%{opacity:1;transform:translateX(13px)}   58%{opacity:1;transform:translateX(0) scale(1.12)}
+  66%{opacity:0;transform:translateX(0) scale(2.1);filter:blur(5px)} 100%{opacity:0}}
+@keyframes bubbleIn{
+  0%,64%{opacity:0;transform:scale(.2)}       74%{opacity:1;transform:scale(1.16)}
+  82%{transform:scale(.96)}                   90%{opacity:1;transform:scale(1)}
+  100%{opacity:0;transform:scale(.9)}}
+@keyframes sUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+
+/* --- hero: never stretched, never cropped --- */
+#splash-hero{
+  flex:1 1 auto; min-height:0; width:100%;
+  display:flex; align-items:center; justify-content:center;
+  margin:18px 0 10px;
+  animation:sUp .6s cubic-bezier(.4,0,.2,1) .12s both}
+#splash-hero img{
+  max-width:min(430px,92vw);
+  max-height:100%;
+  width:auto; height:auto;
+  object-fit:contain;            /* preserves aspect ratio, no distortion */
+  display:block}
+
+/* --- loading area --- */
+#splash-load{flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:12px;
+  padding-bottom:6px;animation:sUp .6s cubic-bezier(.4,0,.2,1) .24s both}
+#splash-bar{width:186px;height:4px;border-radius:99px;background:#DBEAFE;overflow:hidden}
+#splash-bar i{display:block;height:100%;width:0;border-radius:99px;
+  background:linear-gradient(90deg,#2563EB,#7C3AED);transition:width .3s linear}
+#splash-status{font-size:13px;font-weight:500;color:#475569;letter-spacing:.01em}
+#splash-from{font-size:11px;color:#94A3B8;margin-top:2px}
+
+/* short screens: shrink the hero rather than clipping it */
+@media(max-height:680px){
+  #splash-logo{width:68px;height:68px;border-radius:22px}
+  #splash-name{font-size:28px;margin-top:12px}
+  #splash-tag{font-size:13px}
+  #splash-hero{margin:10px 0 6px}
+}
+@media(prefers-reduced-motion:reduce){
+  #sc,#sx,#si,#splash-brand,#splash-hero,#splash-load{animation:none}
+  #si{opacity:1}
+}
 </style>
 </head>
 <body>
@@ -1122,14 +1198,33 @@ body.light-theme #messages{background:transparent}
 </div>
 
 <div id="splash">
-  <div id="splash-logo">
-    <span id="sc">C</span>
-    <span id="sx">X</span>
-    <div id="si"><svg width="52" height="52" fill="none" stroke="#fff" stroke-width="2.2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+
+  <div id="splash-brand">
+    <div id="splash-logo">
+      <span id="sc">C</span>
+      <span id="sx">X</span>
+      <div id="si">
+        <svg width="40" height="40" fill="none" stroke="#fff" stroke-width="2.2" viewBox="0 0 24 24">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+        </svg>
+      </div>
+    </div>
+    <div id="splash-name">Chat-X</div>
+    <div id="splash-tag">Connect. Share. Inspire.</div>
   </div>
-  <div id="splash-name">Chat-X</div>
-  <div id="splash-tag">Next generation messaging</div>
-  <div id="splash-bottom"><div id="splash-from">from</div><div id="splash-brand">GIDEON SAVIOUR</div></div>
+
+  <div id="splash-hero">
+    <img id="splash-img" alt="A person messaging on their phone"
+         src="assets/chat-x-splash.png"
+         onerror="this.onerror=null;this.src='assets/chat-x-splash.svg'"/>
+  </div>
+
+  <div id="splash-load">
+    <div id="splash-bar"><i id="splash-fill"></i></div>
+    <div id="splash-status">Starting Chat-X\u2026</div>
+    <div id="splash-from">from GIDEON SAVIOUR</div>
+  </div>
+
 </div>
 
 <div id="app">
@@ -4214,13 +4309,51 @@ function skeletonList(n){
 }
 
 // Splash to app transition
-setTimeout(function(){
-  document.getElementById('splash').classList.add('hide')
-  setTimeout(function(){
-    document.getElementById('splash').style.display='none'
-    bootAuth()
-  },600)
-},4000)
+/* ===== SPLASH BOOT SEQUENCE ===== */
+;(function(){
+  const bar=()=>document.getElementById('splash-fill')
+  const msg=()=>document.getElementById('splash-status')
+  let pct=0
+  function step(to,text){
+    pct=to
+    const b=bar(); if(b) b.style.width=to+'%'
+    const m=msg(); if(m && text) m.textContent=text
+  }
+
+  // real progress: wait for the hero image, then hand over
+  function whenHeroReady(cb){
+    const img=document.getElementById('splash-img')
+    if(!img) return cb()
+    if(img.complete) return cb()
+    let done=false
+    const fin=()=>{ if(!done){ done=true; cb() } }
+    img.addEventListener('load',fin,{once:true})
+    img.addEventListener('error',fin,{once:true})
+    setTimeout(fin,2500)   // never hang on a slow asset
+  }
+
+  function finish(){
+    step(100,'Ready')
+    setTimeout(function(){
+      const sp=document.getElementById('splash')
+      sp.classList.add('hide')
+      setTimeout(function(){
+        sp.style.display='none'
+        bootAuth()                       // -> auth, or straight into the app
+      },560)                             // matches the CSS fade
+    },320)
+  }
+
+  window.addEventListener('load',function(){
+    step(18,'Starting Chat-X\u2026')
+    setTimeout(()=>step(46,'Loading your profile\u2026'),380)
+    whenHeroReady(function(){
+      setTimeout(()=>step(78,'Preparing your feed\u2026'),260)
+      setTimeout(finish,900)
+    })
+  })
+})()
+
 </script>
 </body>
 </html>
