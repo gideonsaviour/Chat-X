@@ -152,9 +152,6 @@ overscroll-behavior:none;-webkit-overflow-scrolling:touch}
 @keyframes aiSpin{0%{transform:rotate(0deg) translateY(-10px) scale(1)}50%{transform:rotate(180deg) translateY(-10px) scale(.5)}100%{transform:rotate(360deg) translateY(-10px) scale(1)}}
 .pill{background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:8px 14px;font-size:13px;color:var(--text-2)}
 /* Bottom Nav */
-#bottom-nav{position:relative;flex-shrink:0;width:100%;display:none}
-body.app-ready #bottom-nav{display:flex !important}
-#bottom-nav{position:relative;z-index:60}
 
 
 
@@ -178,7 +175,6 @@ input::placeholder,textarea::placeholder{color:var(--text-3)}
 
 /* ===== DESKTOP LAYOUT ===== */
 @media(min-width:641px){
-  #bottom-nav{display:none !important}
   #app.show{display:flex}
   #sidebar{
     width:100% !important;
@@ -228,7 +224,6 @@ input::placeholder,textarea::placeholder{color:var(--text-3)}
 }
 
 /* Prevent keyboard from moving fixed nav */
-#bottom-nav{position:relative;flex-shrink:0;width:100%}
 /* Lock body from scrolling when keyboard opens */
 html,body{
   overscroll-behavior:none;
@@ -237,7 +232,6 @@ html,body{
 #sidebar *{max-width:100%}
 #chat-list{overflow-x:hidden}
 @supports(padding:max(0px)){
-  #bottom-nav{padding-bottom:max(10px,env(safe-area-inset-bottom))}
   body{padding-top:env(safe-area-inset-top)}
 }
 /* bubbles read correctly on any wallpaper, in either theme */
@@ -479,7 +473,6 @@ h1,h2,.scr-title,.auth-h1{letter-spacing:-.02em}
 #feed,#profile,#notifs,#hub,#groups,#pages,#events,#market{z-index:40;bottom:0}
 #feed .scr-body,#profile .scr-body,#notifs .scr-body,#hub .scr-body,
 #groups .scr-body,#pages .scr-body,#events .scr-body,#market .scr-body{padding-bottom:96px}
-#bottom-nav{position:fixed;left:0;right:0;bottom:0;z-index:60}
 #app.show{padding-bottom:76px}
 .fab{bottom:110px}
 [data-back]{display:none}
@@ -542,7 +535,6 @@ body.light-theme{ --grad:linear-gradient(135deg,#3B82F6 0%,#2563EB 60%,#1D4ED8 1
 .scr-head .icon-btn svg{stroke:#fff !important}
 .scr-head .icon-btn:hover{background:rgba(255,255,255,.16) !important}
 .auth-btn,.pill-btn:not(.ghost),.fab{background:var(--grad) !important;color:#fff !important}
-#bottom-nav [id^="pill-"]{transition:background .2s var(--ease)}
 
 /* everything else: solid, no gradient */
 .avatar,.story-av,.prof-av,.auth-logo,#splash-logo,.send-btn{
@@ -622,9 +614,6 @@ body{line-height:1.55;letter-spacing:-.011em}
 /* glass */
 .glass{background:var(--glass);backdrop-filter:blur(20px) saturate(180%);
   -webkit-backdrop-filter:blur(20px) saturate(180%);border:1px solid var(--glass-line)}
-#bottom-nav{background:var(--glass) !important;
-  backdrop-filter:blur(22px) saturate(180%);-webkit-backdrop-filter:blur(22px) saturate(180%);
-  border-top:1px solid var(--glass-line) !important}
 .fab{background:var(--grad) !important;box-shadow:0 8px 26px rgba(37,99,235,.42)}
 .chat-item.active,.card.selected{background:var(--glass);backdrop-filter:blur(14px);
   -webkit-backdrop-filter:blur(14px);border:1px solid var(--glass-line)}
@@ -663,9 +652,53 @@ button,.icon-btn,.tab-btn,.post-act,.ptab,.nav-btn,.chat-item,.hub-tile{min-heig
   .grid2{grid-template-columns:repeat(4,1fr)}
 }
 @media(min-width:641px){
-  #bottom-nav{max-width:560px;left:50%;transform:translateX(-50%);
-    border-radius:var(--r-lg) var(--r-lg) 0 0;border:1px solid var(--glass-line);border-bottom:none}
 }
+/* ===== BOTTOM NAV — single container, no nested frames ===== */
+#bottom-nav{
+  position:fixed; left:0; right:0; bottom:0; z-index:60;
+  display:none; align-items:stretch; justify-content:space-between;
+  padding:6px 6px calc(6px + env(safe-area-inset-bottom));
+  background:var(--glass);
+  backdrop-filter:blur(24px) saturate(180%);
+  -webkit-backdrop-filter:blur(24px) saturate(180%);
+  border:none;
+  border-top:1px solid var(--glass-line);
+  box-shadow:0 -6px 24px rgba(0,0,0,.10);
+}
+body.app-ready #bottom-nav{display:flex}
+body.in-chat #bottom-nav{display:none}
+#bottom-nav>button{
+  flex:1 1 0; min-width:0; display:flex; flex-direction:column;
+  align-items:center; justify-content:center; gap:3px;
+  background:none; border:none; cursor:pointer; padding:6px 2px;
+  font-family:inherit; min-height:52px;
+}
+#bottom-nav [id^="pill-"]{
+  display:flex; align-items:center; justify-content:center;
+  padding:5px 16px; border-radius:999px; border:none;
+  transition:background .22s var(--ease);
+}
+#bottom-nav span{font-size:11px; line-height:1.2; white-space:nowrap}
+#app.show{padding-bottom:72px}
+@media(min-width:641px){
+  #bottom-nav{
+    left:50%; right:auto; transform:translateX(-50%);
+    width:min(520px, calc(100% - 32px));
+    bottom:16px;
+    border:1px solid var(--glass-line);
+    border-radius:20px;
+    box-shadow:0 10px 34px rgba(0,0,0,.18);
+  }
+  #app.show{padding-bottom:96px}
+}
+/* create button + badge anchoring */
+#create-fab{width:46px;height:46px;border-radius:15px;background:var(--grad);
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 6px 18px rgba(37,99,235,.42);transition:transform .18s var(--ease)}
+#nav-create:active #create-fab{transform:scale(.92)}
+#nav-create{justify-content:center !important}
+#pill-chats,#pill-notifs,#pill-profile,#pill-home{position:relative}
+#bottom-nav .nav-avatar{width:26px;height:26px;font-size:10px}
 </style>
 </head>
 <body>
@@ -1315,21 +1348,21 @@ button,.icon-btn,.tab-btn,.post-act,.ptab,.nav-btn,.chat-item,.hub-tile{min-heig
 <div id="toast"></div>
 
 <!-- Bottom Navigation -->
-<div id="bottom-nav" style="position:relative;width:100%;flex-shrink:0;background:var(--card);border-top:1px solid var(--border);display:none;align-items:center;justify-content:space-evenly;padding:8px 0 calc(8px + env(safe-area-inset-bottom));z-index:50">
-  <button onclick="switchNav('home')" id="nav-home" style="display:flex;flex-direction:column;align-items:center;gap:3px;background:none;border:none;cursor:pointer;font-family:Inter,sans-serif;flex:1;min-width:0">
-    <div id="pill-home" style="padding:6px 14px;border-radius:var(--r-full)"><svg width="24" height="24" fill="none" stroke="var(--text-2)" stroke-width="2" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
-    <span id="lbl-home" style="font-size:10px;color:var(--text-2);font-weight:500">Home</span></button>
-  <button onclick="switchNav('chats')" id="nav-chats" style="display:flex;flex-direction:column;align-items:center;gap:3px;background:none;border:none;cursor:pointer;font-family:Inter,sans-serif;flex:1;min-width:0">
-    <div id="pill-chats" style="padding:6px 14px;border-radius:var(--r-full);position:relative"><svg width="24" height="24" fill="none" stroke="var(--text-2)" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span id="badge-chats" style="position:absolute;top:-3px;right:-3px;background:var(--accent);color:#062B21;font-size:9px;font-weight:700;border-radius:var(--r-full);padding:1px 5px;border:2px solid var(--card);display:none">0</span></div>
-    <span id="lbl-chats" style="font-size:10px;color:var(--text-2);font-weight:500">Chats</span></button>
-  <button onclick="openCreate()" style="display:flex;flex-direction:column;align-items:center;gap:3px;background:none;border:none;cursor:pointer;font-family:Inter,sans-serif;flex:1;min-width:0">
-    <div style="width:44px;height:44px;border-radius:var(--r);background:linear-gradient(135deg,var(--primary),var(--primary-deep));display:flex;align-items:center;justify-content:center;box-shadow:var(--shadow)"><svg width="24" height="24" fill="none" stroke="#fff" stroke-width="2.6" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div></button>
-  <button onclick="switchNav('notifs')" id="nav-notifs" style="display:flex;flex-direction:column;align-items:center;gap:3px;background:none;border:none;cursor:pointer;font-family:Inter,sans-serif;flex:1;min-width:0">
-    <div id="pill-notifs" style="padding:6px 14px;border-radius:var(--r-full);position:relative"><svg width="24" height="24" fill="none" stroke="var(--text-2)" stroke-width="2" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg><span id="badge-notifs" style="position:absolute;top:-3px;right:-3px;background:var(--danger);color:#fff;font-size:9px;font-weight:700;border-radius:var(--r-full);padding:1px 5px;border:2px solid var(--card);display:none">0</span></div>
-    <span id="lbl-notifs" style="font-size:10px;color:var(--text-2);font-weight:500">Alerts</span></button>
-  <button onclick="switchNav('profile')" id="nav-profile" style="display:flex;flex-direction:column;align-items:center;gap:3px;background:none;border:none;cursor:pointer;font-family:Inter,sans-serif;flex:1;min-width:0">
-    <div id="pill-profile" style="padding:4px 10px;border-radius:var(--r-full)"><div class="nav-avatar" data-user-initials style="width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;background-size:cover;background-position:center">?</div></div>
-    <span id="lbl-profile" style="font-size:10px;color:var(--text-2);font-weight:500">Profile</span></button>
+<div id="bottom-nav">
+  <button onclick="switchNav('home')" id="nav-home" >
+    <div id="pill-home"><svg width="24" height="24" fill="none" stroke="var(--text-2)" stroke-width="2" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+    <span id="lbl-home">Home</span></button>
+  <button onclick="switchNav('chats')" id="nav-chats" >
+    <div id="pill-chats"><svg width="24" height="24" fill="none" stroke="var(--text-2)" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span id="badge-chats" style="position:absolute;top:-3px;right:-3px;background:var(--accent);color:#062B21;font-size:9px;font-weight:700;border-radius:var(--r-full);padding:1px 5px;border:2px solid var(--card);display:none">0</span></div>
+    <span id="lbl-chats">Chats</span></button>
+  <button onclick="openCreate()" id="nav-create" aria-label="Create">
+    <div id="create-fab"><svg width="24" height="24" fill="none" stroke="#fff" stroke-width="2.6" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div></button>
+  <button onclick="switchNav('notifs')" id="nav-notifs" >
+    <div id="pill-notifs"><svg width="24" height="24" fill="none" stroke="var(--text-2)" stroke-width="2" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg><span id="badge-notifs" style="position:absolute;top:-3px;right:-3px;background:var(--danger);color:#fff;font-size:9px;font-weight:700;border-radius:var(--r-full);padding:1px 5px;border:2px solid var(--card);display:none">0</span></div>
+    <span id="lbl-notifs">Alerts</span></button>
+  <button onclick="switchNav('profile')" id="nav-profile" >
+    <div id="pill-profile"><div class="nav-avatar" data-user-initials style="width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;background-size:cover;background-position:center">?</div></div>
+    <span id="lbl-profile">Profile</span></button>
 </div>
 
 <script>
@@ -3757,6 +3790,7 @@ function navBack(){
 function renderView(){
   const s=navStack[navStack.length-1]
   hideAllScreens()
+  document.body.classList.toggle('in-chat', s.v==='chat')
 
   if(s.v==='chat'){
     // chat list stays mounted underneath so returning is instant
