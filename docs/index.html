@@ -17,34 +17,43 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
 <style>
 :root{
-  --bg1:#000;--bg2:#111;--bg3:#1a1a1a;--border:#222;
-  --text:#f1f1f5;--text2:#8b8b9e;--text3:#666;
-  --accent:#00897B;--accent2:#00695C;--accent-light:#4DB6AC;
-  --accent-rgb:0,137,123;--msg-bg:#1a1a1a;--hover:rgba(255,255,255,.08);
+  /* surfaces */
+  --bg:#0F172A; --card:#1E293B; --surface:#273449; --surface-2:#2F3E55;
+  /* text */
+  --text-1:#F8FAFC; --text-2:#CBD5E1; --text-3:#94A3B8;
+  /* lines */
+  --border:#334155; --border-strong:#475569;
+  /* brand */
+  --primary:#3B82F6; --primary-deep:#2563EB; --primary-soft:#93C5FD;
+  --accent:#34D399; --accent-deep:#10B981;
+  --danger:#F87171; --warning:#FBBF24; --success:#34D399;
+  /* effects */
+  --hover:rgba(255,255,255,.06);
+  --shadow-sm:0 1px 2px rgba(0,0,0,.28);
+  --shadow:0 4px 16px rgba(0,0,0,.34);
+  --shadow-lg:0 12px 34px rgba(0,0,0,.46);
+  --r-sm:10px; --r:14px; --r-lg:20px; --r-full:999px;
+  --ease:cubic-bezier(.4,0,.2,1);
+  /* legacy aliases */
+  --bg1:var(--bg); --bg2:var(--card); --bg3:var(--surface);
+  --text:var(--text-1); --text3:var(--text-2);
+  --accent2:var(--primary-deep); --accent-light:var(--primary-soft);
+  --msg-bg:var(--surface); --accent-rgb:59,130,246;
 }
-body.light-theme .icon-btn{color:#444}
-body.light-theme .icon-btn:hover{background:rgba(0,0,0,0.06);color:#111}
-body.light-theme .send-btn{background:linear-gradient(135deg,#111,#333)}
-body.light-theme .msg-mine{background:linear-gradient(135deg,#111,#333)}
-body.light-theme .msg-ai{background:#f0f0f0;border-color:#ddd;color:#111}
-body.light-theme .msg-theirs{color:#111}
-body.light-theme .tab-btn.active{background:rgba(0,0,0,0.1);color:#111}
-body.light-theme .unread{background:#111}
-body.light-theme #splash{background:#fff}
-body.light-theme #splash-name{color:#111}
-body.light-theme #splash-tag{color:#666}
-body.light-theme #splash-brand{color:#333}
-body.light-theme #splash-from{color:#999}
-body.light-theme #splash-logo{background:linear-gradient(135deg,#111,#333)}
-body.light-theme .avatar{background:linear-gradient(135deg,#111,#333)}
-body.light-theme #sc,body.light-theme #sx{color:#111}
-body.light-theme #si svg{stroke:#111}
 body.light-theme{
-  --bg1:#f5f5f5;--bg2:#ffffff;--bg3:#eeeeee;--border:#ddd;
-  --text:#111;--text2:#444;--text3:#888;
-  --accent:#111;--accent2:#333;--accent-light:#555;
-  --accent-rgb:17,17,17;--msg-bg:#e8e8e8;--hover:rgba(0,0,0,.07);
+  --bg:#F8FAFC; --card:#FFFFFF; --surface:#F1F5F9; --surface-2:#E2E8F0;
+  --text-1:#111827; --text-2:#6B7280; --text-3:#9CA3AF;
+  --border:#E5E7EB; --border-strong:#CBD5E1;
+  --primary:#2563EB; --primary-deep:#1D4ED8; --primary-soft:#60A5FA;
+  --accent:#10B981; --accent-deep:#059669;
+  --danger:#DC2626; --warning:#D97706; --success:#10B981;
+  --hover:rgba(15,23,42,.055);
+  --shadow-sm:0 1px 2px rgba(15,23,42,.06);
+  --shadow:0 4px 16px rgba(15,23,42,.09);
+  --shadow-lg:0 12px 34px rgba(15,23,42,.13);
+  --accent-rgb:37,99,235;
 }
+*,*::before,*::after{transition:background-color .22s var(--ease),border-color .22s var(--ease),color .22s var(--ease)}
 *{box-sizing:border-box;margin:0;padding:0}
 html{height:100%;overflow:hidden;overscroll-behavior:none}
 body{font-family:'Inter',sans-serif;background:var(--bg1);color:var(--text);
@@ -54,10 +63,10 @@ height:var(--app-h,100dvh);
 display:flex;flex-direction:column;overflow:hidden;
 overscroll-behavior:none;-webkit-overflow-scrolling:touch}
 ::-webkit-scrollbar{width:4px}
-::-webkit-scrollbar-thumb{background:#333;border-radius:2px}
-#splash{position:fixed;inset:0;background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;transition:opacity .6s ease}
+::-webkit-scrollbar-thumb{background:var(--border-strong);border-radius:2px}
+#splash{position:fixed;inset:0;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;transition:opacity .6s ease}
 #splash.hide{opacity:0;pointer-events:none}
-#splash-logo{width:120px;height:120px;border-radius:28px;background:linear-gradient(135deg,#00897B,#00695C);display:flex;align-items:center;justify-content:center;box-shadow:0 0 60px rgba(0,137,123,0.5);position:relative;overflow:hidden}
+#splash-logo{width:120px;height:120px;border-radius:28px;background:linear-gradient(135deg,var(--primary),var(--primary-deep));display:flex;align-items:center;justify-content:center;box-shadow:0 0 60px rgba(0,137,123,0.5);position:relative;overflow:hidden}
 #sc{position:absolute;font-size:44px;font-weight:900;color:#fff;animation:cAnim 3s ease forwards}
 #sx{position:absolute;font-size:44px;font-weight:900;color:#fff;animation:xAnim 3s ease forwards}
 #si{position:absolute;opacity:0;animation:iconIn 3s ease forwards}
@@ -65,10 +74,10 @@ overscroll-behavior:none;-webkit-overflow-scrolling:touch}
 @keyframes xAnim{0%{opacity:0;transform:translateX(50px)}20%{opacity:1;transform:translateX(20px)}60%{opacity:1;transform:translateX(20px)}75%{opacity:1;transform:translateX(0) scale(1.2)}90%{opacity:0;transform:translateX(0) scale(2.5);filter:blur(6px)}100%{opacity:0}}
 @keyframes iconIn{0%,78%{opacity:0;transform:scale(0)}88%{opacity:1;transform:scale(1.2)}94%{transform:scale(0.95)}100%{opacity:1;transform:scale(1)}}
 #splash-name{margin-top:20px;font-size:32px;font-weight:800;letter-spacing:-.5px}
-#splash-tag{margin-top:6px;font-size:14px;color:#8b8b9e}
+#splash-tag{margin-top:6px;font-size:14px;color:var(--text-2)}
 #splash-bottom{position:absolute;bottom:48px;text-align:center}
-#splash-from{font-size:13px;color:#4a4a5e;margin-bottom:4px}
-#splash-brand{font-size:15px;font-weight:700;color:#6b6b80;letter-spacing:.5px}
+#splash-from{font-size:13px;color:var(--text-3);margin-bottom:4px}
+#splash-brand{font-size:15px;font-weight:700;color:var(--text-2);letter-spacing:.5px}
 #app{display:none;flex:1;min-height:0;width:100%;flex-direction:row;overflow:hidden}
 #app.show{display:flex}
 #sidebar{width:100%;max-width:300px;height:100%;min-height:0;overflow-x:hidden;background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;flex-shrink:0}
@@ -80,28 +89,28 @@ overscroll-behavior:none;-webkit-overflow-scrolling:touch}
   #sidebar.hidden ~ #main{display:flex !important}
   .back-btn{display:flex !important}
 }
-.avatar{border-radius:50%;background:linear-gradient(135deg,#00897B,#00695C);display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;flex-shrink:0}
+.avatar{border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--primary-deep));display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;flex-shrink:0}
 .sdot{position:absolute;border-radius:50%}
 .chat-item{display:flex;align-items:center;gap:12px;padding:11px 14px;cursor:pointer;border-radius:12px;margin:2px 8px;border:1px solid transparent;transition:background .15s}
 .chat-item:hover{background:rgba(var(--accent-rgb),0.06)}
 .chat-item.active{background:rgba(var(--accent-rgb),0.12);border-color:rgba(var(--accent-rgb),0.3)}
 .tab-btn{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:8px 2px;border:none;border-radius:8px;font-size:11px;font-weight:600;cursor:pointer;transition:all .15s;background:transparent;color:var(--text3);font-family:'Inter',sans-serif}
-.tab-btn.active{background:rgba(0,137,123,0.2);color:#00897B}
-.tab-btn:hover:not(.active){background:var(--hover);color:#f1f1f5}
+.tab-btn.active{background:rgba(0,137,123,0.2);color:var(--primary)}
+.tab-btn:hover:not(.active){background:var(--hover);color:var(--text-1)}
 .icon-btn{background:none;border:none;color:var(--text3);cursor:pointer;padding:8px;border-radius:8px;display:flex;align-items:center;justify-content:center;transition:all .15s;flex-shrink:0}
-.icon-btn:hover{background:var(--hover);color:#f1f1f5}
+.icon-btn:hover{background:var(--hover);color:var(--text-1)}
 .icon-btn:active{transform:scale(.9)}
-.send-btn{background:linear-gradient(135deg,#00897B,#00695C);border:none;color:#fff;width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .15s;flex-shrink:0}
+.send-btn{background:linear-gradient(135deg,var(--primary),var(--primary-deep));border:none;color:#fff;width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .15s;flex-shrink:0}
 .send-btn:hover{opacity:.85}
 .send-btn:active{transform:scale(.93)}
-.msg-mine{background:linear-gradient(135deg,#00897B,#00695C);border-radius:18px 18px 4px 18px;color:#fff;padding:10px 14px;max-width:70%;font-size:14px;line-height:1.55;word-break:break-word}
-.msg-theirs{background:var(--msg-bg);border:1px solid var(--border);border-radius:18px 18px 18px 4px;color:#f1f1f5;padding:10px 14px;max-width:70%;font-size:14px;line-height:1.55;word-break:break-word}
-.msg-ai{background:#0d1a18;border:1px solid var(--accent2)44;border-radius:18px 18px 18px 4px;color:#f1f1f5;padding:10px 14px;max-width:75%;font-size:14px;line-height:1.6;word-break:break-word}
+.msg-mine{background:linear-gradient(135deg,var(--primary),var(--primary-deep));border-radius:18px 18px 4px 18px;color:#fff;padding:10px 14px;max-width:70%;font-size:14px;line-height:1.55;word-break:break-word}
+.msg-theirs{background:var(--msg-bg);border:1px solid var(--border);border-radius:18px 18px 18px 4px;color:var(--text-1);padding:10px 14px;max-width:70%;font-size:14px;line-height:1.55;word-break:break-word}
+.msg-ai{background:var(--surface);border:1px solid var(--accent2)44;border-radius:18px 18px 18px 4px;color:var(--text-1);padding:10px 14px;max-width:75%;font-size:14px;line-height:1.6;word-break:break-word}
 .msg-row{display:flex;align-items:flex-end;gap:8px;margin-bottom:6px}
 .msg-row.mine{flex-direction:row-reverse}
 @keyframes fadeMsg{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
 .fade{animation:fadeMsg .18s ease}
-.unread{background:#00897B;color:#fff;font-size:11px;font-weight:700;border-radius:10px;padding:2px 8px;min-width:22px;text-align:center;flex-shrink:0}
+.unread{background:var(--primary);color:#fff;font-size:11px;font-weight:700;border-radius:10px;padding:2px 8px;min-width:22px;text-align:center;flex-shrink:0}
 #modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.88);align-items:center;justify-content:center;z-index:9998;backdrop-filter:blur(4px)}
 #modal-overlay.show{display:flex}
 #modal-box{background:var(--bg3);border:1px solid var(--border);border-radius:24px;padding:40px 48px;text-align:center;width:290px;max-width:90vw}
@@ -115,11 +124,11 @@ overscroll-behavior:none;-webkit-overflow-scrolling:touch}
 .toggle input{opacity:0;width:0;height:0}
 .toggle-slider{position:absolute;inset:0;background:var(--border);border-radius:24px;cursor:pointer;transition:.3s}
 .toggle-slider:before{content:'';position:absolute;width:18px;height:18px;left:3px;bottom:3px;background:#fff;border-radius:50%;transition:.3s}
-.toggle input:checked+.toggle-slider{background:#00897B}
+.toggle input:checked+.toggle-slider{background:var(--primary)}
 .toggle input:checked+.toggle-slider:before{transform:translateX(20px)}
 .member-item{display:flex;align-items:center;gap:10px;padding:10px 16px;border-radius:10px;transition:background .15s;cursor:pointer}
 .member-item:hover{background:var(--hover)}
-.typing-dot{width:7px;height:7px;border-radius:50%;background:#00897B;display:inline-block;animation:typingBounce 1.2s infinite}
+.typing-dot{width:7px;height:7px;border-radius:50%;background:var(--primary);display:inline-block;animation:typingBounce 1.2s infinite}
 .typing-dot:nth-child(2){animation-delay:.2s}
 .typing-dot:nth-child(3){animation-delay:.4s}
 @keyframes typingBounce{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-6px)}}
@@ -141,7 +150,7 @@ overscroll-behavior:none;-webkit-overflow-scrolling:touch}
 .ai-spinner{width:100%;height:100%;position:relative;display:flex;align-items:center;justify-content:center}
 .ai-spinner-dot{position:absolute;width:6px;height:6px;border-radius:50%;animation:aiSpin 1.4s linear infinite}
 @keyframes aiSpin{0%{transform:rotate(0deg) translateY(-10px) scale(1)}50%{transform:rotate(180deg) translateY(-10px) scale(.5)}100%{transform:rotate(360deg) translateY(-10px) scale(1)}}
-.pill{background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:8px 14px;font-size:13px;color:#8b8b9e}
+.pill{background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:8px 14px;font-size:13px;color:var(--text-2)}
 /* Bottom Nav */
 #bottom-nav{position:relative;flex-shrink:0;width:100%;display:none}
 body.app-ready #bottom-nav{display:flex !important}
@@ -149,22 +158,22 @@ body.chat-open #bottom-nav{display:none !important}
 @media(min-width:641px){#bottom-nav{display:none !important}}
 
 #sidebar{padding-bottom:0}
-.nav-btn{display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;padding:4px 6px;border:none;background:transparent;color:#666;font-family:'Inter',sans-serif;font-size:11px;font-weight:500;transition:all .2s;position:relative;min-width:64px}
-.nav-btn svg{stroke:#666;transition:all .2s}
+.nav-btn{display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;padding:4px 6px;border:none;background:transparent;color:var(--text-2);font-family:'Inter',sans-serif;font-size:11px;font-weight:500;transition:all .2s;position:relative;min-width:64px}
+.nav-btn svg{stroke:var(--text-2);transition:all .2s}
 .nav-btn.active{color:#fff;font-weight:700}
 .nav-btn.active svg{stroke:#fff;stroke-width:2.5}
 .nav-icon-wrap{display:flex;align-items:center;justify-content:center;padding:6px 22px;border-radius:999px;transition:all .25s;position:relative;min-width:56px}
-.nav-btn.active .nav-icon-wrap{background:#3a3a3a}
-.nav-badge{position:absolute;top:-2px;right:-2px;background:#00897B;color:#fff;font-size:10px;font-weight:700;border-radius:10px;padding:1px 5px;min-width:18px;text-align:center;border:2px solid #000}
+.nav-btn.active .nav-icon-wrap{background:var(--border-strong)}
+.nav-badge{position:absolute;top:-2px;right:-2px;background:var(--primary);color:#fff;font-size:10px;font-weight:700;border-radius:10px;padding:1px 5px;min-width:18px;text-align:center;border:2px solid var(--bg)}
 
 /* Adjust for bottom nav */
 #app.show{display:flex}
 #sidebar{height:100%}
 #main{height:100%}
 
-#toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);background:#1a1a1a;border:1px solid #222;color:#f1f1f5;padding:10px 20px;border-radius:10px;font-size:13px;opacity:0;transition:all .3s;z-index:99999;pointer-events:none;white-space:nowrap}
-input,textarea,select{outline:none;font-family:'Inter',sans-serif;color:#f1f1f5}
-input::placeholder,textarea::placeholder{color:#444}
+#toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--surface);border:1px solid var(--border);color:var(--text-1);padding:10px 20px;border-radius:10px;font-size:13px;opacity:0;transition:all .3s;z-index:99999;pointer-events:none;white-space:nowrap}
+input,textarea,select{outline:none;font-family:'Inter',sans-serif;color:var(--text-1)}
+input::placeholder,textarea::placeholder{color:var(--text-3)}
 
 /* ===== DESKTOP LAYOUT ===== */
 @media(min-width:641px){
@@ -204,9 +213,9 @@ input::placeholder,textarea::placeholder{color:#444}
 #chat-list{overflow-y:auto;scroll-behavior:smooth}
 #messages{overflow-y:auto;scroll-behavior:smooth}
 #chat-list::-webkit-scrollbar{width:4px}
-#chat-list::-webkit-scrollbar-thumb{background:#222;border-radius:2px}
+#chat-list::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
 #messages::-webkit-scrollbar{width:4px}
-#messages::-webkit-scrollbar-thumb{background:#222;border-radius:2px}
+#messages::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
 
 /* ===== DESKTOP SIDEBAR WIDTH BALANCE ===== */
 @media(min-width:1024px){
@@ -231,68 +240,68 @@ html,body{
   body{padding-top:env(safe-area-inset-top)}
 }
 /* bubbles read correctly on any wallpaper, in either theme */
-#messages.wp-light .msg-theirs{background:#fff;color:#111;border:1px solid #e0e0e0}
-#messages.wp-light .msg-ai{background:#f2f2f2;color:#111;border:1px solid #e0e0e0}
-#messages.wp-light .msg-theirs span,#messages.wp-light .msg-ai span{color:#666 !important}
-#messages.wp-dark .msg-theirs{background:#1a1a1a;color:#f1f1f5;border:1px solid #2a2a2a}
-#messages.wp-dark .msg-ai{background:#0d1a18;color:#f1f1f5}
+#messages.wp-light .msg-theirs{background:#fff;color:var(--card);border:1px solid var(--border)}
+#messages.wp-light .msg-ai{background:var(--surface);color:var(--card);border:1px solid var(--border)}
+#messages.wp-light .msg-theirs span,#messages.wp-light .msg-ai span{color:var(--text-2) !important}
+#messages.wp-dark .msg-theirs{background:var(--surface);color:var(--text-1);border:1px solid var(--border)}
+#messages.wp-dark .msg-ai{background:var(--surface);color:var(--text-1)}
 #messages.wp-light .msg-mine,#messages.wp-dark .msg-mine{color:#fff}
 /* composer stays dark in both themes */
-#composer{background:#111 !important;border-top:1px solid #222 !important}
-#composer #msg-input{background:#1f1f1f !important;border:1px solid #2a2a2a !important;color:#f1f1f5 !important}
-#composer #msg-input::placeholder{color:#666 !important}
-#composer .icon-btn{color:#888 !important}
+#composer{background:var(--card) !important;border-top:1px solid var(--border) !important}
+#composer #msg-input{background:var(--surface) !important;border:1px solid var(--border) !important;color:var(--text-1) !important}
+#composer #msg-input::placeholder{color:var(--text-2) !important}
+#composer .icon-btn{color:var(--text-2) !important}
 #composer .icon-btn:hover{background:rgba(255,255,255,0.08) !important;color:#fff !important}
-#composer .icon-btn svg{stroke:#888 !important}
+#composer .icon-btn svg{stroke:var(--text-2) !important}
 #composer .icon-btn:hover svg{stroke:#fff !important}
 #composer .send-btn svg{stroke:#fff !important}
 /* back button pill stays dark in both themes */
-.back-btn{background:#2a2a2a !important;border-radius:999px !important}
-.back-btn:hover{background:#3a3a3a !important}
+.back-btn{background:var(--border) !important;border-radius:999px !important}
+.back-btn:hover{background:var(--border-strong) !important}
 .back-btn svg{stroke:#fff !important}
 .back-btn span{color:#fff !important}
 /* ===== AUTH ===== */
-#auth{position:fixed;inset:0;z-index:9998;background:#000;display:none;
+#auth{position:fixed;inset:0;z-index:9998;background:var(--bg);display:none;
   flex-direction:column;align-items:center;justify-content:center;padding:24px;overflow-y:auto}
 #auth.show{display:flex}
 .auth-card{width:100%;max-width:400px}
-.auth-logo{width:64px;height:64px;border-radius:18px;background:linear-gradient(135deg,#00897B,#00695C);
+.auth-logo{width:64px;height:64px;border-radius:18px;background:linear-gradient(135deg,var(--primary),var(--primary-deep));
   display:flex;align-items:center;justify-content:center;margin:0 auto 20px}
 .auth-h1{font-size:24px;font-weight:700;color:#fff;text-align:center;margin-bottom:6px}
-.auth-sub{font-size:14px;color:#888;text-align:center;margin-bottom:26px;line-height:1.5}
-.auth-label{font-size:11px;color:#888;font-weight:700;letter-spacing:.5px;display:block;margin-bottom:6px}
-.auth-input{width:100%;padding:13px 14px;background:#1a1a1a;border:1px solid #2a2a2a;
-  border-radius:12px;font-size:15px;color:#f1f1f5;font-family:Inter,sans-serif;margin-bottom:14px}
-.auth-input:focus{border-color:#00897B}
-.auth-input.err{border-color:#ef4444}
+.auth-sub{font-size:14px;color:var(--text-2);text-align:center;margin-bottom:26px;line-height:1.5}
+.auth-label{font-size:11px;color:var(--text-2);font-weight:700;letter-spacing:.5px;display:block;margin-bottom:6px}
+.auth-input{width:100%;padding:13px 14px;background:var(--surface);border:1px solid var(--border);
+  border-radius:12px;font-size:15px;color:var(--text-1);font-family:Inter,sans-serif;margin-bottom:14px}
+.auth-input:focus{border-color:var(--primary)}
+.auth-input.err{border-color:var(--danger)}
 .auth-btn{width:100%;padding:14px;border:none;border-radius:12px;font-size:15px;font-weight:600;
-  cursor:pointer;font-family:Inter,sans-serif;background:linear-gradient(135deg,#00897B,#00695C);color:#fff}
+  cursor:pointer;font-family:Inter,sans-serif;background:linear-gradient(135deg,var(--primary),var(--primary-deep));color:#fff}
 .auth-btn:disabled{opacity:.45;cursor:default}
-.auth-ghost{width:100%;padding:13px;border:1px solid #2a2a2a;border-radius:12px;font-size:14px;
-  cursor:pointer;font-family:Inter,sans-serif;background:transparent;color:#f1f1f5;margin-top:10px}
-.auth-link{background:none;border:none;color:#4DB6AC;font-size:14px;cursor:pointer;
+.auth-ghost{width:100%;padding:13px;border:1px solid var(--border);border-radius:12px;font-size:14px;
+  cursor:pointer;font-family:Inter,sans-serif;background:transparent;color:var(--text-1);margin-top:10px}
+.auth-link{background:none;border:none;color:var(--primary-soft);font-size:14px;cursor:pointer;
   font-family:Inter,sans-serif;padding:10px;display:block;margin:14px auto 0}
-.auth-err{background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.35);color:#ff8f8f;
+.auth-err{background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.35);color:var(--danger);
   padding:10px 12px;border-radius:10px;font-size:13px;margin-bottom:14px;display:none;line-height:1.45}
 .auth-err.show{display:block}
 .auth-row{display:flex;gap:10px}
 .auth-row .auth-input{flex:1}
-.seg{display:flex;background:#1a1a1a;border:1px solid #2a2a2a;border-radius:12px;padding:4px;margin-bottom:18px}
-.seg button{flex:1;padding:10px;border:none;border-radius:9px;background:transparent;color:#888;
+.seg{display:flex;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:4px;margin-bottom:18px}
+.seg button{flex:1;padding:10px;border:none;border-radius:9px;background:transparent;color:var(--text-2);
   font-size:14px;font-weight:600;cursor:pointer;font-family:Inter,sans-serif}
-.seg button.on{background:#00897B;color:#fff}
+.seg button.on{background:var(--primary);color:#fff}
 .otp{display:flex;gap:8px;justify-content:center;margin-bottom:18px}
 .otp input{width:46px;height:54px;text-align:center;font-size:22px;font-weight:700;
-  background:#1a1a1a;border:1px solid #2a2a2a;border-radius:12px;color:#fff;font-family:Inter,sans-serif}
-.otp input:focus{border-color:#00897B}
-.mock-note{background:rgba(0,137,123,.1);border:1px dashed #00897B;border-radius:10px;
-  padding:11px;font-size:12px;color:#4DB6AC;text-align:center;margin-bottom:16px;line-height:1.5}
+  background:var(--surface);border:1px solid var(--border);border-radius:12px;color:#fff;font-family:Inter,sans-serif}
+.otp input:focus{border-color:var(--primary)}
+.mock-note{background:rgba(0,137,123,.1);border:1px dashed var(--primary);border-radius:10px;
+  padding:11px;font-size:12px;color:var(--primary-soft);text-align:center;margin-bottom:16px;line-height:1.5}
 .mock-code{font-size:22px;font-weight:800;letter-spacing:5px;color:#fff;display:block;margin-top:5px}
 .av-edit{position:relative;width:88px;height:88px;margin:0 auto 8px;cursor:pointer}
 .av-edit .cam{position:absolute;bottom:0;right:0;width:28px;height:28px;border-radius:50%;
-  background:#00897B;border:2px solid #000;display:flex;align-items:center;justify-content:center}
+  background:var(--primary);border:2px solid var(--bg);display:flex;align-items:center;justify-content:center}
 /* call buttons stay dark in both themes */
-.call-pill{background:#2a2a2a !important;border-radius:999px !important}
+.call-pill{background:var(--border) !important;border-radius:999px !important}
 .call-pill .icon-btn{color:#fff !important}
 .call-pill .icon-btn svg{stroke:#fff !important}
 .call-pill .icon-btn:hover{background:rgba(255,255,255,.14) !important}
@@ -308,10 +317,10 @@ html,body{
 .story-strip::-webkit-scrollbar{display:none}
 .story{flex-shrink:0;width:66px;text-align:center;cursor:pointer}
 .story-ring{width:62px;height:62px;border-radius:50%;padding:2px;margin-bottom:5px;
-  background:linear-gradient(135deg,#00897B,#4DB6AC)}
+  background:linear-gradient(135deg,var(--primary),var(--primary-soft))}
 .story-ring.seen{background:var(--border)}
 .story-inner{width:100%;height:100%;border-radius:50%;background:var(--bg1);padding:2px}
-.story-av{width:100%;height:100%;border-radius:50%;background:linear-gradient(135deg,#00897B,#00695C);
+.story-av{width:100%;height:100%;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--primary-deep));
   display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:16px;
   background-size:cover;background-position:center}
 .story-name{font-size:11px;color:var(--text3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -327,20 +336,20 @@ html,body{
   background:none;border:none;cursor:pointer;color:var(--text3);font-size:13px;font-weight:600;
   font-family:Inter,sans-serif;border-radius:9px}
 .post-act:hover{background:var(--hover)}
-.post-act.on{color:#00897B}
+.post-act.on{color:var(--primary)}
 .cmt{display:flex;gap:9px;padding:9px 16px}
 .cmt-bubble{background:var(--bg3);border-radius:14px;padding:9px 12px;flex:1}
 
-#story-view{position:fixed;inset:0;z-index:9999;background:#000;display:none;
+#story-view{position:fixed;inset:0;z-index:9999;background:var(--bg);display:none;
   flex-direction:column;align-items:center;justify-content:center}
 #story-view.show{display:flex}
 .story-bars{position:absolute;top:14px;left:12px;right:12px;display:flex;gap:4px}
 .story-bar{flex:1;height:3px;border-radius:2px;background:rgba(255,255,255,.28);overflow:hidden}
 .story-bar span{display:block;height:100%;width:0;background:#fff}
 
-.prof-cover{height:120px;background:linear-gradient(135deg,#00897B,#00695C)}
+.prof-cover{height:120px;background:linear-gradient(135deg,var(--primary),var(--primary-deep))}
 .prof-av{width:96px;height:96px;border-radius:50%;border:4px solid var(--bg1);margin:-52px auto 0;
-  background:linear-gradient(135deg,#00897B,#00695C);display:flex;align-items:center;
+  background:linear-gradient(135deg,var(--primary),var(--primary-deep));display:flex;align-items:center;
   justify-content:center;color:#fff;font-size:34px;font-weight:700;background-size:cover;background-position:center}
 .prof-stat{flex:1;text-align:center;padding:12px 0}
 .prof-stat b{display:block;font-size:17px;font-weight:700;color:var(--text)}
@@ -358,17 +367,71 @@ html,body{
   margin:12px 16px;overflow:hidden}
 .card-pad{padding:14px 16px}
 .pill-btn{padding:8px 16px;border-radius:999px;border:none;cursor:pointer;font-size:13px;
-  font-weight:600;font-family:Inter,sans-serif;background:linear-gradient(135deg,#00897B,#00695C);color:#fff}
+  font-weight:600;font-family:Inter,sans-serif;background:linear-gradient(135deg,var(--primary),var(--primary-deep));color:#fff}
 .pill-btn.ghost{background:var(--bg3);color:var(--text);border:1px solid var(--border)}
 .chip{display:inline-block;padding:4px 11px;border-radius:999px;background:rgba(0,137,123,.14);
-  color:#00897B;font-size:11px;font-weight:700;margin-right:6px}
+  color:var(--primary);font-size:11px;font-weight:700;margin-right:6px}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:12px 16px}
 .listing{background:var(--bg2);border:1px solid var(--border);border-radius:14px;overflow:hidden;cursor:pointer}
 .listing-img{width:100%;aspect-ratio:1;object-fit:cover;display:block;background:var(--bg3)}
 .listing-ph{width:100%;aspect-ratio:1;background:var(--bg3);display:flex;align-items:center;justify-content:center}
 .fab{position:absolute;right:18px;bottom:96px;width:54px;height:54px;border-radius:50%;
-  border:none;background:linear-gradient(135deg,#00897B,#00695C);color:#fff;cursor:pointer;
+  border:none;background:linear-gradient(135deg,var(--primary),var(--primary-deep));color:#fff;cursor:pointer;
   display:flex;align-items:center;justify-content:center;box-shadow:0 4px 18px rgba(0,0,0,.4);z-index:5}
+
+/* ===== DESIGN SYSTEM ===== */
+body{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;letter-spacing:-.01em}
+h1,h2,.scr-title,.auth-h1{letter-spacing:-.02em}
+
+/* rounded, soft-shadowed surfaces */
+.card,.listing,#modal-box,#sheet>div{box-shadow:var(--shadow);border-radius:var(--r-lg)}
+.chat-item{border-radius:var(--r)}
+.auth-input,.tab-btn,.pill-btn,.auth-btn,.auth-ghost{border-radius:var(--r-sm)}
+.auth-btn,.pill-btn{box-shadow:var(--shadow-sm)}
+.msg-mine{border-radius:var(--r-lg) var(--r-lg) 4px var(--r-lg)}
+.msg-theirs,.msg-ai{border-radius:var(--r-lg) var(--r-lg) var(--r-lg) 4px}
+
+/* brand surfaces follow the palette */
+.avatar,.story-av,.prof-av,.auth-logo,#splash-logo,.send-btn,.hub-ico{
+  background:linear-gradient(135deg,var(--primary),var(--primary-deep))}
+.hub-ico{background:rgba(var(--accent-rgb),.13)}
+.msg-mine{background:linear-gradient(135deg,var(--primary),var(--primary-deep))}
+.story-ring{background:linear-gradient(135deg,var(--primary),var(--accent))}
+.prof-cover,.card>div:first-child[style*="linear-gradient"]{
+  background:linear-gradient(135deg,var(--primary),var(--primary-deep))}
+.unread,.nav-badge{background:var(--accent);color:#062B21}
+.chip{background:rgba(var(--accent-rgb),.13);color:var(--primary)}
+.post-act.on{color:var(--primary)}
+.tab-btn.active{background:rgba(var(--accent-rgb),.13);color:var(--primary)}
+
+/* motion */
+.chat-item,.hub-tile,.post-act,.icon-btn,.pill-btn,.auth-btn,.listing,.story{
+  transition:transform .16s var(--ease),background-color .18s var(--ease),box-shadow .18s var(--ease)}
+.pill-btn:active,.auth-btn:active,.listing:active,.story:active{transform:scale(.97)}
+.icon-btn:active{transform:scale(.9)}
+.listing:hover,.card:hover{box-shadow:var(--shadow-lg)}
+@keyframes riseIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.post,.card{animation:riseIn .28s var(--ease) both}
+#sheet>div{animation:riseIn .2s var(--ease) both}
+
+/* inputs */
+.auth-input:focus,#msg-input:focus{outline:none;border-color:var(--primary);
+  box-shadow:0 0 0 3px rgba(var(--accent-rgb),.16)}
+
+/* composer and call chrome now follow the theme */
+#composer{background:var(--card) !important;border-top:1px solid var(--border) !important}
+#composer #msg-input{background:var(--surface) !important;border:1px solid var(--border) !important;color:var(--text-1) !important}
+#composer #msg-input::placeholder{color:var(--text-3) !important}
+#composer .icon-btn,#composer .icon-btn svg{color:var(--text-2) !important;stroke:var(--text-2) !important}
+#composer .icon-btn:hover{background:var(--hover) !important}
+#composer .icon-btn:hover svg{stroke:var(--text-1) !important}
+.back-btn{background:var(--surface) !important}
+.back-btn:hover{background:var(--surface-2) !important}
+.back-btn svg{stroke:var(--text-1) !important}
+.back-btn span{color:var(--text-1) !important}
+.call-pill{background:var(--surface) !important}
+.call-pill .icon-btn,.call-pill .icon-btn svg{color:var(--text-1) !important;stroke:var(--text-1) !important}
+.call-pill .icon-btn:hover{background:var(--surface-2) !important}
 </style>
 </head>
 <body>
@@ -468,13 +531,13 @@ html,body{
       <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
     </button>
     <button class="icon-btn" onclick="openMyProfile()" title="Profile">
-      <div data-user-initials style="width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#00897B,#00695C);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff">?</div>
+      <div data-user-initials style="width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--primary-deep));display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff">?</div>
     </button>
   </div>
   <div class="scr-body">
     <div class="story-strip" id="story-strip"></div>
     <div class="composer-card">
-      <div data-user-initials style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#00897B,#00695C);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#fff;flex-shrink:0">?</div>
+      <div data-user-initials style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--primary-deep));display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#fff;flex-shrink:0">?</div>
       <div onclick="openCreatePost()" style="flex:1;background:var(--bg3);border:1px solid var(--border);border-radius:999px;padding:11px 16px;color:var(--text3);font-size:14px;cursor:pointer">What's on your mind?</div>
     </div>
     <div id="post-list"></div>
@@ -494,7 +557,7 @@ html,body{
 <div id="story-view">
   <div class="story-bars" id="story-bars"></div>
   <div style="position:absolute;top:34px;left:16px;right:16px;display:flex;align-items:center;gap:10px;z-index:2">
-    <div id="sv-av" style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#00897B,#00695C);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:13px;background-size:cover"></div>
+    <div id="sv-av" style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--primary-deep));display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:13px;background-size:cover"></div>
     <div style="flex:1">
       <div id="sv-name" style="color:#fff;font-size:14px;font-weight:600"></div>
       <div id="sv-time" style="color:rgba(255,255,255,.6);font-size:11px"></div>
@@ -570,17 +633,17 @@ html,body{
       <div style="display:flex;align-items:center;gap:10px">
         <div style="position:relative">
           <div class="avatar" style="width:36px;height:36px;font-size:13px;font-weight:800">CX</div>
-          <div class="sdot" style="width:10px;height:10px;background:#10b981;bottom:1px;right:1px;border:2px solid #111"></div>
+          <div class="sdot" style="width:10px;height:10px;background:var(--success);bottom:1px;right:1px;border:2px solid var(--card)"></div>
         </div>
         <div>
           <div style="font-weight:800;font-size:16px;letter-spacing:-.3px">Chat-X</div>
-          <div style="font-size:10px;color:#00897B;font-weight:600">End-to-end Encrypted</div>
+          <div style="font-size:10px;color:var(--primary);font-weight:600">End-to-end Encrypted</div>
         </div>
       </div>
       <div style="display:flex;gap:2px">
         
         <button class="icon-btn" onclick="showSettings()"><svg class="settings-spin" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>
-        <button id="ai-btn" class="icon-btn" onclick="openChat('ai')" style="background:linear-gradient(135deg,#00897B,#00695C);color:#fff;border-radius:8px;position:relative;overflow:hidden;width:34px;height:34px;padding:0;display:flex;align-items:center;justify-content:center">
+        <button id="ai-btn" class="icon-btn" onclick="openChat('ai')" style="background:linear-gradient(135deg,var(--primary),var(--primary-deep));color:#fff;border-radius:8px;position:relative;overflow:hidden;width:34px;height:34px;padding:0;display:flex;align-items:center;justify-content:center">
   <span id="ai-cx" style="position:absolute;display:none;align-items:center;justify-content:center;top:50%;left:50%;transform:translate(-50%,-50%)">
     <span id="ai-letter-c" style="font-size:13px;font-weight:900;color:#fff;line-height:1">C</span>
     <span id="ai-letter-x" style="font-size:13px;font-weight:900;color:#fff;line-height:1">X</span>
@@ -608,7 +671,7 @@ html,body{
 
 <div id="main">
   <div id="empty-state" style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px">
-    <div style="width:80px;height:80px;border-radius:24px;background:linear-gradient(135deg,#00897B,#00695C);display:flex;align-items:center;justify-content:center;margin-bottom:24px;box-shadow:0 0 40px rgba(0,137,123,0.35)">
+    <div style="width:80px;height:80px;border-radius:24px;background:linear-gradient(135deg,var(--primary),var(--primary-deep));display:flex;align-items:center;justify-content:center;margin-bottom:24px;box-shadow:0 0 40px rgba(0,137,123,0.35)">
       <svg width="36" height="36" fill="none" stroke="#fff" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
     </div>
     <h2 style="font-size:24px;font-weight:700;margin-bottom:8px">Welcome to Chat-X</h2>
@@ -648,7 +711,7 @@ html,body{
 </div>
 
 <div id="group-panel">
-  <div style="padding:16px;border-bottom:1px solid #222;display:flex;align-items:center;gap:10px;flex-shrink:0">
+  <div style="padding:16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;flex-shrink:0">
     <button class="icon-btn" onclick="closeGroupPanel()"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
     <span style="font-weight:700;font-size:15px">Group Info</span>
   </div>
@@ -669,49 +732,49 @@ html,body{
       <div>
         <div style="font-weight:700;font-size:16px" data-user-name>Gideon Saviour</div>
         <div style="font-size:13px;color:var(--text3);margin-top:2px" data-user-contact>Hey there! I am using Chat-X</div>
-        <div style="font-size:11px;color:#00897B;margin-top:4px">Online</div>
+        <div style="font-size:11px;color:var(--primary);margin-top:4px">Online</div>
       </div>
     </div>
     <!-- Settings Items -->
     <div style="padding:8px 0">
       <div onclick="hideSettings();showPrivacy()" style="display:flex;align-items:center;gap:14px;padding:14px 20px;cursor:pointer;transition:background .15s" onmouseover="this.style.background='rgba(0,0,0,0.06)'" onmouseout="this.style.background='transparent'">
         <div style="width:40px;height:40px;border-radius:12px;background:rgba(0,137,123,0.15);display:flex;align-items:center;justify-content:center;flex-shrink:0">
-          <svg width="20" height="20" fill="none" stroke="#00897B" stroke-width="2" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          <svg width="20" height="20" fill="none" stroke="var(--primary)" stroke-width="2" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
         </div>
         <div style="flex:1"><div style="font-size:14px;font-weight:600;color:var(--text)">Privacy & Security</div><div style="font-size:12px;color:var(--text3);margin-top:1px">Read receipts, last seen, encryption</div></div>
         <svg width="16" height="16" fill="none" stroke="var(--text3)" stroke-width="2" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
       </div>
       <div onclick="showNotifications()" style="display:flex;align-items:center;gap:14px;padding:14px 20px;cursor:pointer;transition:background .15s" onmouseover="this.style.background='rgba(0,0,0,0.06)'" onmouseout="this.style.background='transparent'">
         <div style="width:40px;height:40px;border-radius:12px;background:rgba(0,137,123,0.15);display:flex;align-items:center;justify-content:center;flex-shrink:0">
-          <svg width="20" height="20" fill="none" stroke="#00897B" stroke-width="2" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+          <svg width="20" height="20" fill="none" stroke="var(--primary)" stroke-width="2" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
         </div>
         <div style="flex:1"><div style="font-size:14px;font-weight:600;color:var(--text)">Notifications</div><div style="font-size:12px;color:var(--text3);margin-top:1px">Message, group and call tones</div></div>
         <svg width="16" height="16" fill="none" stroke="var(--text3)" stroke-width="2" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
       </div>
       <div onclick="showChatsSettings()" style="display:flex;align-items:center;gap:14px;padding:14px 20px;cursor:pointer;transition:background .15s" onmouseover="this.style.background='rgba(0,0,0,0.06)'" onmouseout="this.style.background='transparent'">
         <div style="width:40px;height:40px;border-radius:12px;background:rgba(0,137,123,0.15);display:flex;align-items:center;justify-content:center;flex-shrink:0">
-          <svg width="20" height="20" fill="none" stroke="#00897B" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          <svg width="20" height="20" fill="none" stroke="var(--primary)" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
         </div>
         <div style="flex:1"><div style="font-size:14px;font-weight:600;color:var(--text)">Chats</div><div style="font-size:12px;color:var(--text3);margin-top:1px">Theme, wallpaper, chat backup</div></div>
         <svg width="16" height="16" fill="none" stroke="var(--text3)" stroke-width="2" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
       </div>
       <div onclick="showStorageSettings()" style="display:flex;align-items:center;gap:14px;padding:14px 20px;cursor:pointer;transition:background .15s" onmouseover="this.style.background='rgba(0,0,0,0.06)'" onmouseout="this.style.background='transparent'">
         <div style="width:40px;height:40px;border-radius:12px;background:rgba(0,137,123,0.15);display:flex;align-items:center;justify-content:center;flex-shrink:0">
-          <svg width="20" height="20" fill="none" stroke="#00897B" stroke-width="2" viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+          <svg width="20" height="20" fill="none" stroke="var(--primary)" stroke-width="2" viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
         </div>
         <div style="flex:1"><div style="font-size:14px;font-weight:600;color:var(--text)">Storage & Data</div><div style="font-size:12px;color:var(--text3);margin-top:1px">Manage storage, network usage</div></div>
         <svg width="16" height="16" fill="none" stroke="var(--text3)" stroke-width="2" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
       </div>
       <div onclick="showHelp()" style="display:flex;align-items:center;gap:14px;padding:14px 20px;cursor:pointer;transition:background .15s" onmouseover="this.style.background='rgba(0,0,0,0.06)'" onmouseout="this.style.background='transparent'">
         <div style="width:40px;height:40px;border-radius:12px;background:rgba(0,137,123,0.15);display:flex;align-items:center;justify-content:center;flex-shrink:0">
-          <svg width="20" height="20" fill="none" stroke="#00897B" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          <svg width="20" height="20" fill="none" stroke="var(--primary)" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
         </div>
         <div style="flex:1"><div style="font-size:14px;font-weight:600;color:var(--text)">Help</div><div style="font-size:12px;color:var(--text3);margin-top:1px">FAQ, contact us, privacy policy</div></div>
         <svg width="16" height="16" fill="none" stroke="var(--text3)" stroke-width="2" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
       </div>
     </div>
     <div style="padding:16px 20px;border-top:1px solid var(--border)">
-      <button onclick="signOut()" style="width:100%;background:var(--bg3);border:1px solid rgba(239,68,68,.3);color:#ef4444;padding:12px;border-radius:12px;cursor:pointer;font-family:Inter,sans-serif;font-size:14px;font-weight:600;margin-bottom:12px">Sign out</button>
+      <button onclick="signOut()" style="width:100%;background:var(--bg3);border:1px solid rgba(239,68,68,.3);color:var(--danger);padding:12px;border-radius:12px;cursor:pointer;font-family:Inter,sans-serif;font-size:14px;font-weight:600;margin-bottom:12px">Sign out</button>
       <div style="font-size:12px;color:var(--text3);text-align:center">Chat-X v1.0.0</div>
     </div>
   </div>
@@ -728,13 +791,13 @@ html,body{
     <div style="padding:8px 0">
       <div style="padding:12px 20px;font-size:11px;color:var(--text3);font-weight:700;letter-spacing:.5px">MESSAGES</div>
       <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border-bottom:1px solid var(--border)"><div><div style="font-size:14px;font-weight:500;color:var(--text)">Message Notifications</div><div style="font-size:12px;color:var(--text3);margin-top:2px">Show notifications for new messages</div></div><label class="toggle"><input type="checkbox" checked onchange="toast('Updated')"><div class="toggle-slider"></div></label></div>
-      <div onclick="showSoundPicker('Message Tone','msg-tone')" style="display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border-bottom:1px solid var(--border);cursor:pointer" onmouseover="this.style.background='rgba(0,0,0,0.06)'" onmouseout="this.style.background='transparent'"><div><div style="font-size:14px;font-weight:500;color:var(--text)">Message Tone</div><div id="msg-tone-label" style="font-size:12px;color:#00897B;margin-top:2px">Default</div></div><svg width="16" height="16" fill="none" stroke="var(--text3)" stroke-width="2" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
+      <div onclick="showSoundPicker('Message Tone','msg-tone')" style="display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border-bottom:1px solid var(--border);cursor:pointer" onmouseover="this.style.background='rgba(0,0,0,0.06)'" onmouseout="this.style.background='transparent'"><div><div style="font-size:14px;font-weight:500;color:var(--text)">Message Tone</div><div id="msg-tone-label" style="font-size:12px;color:var(--primary);margin-top:2px">Default</div></div><svg width="16" height="16" fill="none" stroke="var(--text3)" stroke-width="2" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
       <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border-bottom:1px solid var(--border)"><div><div style="font-size:14px;font-weight:500;color:var(--text)">Vibration</div><div style="font-size:12px;color:var(--text3);margin-top:2px">Default</div></div><label class="toggle"><input type="checkbox" checked onchange="toast('Updated')"><div class="toggle-slider"></div></label></div>
       <div style="padding:12px 20px;font-size:11px;color:var(--text3);font-weight:700;letter-spacing:.5px">GROUPS</div>
       <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border-bottom:1px solid var(--border)"><div><div style="font-size:14px;font-weight:500;color:var(--text)">Group Notifications</div><div style="font-size:12px;color:var(--text3);margin-top:2px">Show notifications for group messages</div></div><label class="toggle"><input type="checkbox" checked onchange="toast('Updated')"><div class="toggle-slider"></div></label></div>
-      <div onclick="showSoundPicker('Group Tone','group-tone')" style="display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border-bottom:1px solid var(--border);cursor:pointer" onmouseover="this.style.background='rgba(0,0,0,0.06)'" onmouseout="this.style.background='transparent'"><div><div style="font-size:14px;font-weight:500;color:var(--text)">Group Tone</div><div id="group-tone-label" style="font-size:12px;color:#00897B;margin-top:2px">Default</div></div><svg width="16" height="16" fill="none" stroke="var(--text3)" stroke-width="2" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
+      <div onclick="showSoundPicker('Group Tone','group-tone')" style="display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border-bottom:1px solid var(--border);cursor:pointer" onmouseover="this.style.background='rgba(0,0,0,0.06)'" onmouseout="this.style.background='transparent'"><div><div style="font-size:14px;font-weight:500;color:var(--text)">Group Tone</div><div id="group-tone-label" style="font-size:12px;color:var(--primary);margin-top:2px">Default</div></div><svg width="16" height="16" fill="none" stroke="var(--text3)" stroke-width="2" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
       <div style="padding:12px 20px;font-size:11px;color:var(--text3);font-weight:700;letter-spacing:.5px">CALLS</div>
-      <div onclick="showRingtonePicker()" style="display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border-bottom:1px solid var(--border);cursor:pointer" onmouseover="this.style.background='rgba(0,0,0,0.06)'" onmouseout="this.style.background='transparent'"><div><div style="font-size:14px;font-weight:500;color:var(--text)">Call Ringtone</div><div id="call-tone-label" style="font-size:12px;color:#00897B;margin-top:2px">Classic Ring</div></div><svg width="16" height="16" fill="none" stroke="var(--text3)" stroke-width="2" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
+      <div onclick="showRingtonePicker()" style="display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border-bottom:1px solid var(--border);cursor:pointer" onmouseover="this.style.background='rgba(0,0,0,0.06)'" onmouseout="this.style.background='transparent'"><div><div style="font-size:14px;font-weight:500;color:var(--text)">Call Ringtone</div><div id="call-tone-label" style="font-size:12px;color:var(--primary);margin-top:2px">Classic Ring</div></div><svg width="16" height="16" fill="none" stroke="var(--text3)" stroke-width="2" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
       <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 20px"><div><div style="font-size:14px;font-weight:500;color:var(--text)">Call Vibration</div><div style="font-size:12px;color:var(--text3);margin-top:2px">Vibrate on incoming calls</div></div><label class="toggle"><input type="checkbox" checked onchange="toast('Updated')"><div class="toggle-slider"></div></label></div>
     </div>
   </div>
@@ -752,19 +815,19 @@ html,body{
       <!-- THEME -->
       <div style="padding:12px 20px;font-size:11px;color:var(--text3);font-weight:700;letter-spacing:.5px">THEME</div>
       <div style="padding:0 20px 16px;display:flex;gap:12px">
-        <div onclick="setTheme('dark')" id="theme-dark" style="flex:1;border-radius:14px;border:2px solid var(--accent);background:#000;padding:16px;cursor:pointer;text-align:center;transition:all .2s">
-          <div style="width:100%;height:50px;border-radius:8px;background:#111;margin-bottom:8px;display:flex;align-items:center;justify-content:center">
-            <div style="width:60%;height:8px;border-radius:4px;background:#00897B"></div>
+        <div onclick="setTheme('dark')" id="theme-dark" style="flex:1;border-radius:14px;border:2px solid var(--accent);background:var(--bg);padding:16px;cursor:pointer;text-align:center;transition:all .2s">
+          <div style="width:100%;height:50px;border-radius:8px;background:var(--card);margin-bottom:8px;display:flex;align-items:center;justify-content:center">
+            <div style="width:60%;height:8px;border-radius:4px;background:var(--primary)"></div>
           </div>
           <div style="font-size:13px;font-weight:600;color:#fff">Dark</div>
-          <div id="theme-dark-check" style="font-size:11px;color:#00897B;margin-top:2px">✓ Active</div>
+          <div id="theme-dark-check" style="font-size:11px;color:var(--primary);margin-top:2px">✓ Active</div>
         </div>
-        <div onclick="setTheme('light')" id="theme-light" style="flex:1;border-radius:14px;border:2px solid #ddd;background:#fff;padding:16px;cursor:pointer;text-align:center;transition:all .2s">
-          <div style="width:100%;height:50px;border-radius:8px;background:#f5f5f5;margin-bottom:8px;display:flex;align-items:center;justify-content:center">
-            <div style="width:60%;height:8px;border-radius:4px;background:#222"></div>
+        <div onclick="setTheme('light')" id="theme-light" style="flex:1;border-radius:14px;border:2px solid var(--border);background:#fff;padding:16px;cursor:pointer;text-align:center;transition:all .2s">
+          <div style="width:100%;height:50px;border-radius:8px;background:var(--surface);margin-bottom:8px;display:flex;align-items:center;justify-content:center">
+            <div style="width:60%;height:8px;border-radius:4px;background:var(--border)"></div>
           </div>
-          <div style="font-size:13px;font-weight:600;color:#000">Light</div>
-          <div id="theme-light-check" style="font-size:11px;color:#999;margin-top:2px">Tap to switch</div>
+          <div style="font-size:13px;font-weight:600;color:var(--bg)">Light</div>
+          <div id="theme-light-check" style="font-size:11px;color:var(--text-3);margin-top:2px">Tap to switch</div>
         </div>
       </div>
 
@@ -825,12 +888,12 @@ html,body{
       <div style="background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:16px">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
           <div style="font-size:14px;font-weight:600;color:var(--text)">Storage Used</div>
-          <div style="font-size:14px;color:#00897B;font-weight:700">1.2 GB / 15 GB</div>
+          <div style="font-size:14px;color:var(--primary);font-weight:700">1.2 GB / 15 GB</div>
         </div>
-        <div style="background:#222;border-radius:4px;height:8px;overflow:hidden">
-          <div style="background:linear-gradient(90deg,#00897B,#4DB6AC);height:100%;width:8%;border-radius:4px"></div>
+        <div style="background:var(--border);border-radius:4px;height:8px;overflow:hidden">
+          <div style="background:linear-gradient(90deg,var(--primary),var(--primary-soft));height:100%;width:8%;border-radius:4px"></div>
         </div>
-        <div style="display:flex;gap:12px;margin-top:12px;font-size:12px;color:#555">
+        <div style="display:flex;gap:12px;margin-top:12px;font-size:12px;color:var(--text-3)">
           <span>📷 Photos: 0.8 GB</span><span>🎥 Videos: 0.3 GB</span><span>📄 Docs: 0.1 GB</span>
         </div>
       </div>
@@ -857,8 +920,8 @@ html,body{
     </div>
     <div style="padding:8px 0" id="sound-list"></div>
     <div style="padding:16px 20px;border-top:1px solid var(--border);display:flex;gap:10px">
-      <button onclick="hideSoundPicker()" style="flex:1;background:#1a1a1a;border:1px solid #222;color:#f1f1f5;padding:12px;border-radius:12px;cursor:pointer;font-family:Inter,sans-serif;font-size:14px">Cancel</button>
-      <button onclick="confirmSound()" style="flex:1;background:linear-gradient(135deg,#00897B,#00695C);border:none;color:#fff;padding:12px;border-radius:12px;cursor:pointer;font-family:Inter,sans-serif;font-size:14px;font-weight:600;color:var(--text)">Set Tone</button>
+      <button onclick="hideSoundPicker()" style="flex:1;background:var(--surface);border:1px solid var(--border);color:var(--text-1);padding:12px;border-radius:12px;cursor:pointer;font-family:Inter,sans-serif;font-size:14px">Cancel</button>
+      <button onclick="confirmSound()" style="flex:1;background:linear-gradient(135deg,var(--primary),var(--primary-deep));border:none;color:#fff;padding:12px;border-radius:12px;cursor:pointer;font-family:Inter,sans-serif;font-size:14px;font-weight:600;color:var(--text)">Set Tone</button>
     </div>
   </div>
 </div>
@@ -876,8 +939,8 @@ html,body{
     </div>
     <div style="padding:8px 0" id="ringtone-list"></div>
     <div style="padding:16px 20px;border-top:1px solid var(--border);display:flex;gap:10px">
-      <button onclick="hideRingtonePicker()" style="flex:1;background:#1a1a1a;border:1px solid #222;color:#f1f1f5;padding:12px;border-radius:12px;cursor:pointer;font-family:Inter,sans-serif;font-size:14px">Cancel</button>
-      <button onclick="confirmRingtone()" style="flex:1;background:linear-gradient(135deg,#00897B,#00695C);border:none;color:#fff;padding:12px;border-radius:12px;cursor:pointer;font-family:Inter,sans-serif;font-size:14px;font-weight:600;color:var(--text)">Set Ringtone</button>
+      <button onclick="hideRingtonePicker()" style="flex:1;background:var(--surface);border:1px solid var(--border);color:var(--text-1);padding:12px;border-radius:12px;cursor:pointer;font-family:Inter,sans-serif;font-size:14px">Cancel</button>
+      <button onclick="confirmRingtone()" style="flex:1;background:linear-gradient(135deg,var(--primary),var(--primary-deep));border:none;color:#fff;padding:12px;border-radius:12px;cursor:pointer;font-family:Inter,sans-serif;font-size:14px;font-weight:600;color:var(--text)">Set Ringtone</button>
     </div>
   </div>
 </div>
@@ -891,22 +954,22 @@ html,body{
     </div>
     <div style="padding:8px 0">
       <div onclick="openFAQ()" style="display:flex;align-items:center;gap:14px;padding:14px 20px;cursor:pointer;border-bottom:1px solid var(--border);transition:background .15s" onmouseover="this.style.background='rgba(0,0,0,0.06)'" onmouseout="this.style.background='transparent'">
-        <div style="width:40px;height:40px;border-radius:12px;background:rgba(0,137,123,0.15);display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="20" height="20" fill="none" stroke="#00897B" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
+        <div style="width:40px;height:40px;border-radius:12px;background:rgba(0,137,123,0.15);display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="20" height="20" fill="none" stroke="var(--primary)" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
         <div style="flex:1"><div style="font-size:14px;font-weight:600;color:var(--text)">FAQ</div><div style="font-size:12px;color:var(--text3);margin-top:1px">Frequently asked questions</div></div>
         <svg width="16" height="16" fill="none" stroke="var(--text3)" stroke-width="2" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
       </div>
       <div onclick="openContact()" style="display:flex;align-items:center;gap:14px;padding:14px 20px;cursor:pointer;border-bottom:1px solid var(--border);transition:background .15s" onmouseover="this.style.background='rgba(0,0,0,0.06)'" onmouseout="this.style.background='transparent'">
-        <div style="width:40px;height:40px;border-radius:12px;background:rgba(0,137,123,0.15);display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="20" height="20" fill="none" stroke="#00897B" stroke-width="2" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+        <div style="width:40px;height:40px;border-radius:12px;background:rgba(0,137,123,0.15);display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="20" height="20" fill="none" stroke="var(--primary)" stroke-width="2" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
         <div style="flex:1"><div style="font-size:14px;font-weight:600;color:var(--text)">Contact Us</div><div style="font-size:12px;color:var(--text3);margin-top:1px">Get support from our team</div></div>
         <svg width="16" height="16" fill="none" stroke="var(--text3)" stroke-width="2" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
       </div>
       <div onclick="openTerms()" style="display:flex;align-items:center;gap:14px;padding:14px 20px;cursor:pointer;border-bottom:1px solid var(--border);transition:background .15s" onmouseover="this.style.background='rgba(0,0,0,0.06)'" onmouseout="this.style.background='transparent'">
-        <div style="width:40px;height:40px;border-radius:12px;background:rgba(0,137,123,0.15);display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="20" height="20" fill="none" stroke="#00897B" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+        <div style="width:40px;height:40px;border-radius:12px;background:rgba(0,137,123,0.15);display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="20" height="20" fill="none" stroke="var(--primary)" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
         <div style="flex:1"><div style="font-size:14px;font-weight:600;color:var(--text)">Terms & Privacy Policy</div><div style="font-size:12px;color:var(--text3);margin-top:1px">Read our terms of service</div></div>
         <svg width="16" height="16" fill="none" stroke="var(--text3)" stroke-width="2" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
       </div>
       <div onclick="openAppInfo()" style="display:flex;align-items:center;gap:14px;padding:14px 20px;cursor:pointer;transition:background .15s" onmouseover="this.style.background='rgba(0,0,0,0.06)'" onmouseout="this.style.background='transparent'">
-        <div style="width:40px;height:40px;border-radius:12px;background:rgba(0,137,123,0.15);display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="20" height="20" fill="none" stroke="#00897B" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
+        <div style="width:40px;height:40px;border-radius:12px;background:rgba(0,137,123,0.15);display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="20" height="20" fill="none" stroke="var(--primary)" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
         <div style="flex:1"><div style="font-size:14px;font-weight:600;color:var(--text)">App Info</div><div style="font-size:12px;color:var(--text3);margin-top:1px">Chat-X v1.0.0 · by Gideon Saviour</div></div>
         <svg width="16" height="16" fill="none" stroke="var(--text3)" stroke-width="2" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
       </div>
@@ -946,7 +1009,7 @@ html,body{
         <div style="flex:1"><label style="font-size:12px;color:var(--text3);font-weight:600;display:block;margin-bottom:6px">TIME</label><input id="ev-time" type="time" style="width:100%;padding:10px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:10px;font-size:14px"/></div>
       </div>
       <div><label style="font-size:12px;color:var(--text3);font-weight:600;display:block;margin-bottom:6px">DESCRIPTION</label><textarea id="ev-desc" placeholder="What's this event about?" rows="3" style="width:100%;padding:10px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:10px;font-size:14px;resize:none;line-height:1.5"></textarea></div>
-      <button onclick="sendEvent()" style="background:linear-gradient(135deg,#00897B,#00695C);border:none;color:#fff;padding:12px;border-radius:12px;font-size:14px;font-weight:600;color:var(--text);cursor:pointer;font-family:'Inter',sans-serif">Send Event Invite</button>
+      <button onclick="sendEvent()" style="background:linear-gradient(135deg,var(--primary),var(--primary-deep));border:none;color:#fff;padding:12px;border-radius:12px;font-size:14px;font-weight:600;color:var(--text);cursor:pointer;font-family:'Inter',sans-serif">Send Event Invite</button>
     </div>
   </div>
 </div>
@@ -956,14 +1019,14 @@ html,body{
   <div style="background:var(--bg2);border:1px solid var(--border);border-radius:20px;padding:24px;width:340px;max-width:95vw;text-align:center" onclick="event.stopPropagation()">
     <div style="font-weight:700;font-size:16px;margin-bottom:16px">Share File</div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px">
-      <div onclick="sendFile('Document');document.getElementById('file-preview').classList.remove('show')" style="background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:14px;cursor:pointer" onmouseover="this.style.background='#222'" onmouseout="this.style.background='#1a1a1a'"><div style="font-size:24px;margin-bottom:6px">📄</div><div style="font-size:13px;font-weight:600">Document</div></div>
-      <div onclick="sendFile('Image');document.getElementById('file-preview').classList.remove('show')" style="background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:14px;cursor:pointer" onmouseover="this.style.background='#222'" onmouseout="this.style.background='#1a1a1a'"><div style="font-size:24px;margin-bottom:6px">🖼️</div><div style="font-size:13px;font-weight:600">Image</div></div>
-      <div onclick="sendFile('Audio');document.getElementById('file-preview').classList.remove('show')" style="background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:14px;cursor:pointer" onmouseover="this.style.background='#222'" onmouseout="this.style.background='#1a1a1a'"><div style="font-size:24px;margin-bottom:6px">🎵</div><div style="font-size:13px;font-weight:600">Audio</div></div>
-      <div onclick="sendFile('Video');document.getElementById('file-preview').classList.remove('show')" style="background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:14px;cursor:pointer" onmouseover="this.style.background='#222'" onmouseout="this.style.background='#1a1a1a'"><div style="font-size:24px;margin-bottom:6px">🎥</div><div style="font-size:13px;font-weight:600">Video</div></div>
-      <div onclick="sendFile('Location');document.getElementById('file-preview').classList.remove('show')" style="background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:14px;cursor:pointer" onmouseover="this.style.background='#222'" onmouseout="this.style.background='#1a1a1a'"><div style="font-size:24px;margin-bottom:6px">📍</div><div style="font-size:13px;font-weight:600">Location</div></div>
-      <div onclick="sendFile('Contact');document.getElementById('file-preview').classList.remove('show')" style="background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:14px;cursor:pointer" onmouseover="this.style.background='#222'" onmouseout="this.style.background='#1a1a1a'"><div style="font-size:24px;margin-bottom:6px">👤</div><div style="font-size:13px;font-weight:600">Contact</div></div>
+      <div onclick="sendFile('Document');document.getElementById('file-preview').classList.remove('show')" style="background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:14px;cursor:pointer" onmouseover="this.style.background='var(--border)'" onmouseout="this.style.background='var(--surface)'"><div style="font-size:24px;margin-bottom:6px">📄</div><div style="font-size:13px;font-weight:600">Document</div></div>
+      <div onclick="sendFile('Image');document.getElementById('file-preview').classList.remove('show')" style="background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:14px;cursor:pointer" onmouseover="this.style.background='var(--border)'" onmouseout="this.style.background='var(--surface)'"><div style="font-size:24px;margin-bottom:6px">🖼️</div><div style="font-size:13px;font-weight:600">Image</div></div>
+      <div onclick="sendFile('Audio');document.getElementById('file-preview').classList.remove('show')" style="background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:14px;cursor:pointer" onmouseover="this.style.background='var(--border)'" onmouseout="this.style.background='var(--surface)'"><div style="font-size:24px;margin-bottom:6px">🎵</div><div style="font-size:13px;font-weight:600">Audio</div></div>
+      <div onclick="sendFile('Video');document.getElementById('file-preview').classList.remove('show')" style="background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:14px;cursor:pointer" onmouseover="this.style.background='var(--border)'" onmouseout="this.style.background='var(--surface)'"><div style="font-size:24px;margin-bottom:6px">🎥</div><div style="font-size:13px;font-weight:600">Video</div></div>
+      <div onclick="sendFile('Location');document.getElementById('file-preview').classList.remove('show')" style="background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:14px;cursor:pointer" onmouseover="this.style.background='var(--border)'" onmouseout="this.style.background='var(--surface)'"><div style="font-size:24px;margin-bottom:6px">📍</div><div style="font-size:13px;font-weight:600">Location</div></div>
+      <div onclick="sendFile('Contact');document.getElementById('file-preview').classList.remove('show')" style="background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:14px;cursor:pointer" onmouseover="this.style.background='var(--border)'" onmouseout="this.style.background='var(--surface)'"><div style="font-size:24px;margin-bottom:6px">👤</div><div style="font-size:13px;font-weight:600">Contact</div></div>
     </div>
-    <button onclick="document.getElementById('file-preview').classList.remove('show')" style="background:#1a1a1a;border:1px solid #222;color:#f1f1f5;padding:10px 24px;border-radius:10px;cursor:pointer;font-family:'Inter',sans-serif;font-size:14px">Cancel</button>
+    <button onclick="document.getElementById('file-preview').classList.remove('show')" style="background:var(--surface);border:1px solid var(--border);color:var(--text-1);padding:10px 24px;border-radius:10px;cursor:pointer;font-family:'Inter',sans-serif;font-size:14px">Cancel</button>
   </div>
 </div>
 
@@ -974,8 +1037,8 @@ html,body{
     <div id="modal-name" style="margin-top:20px;font-size:20px;font-weight:700"></div>
     <div id="modal-sub" style="color:var(--text3);margin-top:6px;font-size:14px"></div>
     <div style="display:flex;gap:20px;justify-content:center;margin-top:36px">
-      <button class="modal-btn" onclick="closeCall()" style="background:#ef4444;color:#fff"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
-      <button class="modal-btn" onclick="acceptCall()" style="background:#10b981;color:#fff"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></button>
+      <button class="modal-btn" onclick="closeCall()" style="background:var(--danger);color:#fff"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+      <button class="modal-btn" onclick="acceptCall()" style="background:var(--success);color:#fff"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></button>
     </div>
   </div>
 </div>
@@ -983,44 +1046,44 @@ html,body{
 <div id="toast"></div>
 
 <!-- Bottom Navigation -->
-<div id="bottom-nav" style="position:relative;width:100%;flex-shrink:0;background:#111;border-top:1px solid #222;align-items:center;justify-content:space-evenly;padding:8px 0 calc(8px + env(safe-area-inset-bottom));z-index:50">
+<div id="bottom-nav" style="position:relative;width:100%;flex-shrink:0;background:var(--card);border-top:1px solid var(--border);align-items:center;justify-content:space-evenly;padding:8px 0 calc(8px + env(safe-area-inset-bottom));z-index:50">
 
   <button onclick="switchNav('updates')" id="nav-updates" style="display:flex;flex-direction:column;align-items:center;gap:4px;background:none;border:none;cursor:pointer;font-family:Inter,sans-serif;flex:1;min-width:0;max-width:20%">
     <div id="pill-updates" style="padding:8px 14px;border-radius:14px;position:relative;transition:background .2s">
-      <svg width="26" height="26" fill="none" stroke="#777" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/><line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/><line x1="2" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="22" y2="12"/></svg>
-      <span style="position:absolute;top:-2px;right:-2px;background:#00897B;color:#fff;font-size:10px;font-weight:700;border-radius:10px;padding:1px 6px;border:2px solid #111;min-width:20px;text-align:center">2</span>
+      <svg width="26" height="26" fill="none" stroke="var(--text-2)" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/><line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/><line x1="2" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="22" y2="12"/></svg>
+      <span style="position:absolute;top:-2px;right:-2px;background:var(--primary);color:#fff;font-size:10px;font-weight:700;border-radius:10px;padding:1px 6px;border:2px solid var(--card);min-width:20px;text-align:center">2</span>
     </div>
-    <span id="lbl-updates" style="font-size:12px;color:#777;font-weight:500">Updates</span>
+    <span id="lbl-updates" style="font-size:12px;color:var(--text-2);font-weight:500">Updates</span>
   </button>
 
   <button onclick="switchNav('calls')" id="nav-calls" style="display:flex;flex-direction:column;align-items:center;gap:4px;background:none;border:none;cursor:pointer;font-family:Inter,sans-serif;flex:1;min-width:0;max-width:20%">
     <div id="pill-calls" style="padding:8px 14px;border-radius:14px;position:relative;transition:background .2s">
-      <svg width="26" height="26" fill="none" stroke="#777" stroke-width="1.8" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+      <svg width="26" height="26" fill="none" stroke="var(--text-2)" stroke-width="1.8" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
     </div>
-    <span id="lbl-calls" style="font-size:12px;color:#777;font-weight:500">Calls</span>
+    <span id="lbl-calls" style="font-size:12px;color:var(--text-2);font-weight:500">Calls</span>
   </button>
 
   <button onclick="switchNav('communities')" id="nav-communities" style="display:flex;flex-direction:column;align-items:center;gap:4px;background:none;border:none;cursor:pointer;font-family:Inter,sans-serif;flex:1;min-width:0;max-width:20%">
     <div id="pill-communities" style="padding:8px 14px;border-radius:14px;transition:background .2s">
-      <svg width="26" height="26" fill="none" stroke="#777" stroke-width="1.8" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      <svg width="26" height="26" fill="none" stroke="var(--text-2)" stroke-width="1.8" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
     </div>
-    <span id="lbl-communities" style="font-size:12px;color:#777;font-weight:500">Communities</span>
+    <span id="lbl-communities" style="font-size:12px;color:var(--text-2);font-weight:500">Communities</span>
   </button>
 
   <button onclick="switchNav('chats')" id="nav-chats" style="display:flex;flex-direction:column;align-items:center;gap:4px;background:none;border:none;cursor:pointer;font-family:Inter,sans-serif;flex:1;min-width:0;max-width:20%">
-    <div id="pill-chats" style="width:60px;height:52px;border-radius:999px;background:#3a3a3a;position:relative;transition:background .2s;display:flex;align-items:center;justify-content:center">
+    <div id="pill-chats" style="width:60px;height:52px;border-radius:999px;background:var(--border-strong);position:relative;transition:background .2s;display:flex;align-items:center;justify-content:center">
       <svg width="28" height="28" fill="none" stroke="#fff" stroke-width="2.2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-      <span id="badge-chats" style="position:absolute;top:-4px;right:-4px;background:#00897B;color:#fff;font-size:10px;font-weight:700;border-radius:10px;padding:1px 6px;border:2px solid #111;min-width:20px;text-align:center">4</span>
+      <span id="badge-chats" style="position:absolute;top:-4px;right:-4px;background:var(--primary);color:#fff;font-size:10px;font-weight:700;border-radius:10px;padding:1px 6px;border:2px solid var(--card);min-width:20px;text-align:center">4</span>
     </div>
     <span id="lbl-chats" style="font-size:12px;color:#fff;font-weight:700">Chats</span>
   </button>
 
   <button onclick="switchNav('you')" id="nav-you" style="display:flex;flex-direction:column;align-items:center;gap:4px;background:none;border:none;cursor:pointer;font-family:Inter,sans-serif;flex:1;min-width:0;max-width:20%">
     <div id="pill-you" style="padding:4px 10px;border-radius:14px;position:relative;transition:background .2s">
-      <div data-user-initials style="width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#00897B,#00695C);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;font-family:Inter,sans-serif">GS</div>
-      <div style="position:absolute;bottom:5px;right:8px;width:8px;height:8px;background:#10b981;border-radius:50%;border:2px solid #111"></div>
+      <div data-user-initials style="width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--primary-deep));display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;font-family:Inter,sans-serif">GS</div>
+      <div style="position:absolute;bottom:5px;right:8px;width:8px;height:8px;background:var(--success);border-radius:50%;border:2px solid var(--card)"></div>
     </div>
-    <span id="lbl-you" style="font-size:12px;color:#777;font-weight:500">You</span>
+    <span id="lbl-you" style="font-size:12px;color:var(--text-2);font-weight:500">You</span>
   </button>
 
 </div>
@@ -1041,16 +1104,16 @@ const contacts=[
   {id:'c2',name:'Bitcoin Network',av:'BN',status:'group',seen:'1h ago',unread:0,last:'BTC just hit a new milestone',type:'community',members:8900},
   {id:'c3',name:'Developers Hub',av:'DH',status:'group',seen:'30m ago',unread:3,last:'Anyone tried the new VS Code update?',type:'community',members:3200},
 ]
-const sc=s=>s==='online'?'#10b981':s==='away'?'#f59e0b':'#333'
+const sc=s=>s==='online'?'var(--success)':s==='away'?'var(--warning)':'var(--border-strong)'
 let tab='chats',active=null,msgs=[],callType=null,aiHistory=[],aiTyping=false
 const _a='gsk_mAANImxj',_b='AD3BbGFSN1xc',_c='WGdyb3FYUOX',_d='JRfabbrMh0ox79yEzeF6D'
 const GK=_a+_b+_c+_d
 
-function mkAv(i,s,status,border='#111'){
+function mkAv(i,s,status,border='var(--card)'){
   if(status==='ai'){
     const d=Math.round(s*.28)
-    const dots=[0,1,2,3,4,5,6,7].map(k=>`<div class="ai-spinner-dot" style="width:6px;height:6px;background:${['#00897B','#4DB6AC','#00695C','#00897B','#4DB6AC','#00695C','#00897B','#4DB6AC'][k]};animation-delay:${(-1.4+k*.175).toFixed(2)}s"></div>`).join('')
-    return`<div style="position:relative;width:${s}px;height:${s}px;flex-shrink:0"><div style="width:${s}px;height:${s}px;border-radius:50%;background:#0d1a18;display:flex;align-items:center;justify-content:center;border:1px solid #00695C44"><div class="ai-spinner">${dots}</div></div></div>`
+    const dots=[0,1,2,3,4,5,6,7].map(k=>`<div class="ai-spinner-dot" style="width:6px;height:6px;background:${['var(--primary)','var(--primary-soft)','var(--primary-deep)','var(--primary)','var(--primary-soft)','var(--primary-deep)','var(--primary)','var(--primary-soft)'][k]};animation-delay:${(-1.4+k*.175).toFixed(2)}s"></div>`).join('')
+    return`<div style="position:relative;width:${s}px;height:${s}px;flex-shrink:0"><div style="width:${s}px;height:${s}px;border-radius:50%;background:var(--surface);display:flex;align-items:center;justify-content:center;border:1px solid rgba(59,130,246,.28)"><div class="ai-spinner">${dots}</div></div></div>`
   }
   const f=Math.round(s*.34),d=Math.round(s*.28)
   const dot=status&&status!=='group'&&status!=='community'?`<div class="sdot" style="width:${d}px;height:${d}px;background:${sc(status)};bottom:1px;right:1px;border:2px solid ${border}"></div>`:''
@@ -1070,9 +1133,9 @@ function seedMsgs(c){
 }
 
 function tick(st){
-  if(st==='read')return'<span style="color:#4DB6AC;font-size:12px;margin-left:2px">✓✓</span>'
-  if(st==='delivered')return'<span style="color:#444;font-size:12px;margin-left:2px">✓✓</span>'
-  return'<span style="color:#444;font-size:12px;margin-left:2px">✓</span>'
+  if(st==='read')return'<span style="color:var(--primary-soft);font-size:12px;margin-left:2px">✓✓</span>'
+  if(st==='delivered')return'<span style="color:var(--text-3);font-size:12px;margin-left:2px">✓✓</span>'
+  return'<span style="color:var(--text-3);font-size:12px;margin-left:2px">✓</span>'
 }
 
 function renderList(){
@@ -1090,8 +1153,8 @@ function renderList(){
       ${mkAv(c.av,44,c.type==='ai'?'ai':c.status)}
       <div style="flex:1;min-width:0">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px">
-          <span style="font-weight:600;font-size:14px">${c.name}${c.type==='ai'?' <span style="background:#00897B;color:#fff;font-size:9px;padding:1px 5px;border-radius:4px;font-weight:700">AI</span>':''}</span>
-          <span style="font-size:11px;color:var(--text3)">${isMuted(c.id)?'<svg width="12" height="12" fill="none" stroke="#666" stroke-width="2" viewBox="0 0 24 24" style="vertical-align:-1px;margin-right:3px"><path d="M13.73 21a2 2 0 0 1-3.46 0"/><path d="M18.63 13A17.9 17.9 0 0 1 18 8"/><path d="M6.26 6.26A5.86 5.86 0 0 0 6 8c0 7-3 9-3 9h14"/><line x1="2" y1="2" x2="22" y2="22"/></svg>':''}${c.seen||''}</span>
+          <span style="font-weight:600;font-size:14px">${c.name}${c.type==='ai'?' <span style="background:var(--primary);color:#fff;font-size:9px;padding:1px 5px;border-radius:4px;font-weight:700">AI</span>':''}</span>
+          <span style="font-size:11px;color:var(--text3)">${isMuted(c.id)?'<svg width="12" height="12" fill="none" stroke="var(--text-2)" stroke-width="2" viewBox="0 0 24 24" style="vertical-align:-1px;margin-right:3px"><path d="M13.73 21a2 2 0 0 1-3.46 0"/><path d="M18.63 13A17.9 17.9 0 0 1 18 8"/><path d="M6.26 6.26A5.86 5.86 0 0 0 6 8c0 7-3 9-3 9h14"/><line x1="2" y1="2" x2="22" y2="22"/></svg>':''}${c.seen||''}</span>
         </div>
         <div style="display:flex;justify-content:space-between;align-items:center;gap:8px">
           <span style="font-size:12px;color:var(--text3);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${c.last}</span>
@@ -1128,10 +1191,10 @@ function openChat(id){
         <svg width="18" height="18" fill="none" stroke="#fff" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
         <span style="color:#fff;font-size:14px;font-weight:600;font-family:Inter,sans-serif">${totalUnread}</span>
       </button>
-      ${mkAv(active.av,40,isAI?'ai':active.status,'#000')}
+      ${mkAv(active.av,40,isAI?'ai':active.status,'var(--bg)')}
       <div style="min-width:0;cursor:${isGroup?'pointer':'default'}" onclick="${isGroup?'showGroupPanel()':''}">
         <div style="font-weight:700;font-size:15px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${active.name}</div>
-        <div style="font-size:12px;color:${isAI||active.status==='online'?'#10b981':active.status==='away'?'#f59e0b':'#666'}">
+        <div style="font-size:12px;color:${isAI||active.status==='online'?'var(--success)':active.status==='away'?'var(--warning)':'var(--text-2)'}">
           ${isAI?'AI Assistant — Always available':isCom?active.members?.toLocaleString()+' members':isGroup?active.members?.length+' members':active.status==='online'?'Online':active.status==='away'?'Away':'Last seen '+active.seen}
         </div>
       </div>
@@ -1164,10 +1227,10 @@ function renderMessages(){
     return`<div class="msg-row${mine?' mine':''} fade">
       ${!mine&&active?mkAv(active.av,28,isAI?'ai':null):''}
       <div class="${mine?'msg-mine':isAI?'msg-ai':'msg-theirs'}" style="">
-        ${isAI?'<div style="font-size:10px;color:#00897B;font-weight:700;margin-bottom:4px;letter-spacing:.5px">CHAT-X AI</div>':''}
+        ${isAI?'<div style="font-size:10px;color:var(--primary);font-weight:700;margin-bottom:4px;letter-spacing:.5px">CHAT-X AI</div>':''}
         ${m.img?'<img src="'+m.img+'" style="max-width:100%;border-radius:12px;display:block"/>':''}${(m.text||'').replace(/\n/g,'<br>')}
         <div style="display:flex;align-items:center;justify-content:flex-end;gap:2px;margin-top:4px">
-          <span style="font-size:11px;color:${mine?'rgba(255,255,255,.4)':'#444'}">${m.time}</span>
+          <span style="font-size:11px;color:${mine?'rgba(255,255,255,.4)':'var(--text-3)'}">${m.time}</span>
           ${mine?tick(m.st):''}
         </div>
       </div>
@@ -1239,14 +1302,14 @@ function showGroupPanel(){
       <div style="font-size:13px;color:var(--text3);margin-top:4px">${members.length} members</div>
     </div>
     <div style="display:flex;gap:8px;margin-bottom:20px">
-      <button onclick="toggleMute(active.id)" style="flex:1;background:#1a1a1a;border:1px solid #222;color:#f1f1f5;padding:10px;border-radius:10px;cursor:pointer;font-size:12px;font-family:Inter,sans-serif">Mute</button>
-      <button onclick="searchInChat()" style="flex:1;background:#1a1a1a;border:1px solid #222;color:#f1f1f5;padding:10px;border-radius:10px;cursor:pointer;font-size:12px;font-family:Inter,sans-serif">Search</button>
-      <button onclick="leaveGroup()" style="flex:1;background:#1a1a1a;border:1px solid #ef444433;color:#ef4444;padding:10px;border-radius:10px;cursor:pointer;font-size:12px;font-family:Inter,sans-serif">Leave</button>
+      <button onclick="toggleMute(active.id)" style="flex:1;background:var(--surface);border:1px solid var(--border);color:var(--text-1);padding:10px;border-radius:10px;cursor:pointer;font-size:12px;font-family:Inter,sans-serif">Mute</button>
+      <button onclick="searchInChat()" style="flex:1;background:var(--surface);border:1px solid var(--border);color:var(--text-1);padding:10px;border-radius:10px;cursor:pointer;font-size:12px;font-family:Inter,sans-serif">Search</button>
+      <button onclick="leaveGroup()" style="flex:1;background:var(--surface);border:1px solid rgba(248,113,113,.28);color:var(--danger);padding:10px;border-radius:10px;cursor:pointer;font-size:12px;font-family:Inter,sans-serif">Leave</button>
     </div>
     <div style="font-size:11px;color:var(--text3);font-weight:700;letter-spacing:.5px;margin-bottom:8px">MEMBERS</div>
-    ${members.map(m=>`<div class="member-item">${mkAv(m.split(' ').map(w=>w[0]).join('').slice(0,2),36,null)}<div style="flex:1"><div style="font-size:14px;font-weight:500;color:var(--text)">${m}</div>${m===active.admin?'<div style="font-size:11px;color:#00897B">Admin</div>':m==='You'?'<div style="font-size:11px;color:var(--text3)">You</div>':''}</div></div>`).join('')}
-    <div style="margin-top:16px;padding-top:16px;border-top:1px solid #222">
-      <button onclick="addMember()" style="width:100%;background:#1a1a1a;border:1px solid #222;color:#00897B;padding:12px;border-radius:10px;cursor:pointer;font-size:14px;font-weight:600;color:var(--text);font-family:Inter,sans-serif">+ Add Member</button>
+    ${members.map(m=>`<div class="member-item">${mkAv(m.split(' ').map(w=>w[0]).join('').slice(0,2),36,null)}<div style="flex:1"><div style="font-size:14px;font-weight:500;color:var(--text)">${m}</div>${m===active.admin?'<div style="font-size:11px;color:var(--primary)">Admin</div>':m==='You'?'<div style="font-size:11px;color:var(--text3)">You</div>':''}</div></div>`).join('')}
+    <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border)">
+      <button onclick="addMember()" style="width:100%;background:var(--surface);border:1px solid var(--border);color:var(--primary);padding:12px;border-radius:10px;cursor:pointer;font-size:14px;font-weight:600;color:var(--text);font-family:Inter,sans-serif">+ Add Member</button>
     </div>`
 }
 function closeGroupPanel(){document.getElementById('group-panel')?.classList.remove('show')}
@@ -1284,17 +1347,17 @@ function acceptCall(){
   const isVid = callType==='video'
   let s=document.getElementById('incall')
   if(!s){ s=document.createElement('div'); s.id='incall'; document.body.appendChild(s) }
-  s.style.cssText='position:fixed;inset:0;z-index:9999;background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px'
+  s.style.cssText='position:fixed;inset:0;z-index:9999;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px'
   s.innerHTML=
     (isVid?'<video id="call-vid" autoplay playsinline muted style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.55"></video>':'')
    +'<div style="position:relative;text-align:center;z-index:1">'
    +'<div class="avatar" style="width:104px;height:104px;font-size:36px;margin:0 auto 18px">'+active.av+'</div>'
    +'<div style="font-size:23px;font-weight:700;color:#fff">'+active.name+'</div>'
-   +'<div id="call-time" style="font-size:15px;color:#4DB6AC;margin-top:6px">00:00</div></div>'
+   +'<div id="call-time" style="font-size:15px;color:var(--primary-soft);margin-top:6px">00:00</div></div>'
    +'<div style="position:absolute;bottom:52px;display:flex;gap:22px;z-index:1">'
    +'<button id="call-mute" onclick="toggleCallMute()" style="width:60px;height:60px;border-radius:50%;border:none;background:rgba(255,255,255,.16);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center">'
    +'<svg width="24" height="24" fill="none" stroke="#fff" stroke-width="2" viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/></svg></button>'
-   +'<button onclick="endCall()" style="width:60px;height:60px;border-radius:50%;border:none;background:#ef4444;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center">'
+   +'<button onclick="endCall()" style="width:60px;height:60px;border-radius:50%;border:none;background:var(--danger);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center">'
    +'<svg width="26" height="26" fill="none" stroke="#fff" stroke-width="2.5" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>'
   s.style.display='flex'
 
@@ -1319,7 +1382,7 @@ function toggleCallMute(){
   if(callStream) callStream.getAudioTracks().forEach(t=>t.enabled=!callMuted)
   const b=document.getElementById('call-mute')
   if(b) b.style.background = callMuted ? '#fff' : 'rgba(255,255,255,.16)'
-  if(b) b.querySelector('svg').setAttribute('stroke', callMuted ? '#000' : '#fff')
+  if(b) b.querySelector('svg').setAttribute('stroke', callMuted ? 'var(--bg)' : '#fff')
   toast(callMuted?'Microphone off':'Microphone on')
 }
 function endCall(){
@@ -1355,8 +1418,8 @@ function setNavActive(section){
     const lbl=document.getElementById('lbl-'+s)
     const svg=document.querySelector('#nav-'+s+' svg')
     if(pill)pill.style.background=s===section?'rgba(120,120,120,0.4)':'transparent'
-    if(svg)svg.setAttribute('stroke',s===section?'#fff':'#777')
-    if(lbl){lbl.style.color=s===section?'#fff':'#777';lbl.style.fontWeight=s===section?'700':'500'}
+    if(svg)svg.setAttribute('stroke',s===section?'#fff':'var(--text-2)')
+    if(lbl){lbl.style.color=s===section?'#fff':'var(--text-2)';lbl.style.fontWeight=s===section?'700':'500'}
   })
 }
 
@@ -1465,20 +1528,20 @@ function setTheme(theme,silent){
   currentTheme=theme
   if(theme==='light'){
     document.body.classList.add('light-theme')
-    document.getElementById('theme-dark').style.borderColor='#ddd'
+    document.getElementById('theme-dark').style.borderColor='var(--border)'
     document.getElementById('theme-dark-check').textContent=''
-    document.getElementById('theme-dark-check').style.color='#999'
-    document.getElementById('theme-light').style.borderColor='#111'
+    document.getElementById('theme-dark-check').style.color='var(--text-3)'
+    document.getElementById('theme-light').style.borderColor='var(--card)'
     document.getElementById('theme-light-check').textContent='✓ Active'
-    document.getElementById('theme-light-check').style.color='#111'
+    document.getElementById('theme-light-check').style.color='var(--card)'
   } else {
     document.body.classList.remove('light-theme')
-    document.getElementById('theme-dark').style.borderColor='#00897B'
+    document.getElementById('theme-dark').style.borderColor='var(--primary)'
     document.getElementById('theme-dark-check').textContent='✓ Active'
-    document.getElementById('theme-dark-check').style.color='#00897B'
-    document.getElementById('theme-light').style.borderColor='#ddd'
+    document.getElementById('theme-dark-check').style.color='var(--primary)'
+    document.getElementById('theme-light').style.borderColor='var(--border)'
     document.getElementById('theme-light-check').textContent='Tap to switch'
-    document.getElementById('theme-light-check').style.color='#999'
+    document.getElementById('theme-light-check').style.color='var(--text-3)'
   }
   applyWallpaper()
   markDirty()
@@ -1573,9 +1636,9 @@ function showSoundPicker(title, key){
   const list=document.getElementById('sound-list')
   list.innerHTML=SOUNDS.map(([name,icon])=>`
     <div onclick="selectSound('${name}')" id="sound-${name.replace(/ /g,'-')}" style="display:flex;align-items:center;gap:14px;padding:14px 20px;cursor:pointer;transition:background .15s;background:${name===currentLabel?'rgba(0,137,123,0.1)':'transparent'}" onmouseover="this.style.background='var(--hover)'" onmouseout="this.style.background='${name===currentLabel?'rgba(0,137,123,0.1)':'transparent'}'">
-      <div style="width:40px;height:40px;border-radius:12px;background:#1a1a1a;display:flex;align-items:center;justify-content:center;font-size:20px">${icon}</div>
+      <div style="width:40px;height:40px;border-radius:12px;background:var(--surface);display:flex;align-items:center;justify-content:center;font-size:20px">${icon}</div>
       <div style="flex:1;font-size:14px;font-weight:${name===currentLabel?'600':'400'}">${name}</div>
-      ${name===currentLabel?'<svg width="18" height="18" fill="none" stroke="#00897B" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>':''}
+      ${name===currentLabel?'<svg width="18" height="18" fill="none" stroke="var(--primary)" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>':''}
     </div>`).join('')
   document.getElementById('sound-picker').style.display='flex'
 }
@@ -1585,9 +1648,9 @@ function selectSound(name){
   const list=document.getElementById('sound-list')
   list.innerHTML=SOUNDS.map(([n,icon])=>`
     <div onclick="selectSound('${n}')" style="display:flex;align-items:center;gap:14px;padding:14px 20px;cursor:pointer;transition:background .15s;background:${n===name?'rgba(0,137,123,0.1)':'transparent'}" onmouseover="this.style.background='var(--hover)'" onmouseout="this.style.background='${n===name?'rgba(0,137,123,0.1)':'transparent'}'">
-      <div style="width:40px;height:40px;border-radius:12px;background:#1a1a1a;display:flex;align-items:center;justify-content:center;font-size:20px">${icon}</div>
+      <div style="width:40px;height:40px;border-radius:12px;background:var(--surface);display:flex;align-items:center;justify-content:center;font-size:20px">${icon}</div>
       <div style="flex:1;font-size:14px;font-weight:${n===name?'600':'400'}">${n}</div>
-      ${n===name?'<svg width="18" height="18" fill="none" stroke="#00897B" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>':''}
+      ${n===name?'<svg width="18" height="18" fill="none" stroke="var(--primary)" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>':''}
     </div>`).join('')
   // Play distinct preview tone
   try{
@@ -1790,9 +1853,9 @@ function showRingtonePicker(){
 function renderRingtoneList(){
   document.getElementById('ringtone-list').innerHTML=RINGTONES.map(r=>`
     <div onclick="selectRingtone('${r.name}')" style="display:flex;align-items:center;gap:14px;padding:14px 20px;cursor:pointer;transition:background .15s;background:${'${r.name}'===_rtSelected?'rgba(0,137,123,0.1)':'transparent'}" onmouseover="this.style.background='var(--hover)'" onmouseout="this.style.background='${'${r.name}'===_rtSelected?'rgba(0,137,123,0.1)':'transparent'}'">
-      <div style="width:44px;height:44px;border-radius:12px;background:#1a1a1a;display:flex;align-items:center;justify-content:center;font-size:22px">${r.icon}</div>
+      <div style="width:44px;height:44px;border-radius:12px;background:var(--surface);display:flex;align-items:center;justify-content:center;font-size:22px">${r.icon}</div>
       <div style="flex:1"><div style="font-size:14px;font-weight:${r.name===_rtSelected?'600':'400'}">${r.name}</div><div style="font-size:12px;color:var(--text3);margin-top:1px">${r.desc}</div></div>
-      ${r.name===_rtSelected?'<svg width="18" height="18" fill="none" stroke="#00897B" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>':'<svg width="20" height="20" fill="none" stroke="#333" stroke-width="2" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>'}
+      ${r.name===_rtSelected?'<svg width="18" height="18" fill="none" stroke="var(--primary)" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>':'<svg width="20" height="20" fill="none" stroke="var(--border-strong)" stroke-width="2" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>'}
     </div>`).join('')
 }
 
@@ -2241,10 +2304,10 @@ function sheetRow(icon,label,sub,onclick,danger){
   return '<div onclick="'+onclick+'" style="display:flex;align-items:center;gap:14px;padding:14px 20px;cursor:pointer;border-bottom:1px solid var(--border)" '
     +'onmouseover="this.style.background=\'rgba(128,128,128,.08)\'" onmouseout="this.style.background=\'transparent\'">'
     +'<div style="width:38px;height:38px;border-radius:11px;background:'+(danger?'rgba(239,68,68,.12)':'rgba(0,137,123,.13)')+';display:flex;align-items:center;justify-content:center;flex-shrink:0">'+icon+'</div>'
-    +'<div style="flex:1"><div style="font-size:14px;font-weight:600;color:'+(danger?'#ef4444':'var(--text)')+'">'+label+'</div>'
+    +'<div style="flex:1"><div style="font-size:14px;font-weight:600;color:'+(danger?'var(--danger)':'var(--text)')+'">'+label+'</div>'
     +(sub?'<div style="font-size:12px;color:var(--text3);margin-top:1px">'+sub+'</div>':'')+'</div></div>'
 }
-const ICO=(p,col)=>'<svg width="18" height="18" fill="none" stroke="'+(col||'#00897B')+'" stroke-width="2" viewBox="0 0 24 24">'+p+'</svg>'
+const ICO=(p,col)=>'<svg width="18" height="18" fill="none" stroke="'+(col||'var(--primary)')+'" stroke-width="2" viewBox="0 0 24 24">'+p+'</svg>'
 
 /* ============ 1. MUTE ============ */
 let mutedChats={}
@@ -2280,9 +2343,9 @@ function runMsgSearch(){
   if(!hits.length){ box.innerHTML='<span style="color:var(--text3)">No messages match \u201c'+q+'\u201d.</span>'; return }
   box.innerHTML=hits.map(o=>{
     const who=o.m.from==='me'?'You':(active?active.name:'')
-    const txt=(o.m.text||'').replace(new RegExp('('+q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')','ig'),'<mark style="background:#00897B;color:#fff;border-radius:3px">$1</mark>')
+    const txt=(o.m.text||'').replace(new RegExp('('+q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')','ig'),'<mark style="background:var(--primary);color:#fff;border-radius:3px">$1</mark>')
     return '<div onclick="jumpToMsg('+o.i+')" style="padding:11px 12px;border:1px solid var(--border);border-radius:10px;margin-bottom:8px;cursor:pointer">'
-      +'<div style="font-size:11px;color:#00897B;font-weight:700;margin-bottom:3px">'+who+' \u00b7 '+o.m.time+'</div>'
+      +'<div style="font-size:11px;color:var(--primary);font-weight:700;margin-bottom:3px">'+who+' \u00b7 '+o.m.time+'</div>'
       +'<div style="font-size:13px;color:var(--text);line-height:1.5">'+txt+'</div></div>'
   }).join('')
 }
@@ -2293,7 +2356,7 @@ function jumpToMsg(i){
   el.scrollIntoView({behavior:'smooth',block:'center'})
   const b=el.querySelector('div'); if(!b) return
   const prev=b.style.boxShadow
-  b.style.boxShadow='0 0 0 2px #00897B'
+  b.style.boxShadow='0 0 0 2px var(--primary)'
   setTimeout(()=>{ b.style.boxShadow=prev },1600)
 }
 
@@ -2305,8 +2368,8 @@ function chatMenu(){
     sheetRow(ICO('<circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>'),'Search in chat','Find a message','searchInChat()')
    +sheetRow(ICO('<path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>'),muted?'Unmute':'Mute notifications',muted?'Currently muted':'Silence this chat',"toggleMute('"+active.id+"')")
    +sheetRow(ICO('<polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>'),'Clear messages','Empty this conversation','clearChat()')
-   +(active.type==='dm'?sheetRow(ICO('<circle cx="12" cy="12" r="10"/><line x1="4.9" y1="4.9" x2="19.1" y2="19.1"/>','#ef4444'),'Block '+active.name.split(' ')[0],'Stop receiving messages','blockContact()',true):'')
-   +(active.type==='group'?sheetRow(ICO('<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/>','#ef4444'),'Leave group','You will stop receiving messages','leaveGroup()',true):''),
+   +(active.type==='dm'?sheetRow(ICO('<circle cx="12" cy="12" r="10"/><line x1="4.9" y1="4.9" x2="19.1" y2="19.1"/>','var(--danger)'),'Block '+active.name.split(' ')[0],'Stop receiving messages','blockContact()',true):'')
+   +(active.type==='group'?sheetRow(ICO('<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/>','var(--danger)'),'Leave group','You will stop receiving messages','leaveGroup()',true):''),
    {flush:true})
 }
 function clearChat(){
@@ -2333,7 +2396,7 @@ function addMember(){
   if(!avail.length){ toast('Everyone is already in this group'); return }
   openSheet('Add members',
     avail.map(c=>'<label style="display:flex;align-items:center;gap:12px;padding:12px 20px;cursor:pointer;border-bottom:1px solid var(--border)">'
-      +'<input type="checkbox" value="'+c.name+'" class="mem-pick" style="width:18px;height:18px;accent-color:#00897B"/>'
+      +'<input type="checkbox" value="'+c.name+'" class="mem-pick" style="width:18px;height:18px;accent-color:var(--primary)"/>'
       +'<div class="avatar" style="width:38px;height:38px;font-size:13px">'+c.av+'</div>'
       +'<div style="font-size:14px;font-weight:500;color:var(--text)">'+c.name+'</div></label>').join('')
    +'<div style="padding:16px 20px"><button class="auth-btn" onclick="confirmAddMembers()">Add to group</button></div>',
@@ -2401,12 +2464,12 @@ function openFeed(){
   openSheet('Updates',
     '<div onclick="postStatus()" style="display:flex;align-items:center;gap:12px;padding:14px 20px;cursor:pointer;border-bottom:1px solid var(--border)">'
     +'<div style="position:relative"><div class="avatar" data-user-initials style="width:44px;height:44px;font-size:15px">'+(currentUser?initialsOf(currentUser):'?')+'</div>'
-    +'<div style="position:absolute;bottom:-2px;right:-2px;width:20px;height:20px;border-radius:50%;background:#00897B;border:2px solid var(--bg2);display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;font-weight:700;line-height:1">+</div></div>'
+    +'<div style="position:absolute;bottom:-2px;right:-2px;width:20px;height:20px;border-radius:50%;background:var(--primary);border:2px solid var(--bg2);display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;font-weight:700;line-height:1">+</div></div>'
     +'<div><div style="font-size:14px;font-weight:600;color:var(--text)">My status</div>'
     +'<div style="font-size:12px;color:var(--text3)">Tap to add a status update</div></div></div>'
     +'<div style="padding:14px 20px 8px;font-size:11px;color:var(--text3);font-weight:700;letter-spacing:.5px">RECENT</div>'
     +statuses.map(s=>'<div onclick="viewStatus(\''+s.id+'\')" style="display:flex;align-items:center;gap:12px;padding:12px 20px;cursor:pointer">'
-      +'<div class="avatar" style="width:44px;height:44px;font-size:15px;box-shadow:0 0 0 2px #00897B,0 0 0 4px var(--bg2)">'+s.av+'</div>'
+      +'<div class="avatar" style="width:44px;height:44px;font-size:15px;box-shadow:0 0 0 2px var(--primary),0 0 0 4px var(--bg2)">'+s.av+'</div>'
       +'<div><div style="font-size:14px;font-weight:600;color:var(--text)">'+s.name+'</div>'
       +'<div style="font-size:12px;color:var(--text3)">'+s.time+'</div></div></div>').join(''),
     {flush:true})
@@ -2426,7 +2489,7 @@ function submitStatus(){
 function viewStatus(id){
   const s=statuses.find(x=>x.id===id); if(!s) return
   openSheet(s.name,
-    '<div style="padding:26px 20px;background:linear-gradient(135deg,#00897B,#00695C);border-radius:14px;color:#fff;font-size:17px;line-height:1.55;text-align:center">'+s.text+'</div>'
+    '<div style="padding:26px 20px;background:linear-gradient(135deg,var(--primary),var(--primary-deep));border-radius:14px;color:#fff;font-size:17px;line-height:1.55;text-align:center">'+s.text+'</div>'
    +'<div style="text-align:center;font-size:12px;color:var(--text3);margin-top:12px">'+s.time+'</div>')
 }
 
@@ -2443,7 +2506,7 @@ function openFAQ(){
     '<div style="border-bottom:1px solid var(--border)">'
     +'<div onclick="toggleFaq('+i+')" style="padding:15px 20px;cursor:pointer;display:flex;justify-content:space-between;gap:12px;align-items:center">'
     +'<span style="font-size:14px;font-weight:600;color:var(--text)">'+p[0]+'</span>'
-    +'<span id="faq-i-'+i+'" style="color:#00897B;font-size:18px;flex-shrink:0">+</span></div>'
+    +'<span id="faq-i-'+i+'" style="color:var(--primary);font-size:18px;flex-shrink:0">+</span></div>'
     +'<div id="faq-'+i+'" style="display:none;padding:0 20px 15px;font-size:13px;color:var(--text3);line-height:1.6">'+p[1]+'</div></div>'
   ).join(''), {flush:true})
 }
@@ -2481,7 +2544,7 @@ function openAppInfo(){
   const u=currentUser
   openSheet('App info',
     '<div style="text-align:center;margin-bottom:20px">'
-    +'<div style="width:64px;height:64px;border-radius:18px;background:linear-gradient(135deg,#00897B,#00695C);display:flex;align-items:center;justify-content:center;margin:0 auto 12px">'
+    +'<div style="width:64px;height:64px;border-radius:18px;background:linear-gradient(135deg,var(--primary),var(--primary-deep));display:flex;align-items:center;justify-content:center;margin:0 auto 12px">'
     +'<svg width="30" height="30" fill="none" stroke="#fff" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>'
     +'<div style="font-size:18px;font-weight:700;color:var(--text)">Chat-X</div>'
     +'<div style="font-size:13px;color:var(--text3);margin-top:2px">Version 1.0.0</div></div>'
@@ -2553,7 +2616,7 @@ function renderPosts(){
       ? 'background-image:url('+currentUser.avatar+');background-size:cover' : ''
     return '<div class="post">'
      +'<div class="post-head">'
-     +'<div onclick="openUserProfile(\''+p.uid+'\')" style="width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,#00897B,#00695C);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:14px;cursor:pointer;'+avStyle+'">'+(avStyle?'':p.av)+'</div>'
+     +'<div onclick="openUserProfile(\''+p.uid+'\')" style="width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--primary-deep));display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:14px;cursor:pointer;'+avStyle+'">'+(avStyle?'':p.av)+'</div>'
      +'<div style="flex:1"><div style="font-size:14px;font-weight:600;color:var(--text)">'+p.name+'</div>'
      +'<div style="font-size:12px;color:var(--text3)">'+ago(p.ts)+'</div></div>'
      +(p.uid===meId()?'<button class="icon-btn" onclick="deletePost(\''+p.id+'\')"><svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg></button>':'')
@@ -2564,7 +2627,7 @@ function renderPosts(){
      +'<span>'+(p.comments.length?p.comments.length+' comment'+(p.comments.length>1?'s':''):'')+'</span></div>'
      +'<div class="post-acts">'
      +'<button class="post-act'+(liked?' on':'')+'" onclick="toggleLike(\''+p.id+'\')">'
-     +'<svg width="17" height="17" fill="'+(liked?'#00897B':'none')+'" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>Like</button>'
+     +'<svg width="17" height="17" fill="'+(liked?'var(--primary)':'none')+'" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>Like</button>'
      +'<button class="post-act" onclick="openComments(\''+p.id+'\')">'
      +'<svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Comment</button>'
      +'<button class="post-act" onclick="sharePost(\''+p.id+'\')">'
@@ -2577,7 +2640,7 @@ function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').rep
 function openCreatePost(){
   openSheet('Create post',
    '<div style="display:flex;align-items:center;gap:11px;margin-bottom:14px">'
-   +'<div data-user-initials style="width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,#00897B,#00695C);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:14px">'+myAv()+'</div>'
+   +'<div data-user-initials style="width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--primary-deep));display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:14px">'+myAv()+'</div>'
    +'<div style="font-size:14px;font-weight:600;color:var(--text)">'+myName()+'</div></div>'
    +'<textarea id="np-text" class="auth-input" rows="5" placeholder="What\u2019s on your mind?" style="resize:none;line-height:1.55"></textarea>'
    +'<div id="np-preview" style="display:none;margin-bottom:14px"><img id="np-img" style="width:100%;border-radius:12px;display:block"/>'
@@ -2631,7 +2694,7 @@ function openComments(id){
   const p=posts.find(x=>x.id===id); if(!p) return
   openSheet('Comments',
    (p.comments.length?p.comments.map(c=>
-     '<div class="cmt"><div style="width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#00897B,#00695C);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:12px;flex-shrink:0">'
+     '<div class="cmt"><div style="width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--primary-deep));display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:12px;flex-shrink:0">'
      +(c.name||'?').split(' ').map(w=>w[0]).join('').slice(0,2)+'</div>'
      +'<div class="cmt-bubble"><div style="font-size:13px;font-weight:600;color:var(--text)">'+esc(c.name)+'</div>'
      +'<div style="font-size:13px;color:var(--text);line-height:1.5;margin-top:2px">'+esc(c.text)+'</div>'
@@ -2759,7 +2822,7 @@ function editProfile(){
   openSheet('Edit profile',
    '<div class="av-edit" onclick="pickAvatar()">'
    +'<div id="ep-av" style="width:88px;height:88px;border-radius:50%;background:'
-   +(u.avatar?'url('+u.avatar+') center/cover':'linear-gradient(135deg,#00897B,#00695C)')
+   +(u.avatar?'url('+u.avatar+') center/cover':'linear-gradient(135deg,var(--primary),var(--primary-deep))')
    +';display:flex;align-items:center;justify-content:center;color:#fff;font-size:30px;font-weight:700">'
    +(u.avatar?'':initialsOf(u))+'</div>'
    +'<div class="cam"><svg width="14" height="14" fill="none" stroke="#fff" stroke-width="2" viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg></div></div>'
@@ -2841,7 +2904,7 @@ function closeScr(id){ document.getElementById(id).classList.remove('show') }
 
 /* ---------- hub ---------- */
 function openHub(){
-  const I=(p)=>'<svg width="22" height="22" fill="none" stroke="#00897B" stroke-width="2" viewBox="0 0 24 24">'+p+'</svg>'
+  const I=(p)=>'<svg width="22" height="22" fill="none" stroke="var(--primary)" stroke-width="2" viewBox="0 0 24 24">'+p+'</svg>'
   document.getElementById('hub-body').innerHTML=
    tile(I('<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/>'),'Groups',sGroups.filter(g=>g.joined).length+' joined \u00b7 '+sGroups.length+' total','openGroups()')
   +tile(I('<path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/>'),'Pages',sPages.filter(p=>p.following).length+' following \u00b7 '+sPages.length+' total','openPages()')
@@ -2973,7 +3036,7 @@ function renderEvents(){
   document.getElementById('events-body').innerHTML = sEvents.length ? sEvents.slice().sort((a,b)=>a.date.localeCompare(b.date)).map(e=>{
     const going=e.going.includes(meId()), inter=e.interested.includes(meId())
     return '<div class="card">'
-     +'<div style="background:linear-gradient(135deg,#00897B,#00695C);padding:16px;color:#fff">'
+     +'<div style="background:linear-gradient(135deg,var(--primary),var(--primary-deep));padding:16px;color:#fff">'
      +'<div style="font-size:12px;opacity:.85">'+fmt(e.date)+' \u00b7 '+e.time+'</div>'
      +'<div style="font-size:17px;font-weight:700;margin-top:3px">'+esc(e.title)+'</div></div>'
      +'<div class="card-pad">'
@@ -3046,7 +3109,7 @@ function viewListing(id){
    +'<div style="font-size:14px;color:var(--text);line-height:1.6;margin-bottom:16px">'+esc(l.desc)+'</div>'
    +'<div style="font-size:12px;color:var(--text3);margin-bottom:14px">Listed by '+esc(l.sellerName)+'</div>'
    +(isMine
-     ? '<button class="auth-ghost" onclick="deleteListing(\''+id+'\')" style="margin:0;color:#ef4444;border-color:rgba(239,68,68,.3)">Delete listing</button>'
+     ? '<button class="auth-ghost" onclick="deleteListing(\''+id+'\')" style="margin:0;color:var(--danger);border-color:rgba(239,68,68,.3)">Delete listing</button>'
      : '<button class="auth-btn" onclick="messageSeller(\''+id+'\')">Message seller</button>'))
 }
 function messageSeller(id){
