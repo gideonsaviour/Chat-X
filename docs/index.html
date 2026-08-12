@@ -296,6 +296,55 @@ html,body{
 .call-pill .icon-btn{color:#fff !important}
 .call-pill .icon-btn svg{stroke:#fff !important}
 .call-pill .icon-btn:hover{background:rgba(255,255,255,.14) !important}
+/* ===== FEED / SOCIAL ===== */
+#feed,#profile{position:fixed;inset:0;z-index:9994;background:var(--bg1);display:none;flex-direction:column}
+#feed.show,#profile.show{display:flex}
+.scr-head{display:flex;align-items:center;gap:12px;padding:14px 16px;background:var(--bg2);
+  border-bottom:1px solid var(--border);flex-shrink:0}
+.scr-title{font-size:19px;font-weight:800;color:var(--text);flex:1}
+.scr-body{flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;padding-bottom:90px}
+
+.story-strip{display:flex;gap:12px;padding:14px 16px;overflow-x:auto;border-bottom:1px solid var(--border)}
+.story-strip::-webkit-scrollbar{display:none}
+.story{flex-shrink:0;width:66px;text-align:center;cursor:pointer}
+.story-ring{width:62px;height:62px;border-radius:50%;padding:2px;margin-bottom:5px;
+  background:linear-gradient(135deg,#00897B,#4DB6AC)}
+.story-ring.seen{background:var(--border)}
+.story-inner{width:100%;height:100%;border-radius:50%;background:var(--bg1);padding:2px}
+.story-av{width:100%;height:100%;border-radius:50%;background:linear-gradient(135deg,#00897B,#00695C);
+  display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:16px;
+  background-size:cover;background-position:center}
+.story-name{font-size:11px;color:var(--text3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+.composer-card{display:flex;align-items:center;gap:12px;padding:14px 16px;border-bottom:8px solid var(--bg0,rgba(128,128,128,.08))}
+.post{border-bottom:8px solid rgba(128,128,128,.08);padding:14px 0}
+.post-head{display:flex;align-items:center;gap:11px;padding:0 16px 10px}
+.post-text{padding:0 16px 11px;font-size:15px;line-height:1.55;color:var(--text);white-space:pre-wrap;word-break:break-word}
+.post-img{width:100%;display:block}
+.post-stats{display:flex;justify-content:space-between;padding:9px 16px;font-size:12px;color:var(--text3)}
+.post-acts{display:flex;border-top:1px solid var(--border);margin:0 16px;padding-top:4px}
+.post-act{flex:1;display:flex;align-items:center;justify-content:center;gap:7px;padding:9px;
+  background:none;border:none;cursor:pointer;color:var(--text3);font-size:13px;font-weight:600;
+  font-family:Inter,sans-serif;border-radius:9px}
+.post-act:hover{background:var(--hover)}
+.post-act.on{color:#00897B}
+.cmt{display:flex;gap:9px;padding:9px 16px}
+.cmt-bubble{background:var(--bg3);border-radius:14px;padding:9px 12px;flex:1}
+
+#story-view{position:fixed;inset:0;z-index:9999;background:#000;display:none;
+  flex-direction:column;align-items:center;justify-content:center}
+#story-view.show{display:flex}
+.story-bars{position:absolute;top:14px;left:12px;right:12px;display:flex;gap:4px}
+.story-bar{flex:1;height:3px;border-radius:2px;background:rgba(255,255,255,.28);overflow:hidden}
+.story-bar span{display:block;height:100%;width:0;background:#fff}
+
+.prof-cover{height:120px;background:linear-gradient(135deg,#00897B,#00695C)}
+.prof-av{width:96px;height:96px;border-radius:50%;border:4px solid var(--bg1);margin:-52px auto 0;
+  background:linear-gradient(135deg,#00897B,#00695C);display:flex;align-items:center;
+  justify-content:center;color:#fff;font-size:34px;font-weight:700;background-size:cover;background-position:center}
+.prof-stat{flex:1;text-align:center;padding:12px 0}
+.prof-stat b{display:block;font-size:17px;font-weight:700;color:var(--text)}
+.prof-stat span{font-size:12px;color:var(--text3)}
 </style>
 </head>
 <body>
@@ -386,6 +435,53 @@ html,body{
     </div>
 
   </div>
+</div>
+
+<div id="feed">
+  <div class="scr-head">
+    <div class="scr-title">Chat-X</div>
+    <button class="icon-btn" onclick="openCreatePost()" title="New post">
+      <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+    </button>
+    <button class="icon-btn" onclick="openMyProfile()" title="Profile">
+      <div data-user-initials style="width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#00897B,#00695C);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff">?</div>
+    </button>
+  </div>
+  <div class="scr-body">
+    <div class="story-strip" id="story-strip"></div>
+    <div class="composer-card">
+      <div data-user-initials style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#00897B,#00695C);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#fff;flex-shrink:0">?</div>
+      <div onclick="openCreatePost()" style="flex:1;background:var(--bg3);border:1px solid var(--border);border-radius:999px;padding:11px 16px;color:var(--text3);font-size:14px;cursor:pointer">What's on your mind?</div>
+    </div>
+    <div id="post-list"></div>
+  </div>
+</div>
+
+<div id="profile">
+  <div class="scr-head">
+    <button class="icon-btn" onclick="closeProfile()">
+      <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+    </button>
+    <div class="scr-title" id="prof-title">Profile</div>
+  </div>
+  <div class="scr-body" id="prof-body"></div>
+</div>
+
+<div id="story-view">
+  <div class="story-bars" id="story-bars"></div>
+  <div style="position:absolute;top:34px;left:16px;right:16px;display:flex;align-items:center;gap:10px;z-index:2">
+    <div id="sv-av" style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#00897B,#00695C);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:13px;background-size:cover"></div>
+    <div style="flex:1">
+      <div id="sv-name" style="color:#fff;font-size:14px;font-weight:600"></div>
+      <div id="sv-time" style="color:rgba(255,255,255,.6);font-size:11px"></div>
+    </div>
+    <button class="icon-btn" onclick="closeStory()" style="color:#fff">
+      <svg width="20" height="20" fill="none" stroke="#fff" stroke-width="2.4" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+  </div>
+  <div id="sv-body" style="width:100%;max-width:440px;padding:30px;text-align:center;font-size:21px;color:#fff;line-height:1.55"></div>
+  <div onclick="prevStory()" style="position:absolute;left:0;top:70px;bottom:0;width:32%"></div>
+  <div onclick="nextStory()" style="position:absolute;right:0;top:70px;bottom:0;width:68%"></div>
 </div>
 
 <div id="splash">
@@ -1229,7 +1325,7 @@ function switchNav(section){
     document.getElementById('empty-state').style.display='flex'
     active=null
   } else if(section==='updates'){
-    openUpdates()
+    openFeed()
     document.getElementById('nav-chats').classList.add('active')
     document.getElementById('nav-updates').classList.remove('active')
   } else if(section==='you'){
@@ -2010,7 +2106,7 @@ function enterApp(){
   document.getElementById('app').classList.add('show')
   document.body.classList.add('app-ready')
   applyUserToUI()
-  loadMuted(); loadPrefs(); renderList(); updateNavBadge()
+  loadMuted(); loadSocial(); loadPrefs(); renderList(); updateNavBadge()
 }
 
 function applyUserToUI(){
@@ -2228,7 +2324,7 @@ let statuses=[
   {id:'u3',name:'Sarah Chen',av:'SC',time:'12 min ago',text:'Shipping the new designs today'},
   {id:'u6',name:'James Okafor',av:'JO',time:'1 hour ago',text:'Block 850,000 just mined'}
 ]
-function openUpdates(){
+function openFeed(){
   openSheet('Updates',
     '<div onclick="postStatus()" style="display:flex;align-items:center;gap:12px;padding:14px 20px;cursor:pointer;border-bottom:1px solid var(--border)">'
     +'<div style="position:relative"><div class="avatar" data-user-initials style="width:44px;height:44px;font-size:15px">'+(currentUser?initialsOf(currentUser):'?')+'</div>'
@@ -2324,6 +2420,307 @@ function openAppInfo(){
       .map(r=>'<div style="display:flex;justify-content:space-between;gap:16px;padding:12px 0;border-bottom:1px solid var(--border)">'
         +'<span style="font-size:13px;color:var(--text3)">'+r[0]+'</span>'
         +'<span style="font-size:13px;color:var(--text);font-weight:500;text-align:right">'+r[1]+'</span></div>').join(''))
+}
+
+
+/* ================= PHASE 2: FEED, STORIES, PROFILES ================= */
+
+let posts=[], stories2=[], storyQueue=[], storyIdx=0, storyTimer=null
+
+const SEED_POSTS=[
+ {id:'p1',uid:'u3',name:'Sarah Chen',av:'SC',text:'Shipped the new design system today. Six months of work finally live.',img:null,ts:Date.now()-5400000,likes:['u6'],comments:[{uid:'u6',name:'James Okafor',text:'Congrats! It looks superb.',ts:Date.now()-4800000}]},
+ {id:'p2',uid:'u6',name:'James Okafor',av:'JO',text:'Block 850,000 just mined. Quiet milestone, big moment.',img:null,ts:Date.now()-18000000,likes:['u3','u4'],comments:[]},
+ {id:'p3',uid:'u4',name:'Marcus Webb',av:'MW',text:'Rewrote the whole auth flow. Half the code, twice as fast.',img:null,ts:Date.now()-86400000,likes:[],comments:[]}
+]
+const SEED_STORIES=[
+ {id:'s1',uid:'u3',name:'Sarah Chen',av:'SC',text:'Launch day. Nervous but ready.',ts:Date.now()-3600000,seen:false},
+ {id:'s2',uid:'u6',name:'James Okafor',av:'JO',text:'Sunrise over Lagos this morning.',ts:Date.now()-7200000,seen:false}
+]
+
+function loadSocial(){
+  try{ posts=JSON.parse(localStorage.getItem('chatx_posts')||'null')||SEED_POSTS.slice() }
+  catch(e){ posts=SEED_POSTS.slice() }
+  try{ stories2=JSON.parse(localStorage.getItem('chatx_stories')||'null')||SEED_STORIES.slice() }
+  catch(e){ stories2=SEED_STORIES.slice() }
+  const cutoff=Date.now()-86400000
+  stories2=stories2.filter(s=>s.ts>cutoff)      // stories really do expire at 24h
+  saveSocial()
+}
+function saveSocial(){
+  try{
+    localStorage.setItem('chatx_posts',JSON.stringify(posts))
+    localStorage.setItem('chatx_stories',JSON.stringify(stories2))
+  }catch(e){}
+}
+
+function ago(ts){
+  const s=Math.floor((Date.now()-ts)/1000)
+  if(s<60) return 'Just now'
+  if(s<3600) return Math.floor(s/60)+'m'
+  if(s<86400) return Math.floor(s/3600)+'h'
+  return Math.floor(s/86400)+'d'
+}
+function meId(){ return 'me' }
+function myAv(){ return currentUser?initialsOf(currentUser):'?' }
+function myName(){ return currentUser?fullName(currentUser):'You' }
+
+/* ---------- feed ---------- */
+function openFeed(){
+  document.getElementById('feed').classList.add('show')
+  renderStories(); renderPosts()
+}
+function closeFeed(){ document.getElementById('feed').classList.remove('show') }
+
+function renderPosts(){
+  const box=document.getElementById('post-list'); if(!box) return
+  if(!posts.length){ box.innerHTML='<div style="padding:40px 20px;text-align:center;color:var(--text3);font-size:14px">No posts yet. Share something.</div>'; return }
+  box.innerHTML=posts.slice().sort((a,b)=>b.ts-a.ts).map(p=>{
+    const liked=p.likes.includes(meId())
+    const avStyle = p.uid===meId() && currentUser && currentUser.avatar
+      ? 'background-image:url('+currentUser.avatar+');background-size:cover' : ''
+    return '<div class="post">'
+     +'<div class="post-head">'
+     +'<div onclick="openUserProfile(\''+p.uid+'\')" style="width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,#00897B,#00695C);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:14px;cursor:pointer;'+avStyle+'">'+(avStyle?'':p.av)+'</div>'
+     +'<div style="flex:1"><div style="font-size:14px;font-weight:600;color:var(--text)">'+p.name+'</div>'
+     +'<div style="font-size:12px;color:var(--text3)">'+ago(p.ts)+'</div></div>'
+     +(p.uid===meId()?'<button class="icon-btn" onclick="deletePost(\''+p.id+'\')"><svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg></button>':'')
+     +'</div>'
+     +(p.text?'<div class="post-text">'+esc(p.text)+'</div>':'')
+     +(p.img?'<img class="post-img" src="'+p.img+'"/>':'')
+     +'<div class="post-stats"><span>'+(p.likes.length?p.likes.length+' like'+(p.likes.length>1?'s':''):'')+'</span>'
+     +'<span>'+(p.comments.length?p.comments.length+' comment'+(p.comments.length>1?'s':''):'')+'</span></div>'
+     +'<div class="post-acts">'
+     +'<button class="post-act'+(liked?' on':'')+'" onclick="toggleLike(\''+p.id+'\')">'
+     +'<svg width="17" height="17" fill="'+(liked?'#00897B':'none')+'" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>Like</button>'
+     +'<button class="post-act" onclick="openComments(\''+p.id+'\')">'
+     +'<svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Comment</button>'
+     +'<button class="post-act" onclick="sharePost(\''+p.id+'\')">'
+     +'<svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>Share</button>'
+     +'</div></div>'
+  }).join('')
+}
+function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') }
+
+function openCreatePost(){
+  openSheet('Create post',
+   '<div style="display:flex;align-items:center;gap:11px;margin-bottom:14px">'
+   +'<div data-user-initials style="width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,#00897B,#00695C);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:14px">'+myAv()+'</div>'
+   +'<div style="font-size:14px;font-weight:600;color:var(--text)">'+myName()+'</div></div>'
+   +'<textarea id="np-text" class="auth-input" rows="5" placeholder="What\u2019s on your mind?" style="resize:none;line-height:1.55"></textarea>'
+   +'<div id="np-preview" style="display:none;margin-bottom:14px"><img id="np-img" style="width:100%;border-radius:12px;display:block"/>'
+   +'<button onclick="clearPostImg()" class="auth-ghost" style="margin-top:8px">Remove photo</button></div>'
+   +'<button class="auth-ghost" onclick="pickPostImg()" style="margin-bottom:12px">Add photo</button>'
+   +'<button class="auth-btn" onclick="submitPost()">Post</button>'
+   +'<input type="file" id="np-file" accept="image/*" style="display:none" onchange="onPostImg(event)"/>')
+  setTimeout(()=>{const t=document.getElementById('np-text'); if(t) t.focus()},80)
+}
+let pendingPostImg=null
+function pickPostImg(){ document.getElementById('np-file').click() }
+function onPostImg(e){
+  const f=e.target.files&&e.target.files[0]; if(!f) return
+  const rd=new FileReader()
+  rd.onload=ev=>downscale(ev.target.result,1080,.82,url=>{
+    pendingPostImg=url
+    document.getElementById('np-img').src=url
+    document.getElementById('np-preview').style.display='block'
+  })
+  rd.readAsDataURL(f); e.target.value=''
+}
+function clearPostImg(){
+  pendingPostImg=null
+  document.getElementById('np-preview').style.display='none'
+}
+function submitPost(){
+  const t=(document.getElementById('np-text').value||'').trim()
+  if(!t && !pendingPostImg){ toast('Write something or add a photo'); return }
+  posts.unshift({id:'p'+Date.now(),uid:meId(),name:myName(),av:myAv(),
+    text:t,img:pendingPostImg,ts:Date.now(),likes:[],comments:[]})
+  pendingPostImg=null
+  saveSocial(); closeSheet(); renderPosts(); toast('Posted')
+}
+function deletePost(id){
+  posts=posts.filter(p=>p.id!==id); saveSocial(); renderPosts(); toast('Post deleted')
+}
+function toggleLike(id){
+  const p=posts.find(x=>x.id===id); if(!p) return
+  const i=p.likes.indexOf(meId())
+  if(i>-1) p.likes.splice(i,1); else p.likes.push(meId())
+  saveSocial(); renderPosts()
+}
+function sharePost(id){
+  const p=posts.find(x=>x.id===id); if(!p) return
+  const txt=p.name+': '+(p.text||'shared a photo')
+  if(navigator.share){ navigator.share({title:'Chat-X',text:txt}).catch(()=>{}) }
+  else if(navigator.clipboard){ navigator.clipboard.writeText(txt); toast('Copied to clipboard') }
+  else toast('Sharing not supported here')
+}
+function openComments(id){
+  const p=posts.find(x=>x.id===id); if(!p) return
+  openSheet('Comments',
+   (p.comments.length?p.comments.map(c=>
+     '<div class="cmt"><div style="width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#00897B,#00695C);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:12px;flex-shrink:0">'
+     +(c.name||'?').split(' ').map(w=>w[0]).join('').slice(0,2)+'</div>'
+     +'<div class="cmt-bubble"><div style="font-size:13px;font-weight:600;color:var(--text)">'+esc(c.name)+'</div>'
+     +'<div style="font-size:13px;color:var(--text);line-height:1.5;margin-top:2px">'+esc(c.text)+'</div>'
+     +'<div style="font-size:11px;color:var(--text3);margin-top:4px">'+ago(c.ts)+'</div></div></div>').join('')
+    :'<div style="padding:24px;text-align:center;color:var(--text3);font-size:13px">No comments yet.</div>')
+   +'<div style="display:flex;gap:8px;padding:14px 16px;border-top:1px solid var(--border)">'
+   +'<input id="cmt-in" class="auth-input" placeholder="Write a comment" style="margin:0;flex:1"/>'
+   +'<button class="auth-btn" onclick="submitComment(\''+id+'\')" style="width:auto;padding:0 18px">Send</button></div>',
+   {flush:true})
+  setTimeout(()=>{const i=document.getElementById('cmt-in'); if(i) i.focus()},80)
+}
+function submitComment(id){
+  const v=(document.getElementById('cmt-in').value||'').trim()
+  if(!v){ toast('Write a comment first'); return }
+  const p=posts.find(x=>x.id===id); if(!p) return
+  p.comments.push({uid:meId(),name:myName(),text:v,ts:Date.now()})
+  saveSocial(); renderPosts(); openComments(id)
+}
+
+/* ---------- stories ---------- */
+function renderStories(){
+  const box=document.getElementById('story-strip'); if(!box) return
+  const mine=stories2.filter(s=>s.uid===meId())
+  let html='<div class="story" onclick="'+(mine.length?'viewStories(\''+meId()+'\')':'openCreateStory()')+'">'
+    +'<div class="story-ring'+(mine.length?'':' seen')+'"><div class="story-inner">'
+    +'<div class="story-av" data-user-initials'+(currentUser&&currentUser.avatar?' style="background-image:url('+currentUser.avatar+')"':'')+'>'+(currentUser&&currentUser.avatar?'':myAv())+'</div>'
+    +'</div></div><div class="story-name">Your story</div></div>'
+  const others=[...new Set(stories2.filter(s=>s.uid!==meId()).map(s=>s.uid))]
+  html+=others.map(uid=>{
+    const s=stories2.find(x=>x.uid===uid)
+    return '<div class="story" onclick="viewStories(\''+uid+'\')">'
+     +'<div class="story-ring'+(s.seen?' seen':'')+'"><div class="story-inner">'
+     +'<div class="story-av">'+s.av+'</div></div></div>'
+     +'<div class="story-name">'+s.name.split(' ')[0]+'</div></div>'
+  }).join('')
+  box.innerHTML=html
+}
+function openCreateStory(){
+  openSheet('Add to your story',
+   '<textarea id="st2-text" class="auth-input" rows="4" placeholder="Share a moment" style="resize:none;line-height:1.55"></textarea>'
+   +'<div style="font-size:12px;color:var(--text3);margin-bottom:14px">Your story disappears after 24 hours.</div>'
+   +'<button class="auth-btn" onclick="submitStory2()">Share to story</button>')
+  setTimeout(()=>{const t=document.getElementById('st2-text'); if(t) t.focus()},80)
+}
+function submitStory2(){
+  const v=(document.getElementById('st2-text').value||'').trim()
+  if(!v){ toast('Write something first'); return }
+  stories2.unshift({id:'s'+Date.now(),uid:meId(),name:myName(),av:myAv(),text:v,ts:Date.now(),seen:true})
+  saveSocial(); closeSheet(); renderStories(); toast('Added to your story')
+}
+function viewStories(uid){
+  storyQueue=stories2.filter(s=>s.uid===uid).sort((a,b)=>a.ts-b.ts)
+  if(!storyQueue.length) return
+  storyIdx=0
+  document.getElementById('story-view').classList.add('show')
+  document.getElementById('story-bars').innerHTML=storyQueue.map(()=>'<div class="story-bar"><span></span></div>').join('')
+  showStoryAt(0)
+}
+function showStoryAt(i){
+  if(i<0||i>=storyQueue.length) return closeStory()
+  storyIdx=i
+  const s=storyQueue[i]
+  s.seen=true; saveSocial()
+  document.getElementById('sv-av').textContent=s.av
+  document.getElementById('sv-name').textContent=s.name
+  document.getElementById('sv-time').textContent=ago(s.ts)
+  document.getElementById('sv-body').textContent=s.text
+  const bars=document.querySelectorAll('#story-bars .story-bar span')
+  bars.forEach((b,k)=>{ b.style.transition='none'; b.style.width = k<i?'100%':'0' })
+  const cur=bars[i]
+  if(cur){ setTimeout(()=>{ cur.style.transition='width 5s linear'; cur.style.width='100%' },30) }
+  if(storyTimer) clearTimeout(storyTimer)
+  storyTimer=setTimeout(()=>showStoryAt(i+1),5000)
+}
+function nextStory(){ showStoryAt(storyIdx+1) }
+function prevStory(){ showStoryAt(storyIdx-1) }
+function closeStory(){
+  if(storyTimer){ clearTimeout(storyTimer); storyTimer=null }
+  document.getElementById('story-view').classList.remove('show')
+  renderStories()
+}
+
+/* ---------- profiles ---------- */
+function openMyProfile(){ openUserProfile(meId()) }
+function openUserProfile(uid){
+  const isMe = uid===meId()
+  const c = isMe?null:contacts.find(x=>x.id===uid)
+  const name = isMe?myName():(c?c.name:(posts.find(p=>p.uid===uid)||{}).name||'Unknown')
+  const av = isMe?myAv():(c?c.av:(posts.find(p=>p.uid===uid)||{}).av||'?')
+  const mine = posts.filter(p=>p.uid===uid)
+  const avStyle = isMe && currentUser && currentUser.avatar
+    ? 'background-image:url('+currentUser.avatar+')' : ''
+
+  document.getElementById('prof-title').textContent = isMe?'Your profile':name
+  document.getElementById('prof-body').innerHTML=
+    '<div class="prof-cover"></div>'
+   +'<div class="prof-av" style="'+avStyle+'">'+(avStyle?'':av)+'</div>'
+   +'<div style="text-align:center;padding:12px 20px 0">'
+   +'<div style="font-size:20px;font-weight:700;color:var(--text)">'+esc(name)+'</div>'
+   +'<div style="font-size:13px;color:var(--text3);margin-top:3px">'
+   +(isMe?(currentUser?(currentUser.email||currentUser.phone||''):''):(c?(c.status==='online'?'Online':'Last seen '+c.seen):''))+'</div></div>'
+   +'<div style="display:flex;margin:16px 20px;background:var(--bg3);border-radius:14px">'
+   +'<div class="prof-stat"><b>'+mine.length+'</b><span>Posts</span></div>'
+   +'<div class="prof-stat"><b>'+contacts.filter(x=>x.type==='dm').length+'</b><span>Friends</span></div>'
+   +'<div class="prof-stat"><b>'+mine.reduce((n,p)=>n+p.likes.length,0)+'</b><span>Likes</span></div></div>'
+   +(isMe
+      ? '<div style="padding:0 20px 16px"><button class="auth-ghost" onclick="editProfile()" style="margin:0">Edit profile</button></div>'
+      : '<div style="padding:0 20px 16px;display:flex;gap:10px">'
+        +'<button class="auth-btn" onclick="closeProfile();openChat(\''+uid+'\')" style="flex:1">Message</button></div>')
+   +'<div style="padding:14px 20px 8px;font-size:11px;color:var(--text3);font-weight:700;letter-spacing:.5px;border-top:1px solid var(--border)">POSTS</div>'
+   +(mine.length?mine.sort((a,b)=>b.ts-a.ts).map(p=>
+      '<div style="padding:12px 20px;border-bottom:1px solid var(--border)">'
+      +'<div style="font-size:12px;color:var(--text3);margin-bottom:5px">'+ago(p.ts)+'</div>'
+      +(p.text?'<div style="font-size:14px;color:var(--text);line-height:1.55">'+esc(p.text)+'</div>':'')
+      +(p.img?'<img src="'+p.img+'" style="width:100%;border-radius:10px;margin-top:8px;display:block"/>':'')
+      +'<div style="font-size:12px;color:var(--text3);margin-top:7px">'+p.likes.length+' likes \u00b7 '+p.comments.length+' comments</div></div>').join('')
+    :'<div style="padding:30px 20px;text-align:center;color:var(--text3);font-size:13px">No posts yet.</div>')
+
+  document.getElementById('profile').classList.add('show')
+}
+function closeProfile(){ document.getElementById('profile').classList.remove('show') }
+
+function editProfile(){
+  const u=currentUser||{}
+  openSheet('Edit profile',
+   '<div class="av-edit" onclick="pickAvatar()">'
+   +'<div id="ep-av" style="width:88px;height:88px;border-radius:50%;background:'
+   +(u.avatar?'url('+u.avatar+') center/cover':'linear-gradient(135deg,#00897B,#00695C)')
+   +';display:flex;align-items:center;justify-content:center;color:#fff;font-size:30px;font-weight:700">'
+   +(u.avatar?'':initialsOf(u))+'</div>'
+   +'<div class="cam"><svg width="14" height="14" fill="none" stroke="#fff" stroke-width="2" viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg></div></div>'
+   +'<div style="text-align:center;font-size:12px;color:var(--text3);margin-bottom:18px">Tap to change photo</div>'
+   +'<div class="auth-row"><div style="flex:1"><label class="auth-label">FIRST NAME</label>'
+   +'<input id="ep-first" class="auth-input" value="'+esc(u.first||'')+'"/></div>'
+   +'<div style="flex:1"><label class="auth-label">LAST NAME</label>'
+   +'<input id="ep-last" class="auth-input" value="'+esc(u.last||'')+'"/></div></div>'
+   +'<button class="auth-btn" onclick="saveProfile()">Save changes</button>'
+   +'<input type="file" id="ep-file" accept="image/*" style="display:none" onchange="onAvatarFile(event)"/>')
+}
+function pickAvatar(){ document.getElementById('ep-file').click() }
+function onAvatarFile(e){
+  const f=e.target.files&&e.target.files[0]; if(!f) return
+  const rd=new FileReader()
+  rd.onload=ev=>downscale(ev.target.result,512,.85,url=>{
+    currentUser.avatar=url
+    const a=document.getElementById('ep-av')
+    if(a){ a.style.background='url('+url+') center/cover'; a.textContent='' }
+  })
+  rd.readAsDataURL(f); e.target.value=''
+}
+function saveProfile(){
+  const f=(document.getElementById('ep-first').value||'').trim()
+  const l=(document.getElementById('ep-last').value||'').trim()
+  if(!f) return toast('First name cannot be empty')
+  if(!l) return toast('Last name cannot be empty')
+  currentUser.first=f; currentUser.last=l
+  saveUser(currentUser); applyUserToUI()
+  posts.forEach(p=>{ if(p.uid===meId()){ p.name=myName(); p.av=myAv() } })
+  stories2.forEach(s=>{ if(s.uid===meId()){ s.name=myName(); s.av=myAv() } })
+  saveSocial()
+  closeSheet(); openUserProfile(meId()); renderPosts(); renderStories()
+  toast('Profile updated')
 }
 
 // Splash to app transition
